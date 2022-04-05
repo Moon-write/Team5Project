@@ -1,24 +1,14 @@
-<!DOCTYPE html>
-<html lang="ko">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>코로나 정보공유 커뮤니티 :: 위드코로나</title>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
     <!--기본 CSS-->
-    <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="/css/index.css">
     <!--구글폰트-->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <!-- 부트스트랩 CSS -->
-    <!--<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">-->
     <script src="js/jquery-3.6.0.js"></script>
     <link rel="stylesheet" href="css/bootstrap.css">
     <!-- 부트스트랩 JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
-</head>
-<body>
-    <!-- 헤더영역-->
-    <header>
+        <header>
         <div class="header-wrap">
             <div class="header-box">
                 <div class="logo-box">
@@ -58,24 +48,6 @@
             </div>
         </div>
     </header>
-    <!-- 본문영역-->
-    <div class="div-content">
-        <div class="content-title">
-            공지사항
-        </div>
-    </div>
-    <!-- 푸터영역-->
-    <footer>
-        <div class="footer-wrap">
-            <div class="info-wrap">
-                <h6>코로나 정보공유 커뮤니티</h6>
-                <img src="img/logoL.png" height="30px">
-                <h6><b>KH 정보교육원 세미프로젝트</b></h6>
-                <h6>서울특별시 영등포구 선유동2로 57 이레빌딩 19F</h6>
-                <p>@ 2022 Team 5미크론</p>
-            </div>
-        </div>
-    </footer>
     <script>
         $("#menuBtn").on("click",function(){
             if($(this).text()=="expand_more"){
@@ -94,5 +66,3 @@
         }
     })
     </script>
-</body>
-</html>
