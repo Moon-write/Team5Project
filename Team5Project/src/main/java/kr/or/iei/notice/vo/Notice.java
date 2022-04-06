@@ -9,12 +9,13 @@ public class Notice {
 	private String regDate;
 	private String filename;
 	private String filepath;
+	private int thumbsUp;
 	public Notice() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 	public Notice(int noticeNo, String noticeTitle, String noticeWriter, String noticeContent, int readCount,
-			String regDate, String filename, String filepath) {
+			String regDate, String filename, String filepath, int thumbsUp) {
 		super();
 		this.noticeNo = noticeNo;
 		this.noticeTitle = noticeTitle;
@@ -24,6 +25,7 @@ public class Notice {
 		this.regDate = regDate;
 		this.filename = filename;
 		this.filepath = filepath;
+		this.thumbsUp = thumbsUp;
 	}
 	public int getNoticeNo() {
 		return noticeNo;
@@ -72,5 +74,11 @@ public class Notice {
 	}
 	public void setFilepath(String filepath) {
 		this.filepath = filepath;
+	}
+	public int getThumbsUp() {
+		return thumbsUp;
+	}
+	public void setThumbsUp(int thumbsUp) {
+		this.thumbsUp = thumbsUp;
 	}
 }
