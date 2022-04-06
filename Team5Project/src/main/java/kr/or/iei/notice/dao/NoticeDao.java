@@ -15,7 +15,7 @@ public class NoticeDao {
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
 		ArrayList<Notice> list = new ArrayList<Notice>();
-		String query = "select * from (select rownum as rnum,n.* from (select * from notice order by notice_no desc)n) where rnum between ? and ?;";
+		String query = "select * from (select rownum as rnum,n.* from (select * from notice order by notice_no desc)n) where rnum between ? and ?";
 		try {
 			pstmt = conn.prepareStatement(query);
 			//start, end변수를 넣어줬으니까 setting해주기
@@ -43,6 +43,27 @@ public class NoticeDao {
 			JDBCTemplate.close(pstmt);
 		}
 		return list;
+	}
+
+	public int totalNoticeCount(Connection conn) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		int result = 0;
+		String query = "select count(*) as cnt from notice";
+		try {
+			pstmt = conn.prepareStatement(query);
+			rset = pstmt.executeQuery();
+			if(rset.next()) {
+				result = rset.getInt("cnt");
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			JDBCTemplate.close(rset);
+			JDBCTemplate.close(pstmt);
+		}
+		return result;
 	}
 
 }

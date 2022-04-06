@@ -4,6 +4,7 @@
     pageEncoding="UTF-8"%>
     <%
     	ArrayList<Notice> list = (ArrayList<Notice>)request.getAttribute("list");
+    	String pageNav = (String)request.getAttribute("pageNav");
     %>
 <!DOCTYPE html>
 <html>
@@ -72,6 +73,7 @@
 				</tr>
 			<%} %>
 		</table>
+		<div id="pageNav"><%=pageNav %></div>
 	</div>
 	<%@include file="/WEB-INF/views/common/footer.jsp" %>
 </body>

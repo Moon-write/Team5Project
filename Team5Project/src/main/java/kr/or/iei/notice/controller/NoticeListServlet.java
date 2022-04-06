@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import kr.or.iei.notice.service.NoticeService;
 import kr.or.iei.notice.vo.Notice;
+import kr.or.iei.notice.vo.NoticePageData;
 
 /**
  * Servlet implementation class NoticeListServlet
@@ -38,10 +39,11 @@ public class NoticeListServlet extends HttpServlet {
 		int reqPage = Integer.parseInt(request.getParameter("reqPage"));
 		//3.비즈니스로직
 		NoticeService service = new NoticeService();
-		ArrayList<Notice> list = service.selectNoticeService(reqPage);
+		NoticePageData npd = service.selectNoticeService(reqPage);
 		//4.결과처리
 		RequestDispatcher view = request.getRequestDispatcher("/WEB-INF/views/notice/noticeList.jsp");
-		request.setAttribute("list", list);
+		request.setAttribute("list", npd.getList());
+		request.setAttribute("pageNav", npd.getPageNav());
 		view.forward(request, response);
 	}
 
