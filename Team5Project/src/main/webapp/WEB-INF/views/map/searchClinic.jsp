@@ -36,13 +36,28 @@
 	<script>
 		$(function(){
 			
+
 			const xhr = new XMLHttpRequest();
-			xhr.open('get', 'http://apis.data.go.kr/B551182/rprtHospService/getRprtHospService/');
-			xhr.setRequestHeader('Ping-Other', 'pingpong');
+			xhr.open('get', 'http://apis.data.go.kr/B551182/rprtHospService/getRprtHospService?serviceKey=aZgnd9FXHlwr%2FaUjJKh8XgW7sh9DIiuxXVRki%2Beg6LzQC3GGaLH7uVm16NtYTSmJYE6tWEZ%2BaCiHGP31GFG%2Big%3D%3D&pageNo=1&numOfRows=10');
+			xhr.setRequestHeader('Ping-Other','pingpong');
 			xhr.setRequestHeader('Content-Type', 'application/xml');
+//			xhr.setRequestHeader('access-control-request-method','method');
+			xhr.setRequestHeader('Access-Control-Allow-Origin',"*");
+			xhr.onreadystatechange=function(){
+				if(this.readyState==4 && this.status ==200) {
+					// 요청이 다 끝나고 결과가 정상인 경우
+					console.log("정상이랜다");
+				} else if(this.readyState==4 && this.status == 404) {
+					// 요청이 끝났는데 결과가 에러코드(404)인 경우
+					console.log("에러났댄다");
+				}
+			}
 			xhr.send('<person><name>Arun</name></person>');
+				const value=xhr.requestXML;
+				console.log(value)
 			
 		})
+
 	</script>
 </body>
 </html>
