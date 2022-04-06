@@ -1,5 +1,10 @@
+<%@page import="kr.co.iei.member.vo.Member"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    <%
+    	Member m = (Member)session.getAttribute("m");
+    	System.out.println("header : "+m);
+    %>
     <!--기본 CSS-->
     <link rel="stylesheet" href="/css/index.css">
     <!--구글폰트-->
@@ -16,7 +21,7 @@
                     <span class="material-icons" id="menuBtn">expand_more</span>
                 </div>
                 <div class="member-box">
-                    <div class="member-title">
+                    <div id="login-btn" class="member-title" >
                         <a href="#"><span class="material-icons">face</span>
                         <span class="member-content">로그인</span></a>
                     </div>
@@ -48,7 +53,47 @@
             </div>
         </div>
     </header>
+        <div class="modal" id="login-modal">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">SIGN IN</h5>
+              <button type="button" id="btn-close" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true"></span>
+              </button>
+            </div>
+            <form action="/signin.do" method="post">
+            <div class="modal-body">
+              <div>
+              	<label class="form-label mt-4" for="memberId">ID</label>
+              	<input type="text" name="memberId" class="form-control" id="memberId" placeholder="아이디입력">
+              </div>
+              <div>
+              	<label class="form-label mt-4" for="input-box">Password</label>
+              	<input type="password" name="memberPw" class="form-control" id="memberPw" placeholder="비밀번호입력">
+              </div>
+              <div class="input-group mb-3">
+              	<a href="#">Forgot username/password?</a>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="submit" class="btn btn-primary">Login</button>
+              <button id="modal-close" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+            </form>
+          </div>
+        </div>
+      </div>
     <script>
+    	$("#login-btn").on("click",function(){
+    		$("#login-modal").show();
+    	});
+    	$("#modal-close").on("click",function(){
+    		$("#login-modal").hide();
+    	});
+    	$("#btn-close").on("click",function(){
+    		$("#login-modal").hide();
+    	});
         $("#menuBtn").on("click",function(){
             if($(this).text()=="expand_more"){
                 $(".menu-list>li").show();
