@@ -9,13 +9,16 @@ public class Message {
 	private int msgRead;
 	private int msgSenderDel;
 	private int msgReceiverDel;
+	private String SenderName;
+	private String ReceiverName;
 	
 	public Message() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
+	
 	public Message(int msgNo, String msgSender, String msgReceiver, String msgContent, String msgDate, int msgRead,
-			int msgSenderDel, int msgReceiverDel) {
+			int msgSenderDel, int msgReceiverDel, String senderName, String receiverName) {
 		super();
 		this.msgNo = msgNo;
 		this.msgSender = msgSender;
@@ -25,6 +28,8 @@ public class Message {
 		this.msgRead = msgRead;
 		this.msgSenderDel = msgSenderDel;
 		this.msgReceiverDel = msgReceiverDel;
+		this.SenderName = senderName;
+		this.ReceiverName = receiverName;
 	}
 	
 	public Message(String msgSender, String msgReceiver, String msgContent) {
@@ -82,6 +87,23 @@ public class Message {
 	public void setMsgReceiverDel(int msgReceiverDel) {
 		this.msgReceiverDel = msgReceiverDel;
 	}
+
+	public String getSenderName() {
+		return SenderName;
+	}
+
+	public void setSenderName(String senderName) {
+		SenderName = senderName;
+	}
+
+	public String getReceiverName() {
+		return ReceiverName;
+	}
+
+	public void setReceiverName(String receiverName) {
+		ReceiverName = receiverName;
+	}
+	
 }
 
 

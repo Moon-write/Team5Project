@@ -33,5 +33,16 @@
 		</div>
 	</div>
 	<%@include file="/WEB-INF/views/common/footer.jsp" %>
+	<script>
+		$(function(){
+			
+			const xhr = new XMLHttpRequest();
+			xhr.open('get', 'http://apis.data.go.kr/B551182/rprtHospService/getRprtHospService/');
+			xhr.setRequestHeader('Ping-Other', 'pingpong');
+			xhr.setRequestHeader('Content-Type', 'application/xml');
+			xhr.send('<person><name>Arun</name></person>');
+			
+		})
+	</script>
 </body>
 </html>
