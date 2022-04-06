@@ -8,6 +8,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import kr.co.iei.member.service.MemberService;
 import kr.co.iei.member.vo.Member;
@@ -53,6 +54,8 @@ public class SigninServlet extends HttpServlet {
 				request.setAttribute("title", "로그인 성공");
 				request.setAttribute("msg", "안녕");
 				request.setAttribute("icon", "success");
+				HttpSession session = request.getSession();//session객체 생성 후 가져옴
+				session.setAttribute("m", m);
 			}
 		}else {
 			request.setAttribute("title", "로그인 실패");

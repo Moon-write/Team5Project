@@ -3,7 +3,6 @@
     pageEncoding="UTF-8"%>
     <%
     	Member m = (Member)session.getAttribute("m");
-    	System.out.println("header : "+m);
     %>
     <!--기본 CSS-->
     <link rel="stylesheet" href="/css/index.css">
@@ -17,30 +16,38 @@
         <div class="header-wrap">
             <div class="header-box">
                 <div class="logo-box">
-                    <a href="#"><img src="img/logoflex.png" height="30px"></a>
+                    <a href="/"><img src="img/logoflex.png" height="30px"></a>
                     <span class="material-icons" id="menuBtn">expand_more</span>
                 </div>
                 <div class="member-box">
-                    <div id="login-btn" class="member-title" >
-                        <a href="#"><span class="material-icons">face</span>
-                        <span class="member-content">로그인</span></a>
-                    </div>
-                    <div class="member-title">
-                        <a href="#"><span class="material-icons">person_add_alt_1</span>
-                        <span class="member-content">회원가입</span></a>
-                    </div>
-                    <div class="member-title">
-                        <a href="#"><span class="material-icons">logout</span>
-                        <span class="member-content">로그아웃</span></a>
-                    </div>
-                    <div class="member-title">
-                        <a href="#"><span class="material-icons">message</span>
-                        <span class="member-content">쪽지</span></a>
-                    </div>
-                    <div class="member-title">
-                        <a href="#"><span class="material-icons">info</span>
-                        <span class="member-content">개인정보수정</span></a>
-                    </div>
+                	<%if(m == null) {%>
+	                    <div id="login-btn" class="member-title" >
+	                        <a href="#"><span class="material-icons">face</span>
+	                        <span class="member-content">로그인</span></a>
+	                    </div>
+	                    <div class="member-title">
+	                        <a href="#"><span class="material-icons">person_add_alt_1</span>
+	                        <span class="member-content">회원가입</span></a>
+	                    </div>
+                	<%} else { %>
+                		<div class="member-title">
+                			<a href="#"><span class="material-icons">face</span>
+	                        <span class="member-content">회원정보</span></a>
+                		</div>
+                		<div class="member-title">
+                        	<a href="/logout.do"><span class="material-icons">logout</span>
+                        	<span class="member-content">로그아웃</span></a>
+                   	 	</div>
+                 	 	<div class="member-title">
+                        	<a href="#"><span class="material-icons">message</span>
+                        	<span class="member-content">쪽지</span></a>
+                    	</div>
+                    	<div class="member-title">
+                        	<a href="#"><span class="material-icons">info</span>
+                        	<span class="member-content">개인정보수정</span></a>
+                    	</div>
+                	<%} %>
+                  
                 </div>
             </div>
             <div class="menu-wrap">
@@ -53,6 +60,7 @@
             </div>
         </div>
     </header>
+    <%if(m == null) { %>
         <div class="modal" id="login-modal">
         <div class="modal-dialog" role="document">
           <div class="modal-content">
@@ -72,7 +80,7 @@
               	<label class="form-label mt-4" for="input-box">Password</label>
               	<input type="password" name="memberPw" class="form-control" id="memberPw" placeholder="비밀번호입력">
               </div>
-              <div class="input-group mb-3">
+              <div class="input-group">
               	<a href="#">Forgot username/password?</a>
               </div>
             </div>
@@ -84,6 +92,9 @@
           </div>
         </div>
       </div>
+      <%}else{ %>
+      
+      <%} %> <!-- 로그인 되었을때에는 로그인 modal필요 없으므로 if문 처리 -->
     <script>
     	$("#login-btn").on("click",function(){
     		$("#login-modal").show();
