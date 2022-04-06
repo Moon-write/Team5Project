@@ -7,11 +7,14 @@
 <title>Insert title here</title>
 </head>
 <body>
-	어서오세요...
-	수정됐나요..
-	한번더...
-	효석:저도한번
-	유림:commit확인합니다...
-	원준:저도 어디한번 commit확인합니다
+	<%@ include file="/WEB-INF/views/common/header.jsp" %>
+	<!-- 본문영역 -->
+	  <div class="div-content">
+        <div class="content-title">
+			공지사항 입니다
+        </div>
+    </div>
+    <!-- 본문영역 -->
+	<%@ include file="/WEB-INF/views/common/footer.jsp" %>
 </body>
 </html>
