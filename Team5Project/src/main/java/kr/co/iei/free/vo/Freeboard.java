@@ -1,35 +1,29 @@
 package kr.co.iei.free.vo;
 
+import java.util.ArrayList;
+
 public class Freeboard {
-	private Free f;
-	private String writer;
-	private String Page;
+	private ArrayList<Free> flist;
+	private String pageNavi;
 	public Freeboard() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	public Freeboard(Free f, String writer, String page) {
+	public Freeboard(ArrayList<Free> flist, String pageNavi) {
 		super();
-		this.f = f;
-		this.writer = writer;
-		Page = page;
+		this.flist = flist;
+		this.pageNavi = pageNavi;
 	}
-	public Free getF() {
-		return f;
+	public ArrayList<Free> getFlist() {
+		return flist;
 	}
-	public void setF(Free f) {
-		this.f = f;
+	public void setFlist(ArrayList<Free> flist) {
+		this.flist = flist;
 	}
-	public String getWriter() {
-		return writer;
+	public String getPageNavi() {
+		return pageNavi;
 	}
-	public void setWriter(String writer) {
-		this.writer = writer;
-	}
-	public String getPage() {
-		return Page;
-	}
-	public void setPage(String page) {
-		Page = page;
+	public void setPageNavi(String pageNavi) {
+		this.pageNavi = pageNavi;
 	}
 }

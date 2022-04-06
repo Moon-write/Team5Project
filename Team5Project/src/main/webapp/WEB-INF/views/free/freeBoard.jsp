@@ -4,7 +4,6 @@
     pageEncoding="UTF-8"%>
     <%
     	ArrayList<Free> list = (ArrayList<Free>)request.getAttribute("list");
-    	String pageNavi = (String)request.getAttribute("pageNavi");
     %>
 <!DOCTYPE html>
 <html>

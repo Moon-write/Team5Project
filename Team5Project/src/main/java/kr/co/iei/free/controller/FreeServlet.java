@@ -38,13 +38,12 @@ public class FreeServlet extends HttpServlet {
 		
 		//3.비지니스로직
 		FreeService service = new FreeService();
-		Freeboard flist = service.selectFreeList(reqPage);
+		Freeboard freeboard = service.selectFreeList(reqPage);
 		
 		//4.결과처리
 		RequestDispatcher view = request.getRequestDispatcher("WEB-INF/views/free/freeBoard.jsp");
-		request.setAttribute("list", flist.getF());
-		request.setAttribute("writer", flist.getWriter());
-		request.setAttribute("pageNavi", flist.getPage());
+		request.setAttribute("list", freeboard.getFlist());
+		request.setAttribute("pageNavi", freeboard.getPageNavi());
 		view.forward(request, response);
 	}
 
