@@ -26,7 +26,7 @@
 	                        <span class="member-content">로그인</span></a>
 	                    </div>
 	                    <div class="member-title">
-	                        <a href="#"><span class="material-icons">person_add_alt_1</span>
+	                        <a href="signupFrm.do"><span class="material-icons">person_add_alt_1</span>
 	                        <span class="member-content">회원가입</span></a>
 	                    </div>
                 	<%} else { %>
