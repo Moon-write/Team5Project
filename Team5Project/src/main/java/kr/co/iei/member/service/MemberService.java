@@ -16,4 +16,17 @@ public class MemberService {
 		return m;
 	}
 
+	public int insertMember(Member m) {
+		Connection conn = JDBCTemplate.getConnection();
+		MemberDao dao = new MemberDao();
+		int result = dao.insertMember(conn,m); //insert이므로 결과는 result
+		if(result>0) {
+			JDBCTemplate.commit(conn);
+		}else {
+			JDBCTemplate.rollback(conn);
+		}
+		JDBCTemplate.close(conn);
+		return result;
+	}
+
 }

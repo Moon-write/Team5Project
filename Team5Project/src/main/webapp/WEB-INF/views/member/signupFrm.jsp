@@ -44,48 +44,48 @@
 			<div class="input-wrap">
 				<label for="memberId" id="memberId">아이디</label>
 				<div class="id-wrap">
-					<input class="form-control form-control-lg" id="inputLarge11" type="text" name="memberId" id="memberId" class="">
+					<input class="form-control form-control-lg" id="inputLarge11" type="text" name="memberId" id="memberId">
 					<button class="btn btn-primary" type="button" id="button-addon2" class="">Checked</button>
 				</div>
 			</div>
 			<div class="input-wrap">
 				<label for="memberPw">비밀번호</label>
-				<input class="form-control form-control-lg" id="inputLarge" type="password" name="memberPw" id=memberPw" class="">
+				<input class="form-control form-control-lg" type="password" name="memberPw" id=memberPw">
 			</div>
 			<div class="input-wrap">
 				<label for="memberPwRe">비밀번호확인</label>
-				<input class="form-control form-control-lg" id="inputLarge" type="password" name="memberPwRe" id="memberPwRe" class="">			
+				<input class="form-control form-control-lg" type="password" name="memberPwRe" id="memberPwRe">			
 			</div>
 			<div class="input-wrap">
 				<label for="memberName">이름</label>
-				<input class="form-control form-control-lg" id="inputLarge" type="text" name="memberName" id="memberName" class="">
+				<input class="form-control form-control-lg" type="text" name="memberName" id="memberName">
 			</div>
 			<div class="input-wrap">
 				<label for="memberNickname">별명</label>
-				<input class="form-control form-control-lg" id="inputLarge" type="text" name="memberNickname" id="memberNickname" class="">
+				<input class="form-control form-control-lg" type="text" name="memberNickname" id="memberNickname">
 			</div>
 			<div class="input-wrap">
 				<label for="phone">번호</label>
-				<input class="form-control form-control-lg" id="inputLarge" type="text" name="phone" id="phone" class="">
+				<input class="form-control form-control-lg" type="text" name="phone" id="phone">
 			</div>
 			<div class="input-wrap">
 				<label for="memberAddress">주소</label>
-				<input class="form-control form-control-lg" id="inputLarge" type="text" name="memberAddress" id="memberAddress" class="">
+				<input class="form-control form-control-lg" type="text" name="address" id="memberAddress">
 			</div>
 			<div class="input-wrap">
 				<label for="email">이메일</label>
-				<input class="form-control form-control-lg" id="inputLarge" type="text" name="email" id="email" class="">
+				<input class="form-control form-control-lg" type="text" name="email" id="email">
 			</div>
 			<div class="input-wrap">
 				<label for="memberGender" id="memberGender">성별</label>
 				<div class="form-check">
 					<label class="form-check-label">
-						<input type="radio" class="form-check-input" name=optionsRadios" id=optionsRadios1" value="option1" checked>남자
+						<input type="radio" class="form-check-input" name="gender" value="남">남자
 					</label><br>
 				</div>
 				<div class="form-check">
 					<label class="form-check-label">
-						<input type="radio" class="form-check-input" name=optionsRadios" id=optionsRadios2" value="option2" checked>여자
+						<input type="radio" class="form-check-input" name="gender" value="여">여자
 					</label><br>
 				</div>
 			</div>
