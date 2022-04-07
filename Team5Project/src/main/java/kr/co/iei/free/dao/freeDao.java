@@ -18,6 +18,7 @@ public class freeDao {
 		ResultSet rset = null;
 		ArrayList<Free> list = new ArrayList<Free>();
 		String query = "select * from (select rownum as rnum,n.* from (select * from FreeBoard_tbl order by free_no desc)n) where rnum between ? and ?";
+		
 		try {
 			pstmt = conn.prepareStatement(query);
 			pstmt.setInt(1,  Start);
@@ -69,7 +70,15 @@ public class freeDao {
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
 		ArrayList<FreeboardTable> list = new ArrayList<FreeboardTable>();
-		String query = "select * from (select rownum as rnum,n.* from (select * from FreeBoard_tbl order by free_no desc)n) where rnum between ? and ?";
+		String query = "select * from (select rownum as rnum,n.* "
+				+ "from (select t1.free_no,t2.member_nickname, t1.free_title, t1.free_date, t1.free_count"
+				+ "from freeboard_tbl t1 inner join member_tbl t2 on t1.free_id = t2.member_id order by free_no desc)n) "
+				+ "where rnum between ? and ?;";
+		
+				//t1 = 글 테이블,
+				//t2 = 멤버 테이블,
+				//t1과 t2가 inner join 한 것에서 t1.글번호, t2.작성자, t1.제목, t1.작성일, t1.조회수를 셀렉트하여
+				//
 		try {
 			pstmt = conn.prepareStatement(query);
 			pstmt.setInt(1,  start);
