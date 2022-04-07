@@ -1,6 +1,7 @@
 package kr.co.iei.free.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -10,7 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import kr.co.iei.free.service.FreeService;
-import kr.co.iei.free.vo.Freeboard;
+import kr.co.iei.free.vo.FreeboardTable;
 
 /**
  * Servlet implementation class FreeServlet
@@ -35,15 +36,14 @@ public class FreeServlet extends HttpServlet {
 		request.setCharacterEncoding("utf-8");
 		//2.값추출
 		int reqPage = Integer.parseInt(request.getParameter("reqPage"));
-		
+		int numPage = Integer.parseInt(request.getParameter("numPage"));
 		//3.비지니스로직
 		FreeService service = new FreeService();
-		Freeboard freeboard = service.selectFreeList(reqPage);
+		ArrayList<FreeboardTable> freeboard = service.selectFreeList(reqPage, numPage);
 		
 		//4.결과처리
 		RequestDispatcher view = request.getRequestDispatcher("WEB-INF/views/free/freeBoard.jsp");
-		request.setAttribute("list", freeboard.getFlist());
-		request.setAttribute("pageNavi", freeboard.getPageNavi());
+		request.setAttribute("list", freeboard);
 		view.forward(request, response);
 	}
 

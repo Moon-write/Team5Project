@@ -53,7 +53,7 @@
             <div class="menu-wrap">
                 <ul class="menu-list row">
                     <li class="col-md-3"><a href="/noticeList.do?reqPage=1">공지사항</a></li>
-                    <li class="col-md-3"><a href="/free.do?reqPage=1">자유게시판</a></li>
+                    <li class="col-md-3"><a href="/free.do?reqPage=1&numPage=10">자유게시판</a></li>
                     <li class="col-md-3"><a href="#">질문/답변</a></li>
                     <li class="col-md-3"><a href="/searchClinic.do">주변 진료소 찾기</a></li>
                 </ul>
