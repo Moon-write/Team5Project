@@ -2,8 +2,6 @@ package kr.co.iei.mapApi.vo;
 
 public class Clinic {
 	private String clinicName;
-	private String sidoNm;
-	private String sgguNm;
 	private String clinicCode;
 	private String clinicAddr;
 	private String ratAble;
@@ -16,12 +14,10 @@ public class Clinic {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	public Clinic(String clinicName, String sidoNm, String sgguNm, String clinicCode, String clinicAddr, String ratAble,
+	public Clinic(String clinicName, String clinicCode, String clinicAddr, String ratAble,
 			String pcrAble, String xPos, String yPos, String telNo) {
 		super();
 		this.clinicName = clinicName;
-		this.sidoNm = sidoNm;
-		this.sgguNm = sgguNm;
 		this.clinicCode = clinicCode;
 		this.clinicAddr = clinicAddr;
 		this.ratAble = ratAble;
@@ -35,18 +31,6 @@ public class Clinic {
 	}
 	public void setClinicName(String clinicName) {
 		this.clinicName = clinicName;
-	}
-	public String getSidoNm() {
-		return sidoNm;
-	}
-	public void setSidoNm(String sidoNm) {
-		this.sidoNm = sidoNm;
-	}
-	public String getSgguNm() {
-		return sgguNm;
-	}
-	public void setSgguNm(String sgguNm) {
-		this.sgguNm = sgguNm;
 	}
 	public String getClinicCode() {
 		return clinicCode;

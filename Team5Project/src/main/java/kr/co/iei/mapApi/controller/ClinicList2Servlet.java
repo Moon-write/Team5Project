@@ -4,13 +4,12 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import com.google.gson.Gson;
 
 import kr.co.iei.mapApi.service.ApiExplorer;
 import kr.co.iei.mapApi.vo.Clinic;
@@ -44,13 +43,15 @@ public class ClinicList2Servlet extends HttpServlet {
 		ApiExplorer api = new ApiExplorer();
 		ArrayList<Clinic> list = api.getData(sidoNm, sgguNm, detailAddr, pageNo);
 		
-		// 결과 list를 json 형식으로 보내줄거임
-		response.setContentType("application/json");
-		response.setCharacterEncoding("utf-8");
-		PrintWriter out = response.getWriter();
+		// 결과 list를 보내줄거임
+
 		
-		Gson gson = new Gson();
-		gson.toJson(list, out);
+		RequestDispatcher view = request.getRequestDispatcher("/WEB-INF/views/map/searchClinic.jsp");
+		request.setAttribute("sido", sidoNm);
+		request.setAttribute("gugun", sgguNm);
+		request.setAttribute("detailAddr", detailAddr);
+		request.setAttribute("result", list);
+		view.forward(request, response);
 	}
 
 	/**

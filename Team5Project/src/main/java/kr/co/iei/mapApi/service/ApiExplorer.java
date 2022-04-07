@@ -56,7 +56,7 @@ public class ApiExplorer {
 	public ArrayList<Clinic> getData(String sidoNm, String sgguNm, String detailAddr, int requestPage) {
 		// sidoNm/sgguNm이 일치하고 detailAddr을 포함하는 리스트의 requestPage를 불러온다.
 		// 한 페이지당 리스트 수
-		int pageRow = 10;
+		int pageRow = 5;
 		int listRow = requestPage*pageRow;
 		
 		// requestPage*pageRow 만큼 리턴받기 = 리스트 이만큼 리턴받으면 됨
@@ -122,10 +122,9 @@ public class ApiExplorer {
 							c.setClinicName(getTagValue("yadmNm", eElement));
 							c.setPcrAble(getTagValue("pcrPsblYn", eElement));
 							c.setRatAble(getTagValue("ratPsblYn", eElement));
-							c.setSgguNm(sgguNm);
-							c.setSidoNm(sidoNm);
 							c.setxPos(getTagValue("XPosWgs84", eElement));
 							c.setyPos(getTagValue("YPosWgs84", eElement));
+							c.setTelNo(getTagValue("telno", eElement));
 							list.add(c);
 						}
 					}
