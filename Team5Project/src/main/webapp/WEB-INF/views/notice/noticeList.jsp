@@ -48,12 +48,25 @@
 	.notice-tbl tr>th:last-child{
 		width: 10%;
 	}
+	.writebox{
+		text-align: right;
+	}
+	.btn-dark{
+		height: 30px;
+		width: 80px;
+	}
+}
 </style>
 </head>
 <body>
 	<%@include file="/WEB-INF/views/common/header.jsp" %>
 	<div class="div-content">
-		<div class="content-title">공지사항 게시판</div>
+		<div class="content-title" style="margin-bottom: 20px;">공지사항 게시판</div>
+		<%if(m != null && m.getMemberLevel() == 0) {%>
+		<div class="writebox">
+			<a class="btn btn-dark" href="/noticeWirteFrm.do" style="margin-bottom: 10px; font-size: 18px; line-height: 18px">글쓰기</a>
+		</div>
+		<%} %>
 		<table class="table tabel-hover notice-tbl">
 			<tr class="table-success">
 				<th>번호</th><th>제목</th><th>작성자</th><th>작성일</th><th>조회수</th><th>추천</th>

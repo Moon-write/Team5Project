@@ -40,13 +40,13 @@ public class NoticeService {
 			pageNav += "<li>";
 			//-1을 해줘야 ! 12345 느낌표 자리에 생기니까
 			pageNav += "<a class='page-item' href='/noticeList.do?reqPage="+(pageNo-1)+"'>";
-			pageNav += "<span class='material-icons'>chevron_left</span>";
+			pageNav += "<span class='page-link'>«</span>";
 			pageNav += "</a></li>";
 		}
 		//페이지 숫자
 		for(int i=0;i<pageNavSize;i++) {
 			if(pageNo == reqPage) {
-				pageNav += "<li class='page-item active'>";
+				pageNav += "<li class='badge rounded-pill bg-light'>";
 				pageNav += "<a class='page-link' href='/noticeList.do?reqPage="+pageNo+"'>";
 				pageNav += pageNo;
 				pageNav += "</a></li>";
@@ -66,11 +66,10 @@ public class NoticeService {
 		if(pageNo<=totalPage) {
 			pageNav += "<li>";
 			pageNav += "<a class='page-item' href='/noticeList.do?reqPage="+pageNo+"'>";
-			pageNav += "<span class='material-icons'>chevron_right</span>";
+			pageNav += "<span class='page-link'>»</span>";
 			pageNav += "</a></li>";
 		}
 		pageNav += "</ul>";
-		System.out.println(pageNav);
 		NoticePageData npd = new NoticePageData(list, pageNav);
 		JDBCTemplate.close(conn);
 		return npd;
