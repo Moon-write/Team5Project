@@ -34,7 +34,7 @@ public class NoticeService {
 		//nav시작번호 계산
 		int pageNo = ((reqPage-1)/pageNavSize)*pageNavSize + 1;
 		//nav제작
-		String pageNav = "<ul class='pagination pagination-lg' style='padding-left: 300px;'>";
+		String pageNav = "<ul class='pagination pagination-lg' style='justify-content: center;'>";
 		//이전 버튼
 		if(pageNo != 1) {
 			pageNav += "<li>";
