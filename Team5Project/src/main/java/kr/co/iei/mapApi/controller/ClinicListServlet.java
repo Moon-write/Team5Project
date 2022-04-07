@@ -1,25 +1,27 @@
-package kr.co.iei.map.controller;
+package kr.co.iei.mapApi.controller;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import kr.co.iei.mapApi.service.ApiExplorer;
+
 /**
- * Servlet implementation class SearchClinicServlet
+ * Servlet implementation class MapListServlet
  */
-@WebServlet(name = "SearchClinic", urlPatterns = { "/searchClinic.do" })
-public class SearchClinicServlet extends HttpServlet {
+@WebServlet(name = "ClinicList", urlPatterns = { "/clinicList.do" })
+public class ClinicListServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public SearchClinicServlet() {
+    public ClinicListServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -28,8 +30,20 @@ public class SearchClinicServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		RequestDispatcher view = request.getRequestDispatcher("WEB-INF/views/map/searchClinic.jsp");
-		view.forward(request, response);
+		// TODO Auto-generated method stub
+		request.setCharacterEncoding("UTF-8");
+		String pageNo = request.getParameter("pageNo");
+		String numOfRows = request.getParameter("numOfRows");
+		
+		
+		ApiExplorer api = new ApiExplorer();
+		String result = api.main(pageNo, numOfRows);
+		
+		
+		response.setCharacterEncoding("UTF-8");
+		response.setContentType("application/xml");
+		PrintWriter writer = response.getWriter();		
+		writer.print(result);
 	}
 
 	/**
