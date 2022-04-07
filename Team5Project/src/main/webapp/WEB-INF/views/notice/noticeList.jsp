@@ -16,12 +16,10 @@
 		color: black;
 		text-decoration: none;	
 	}
-	.notice-tbl a{
-		color: ##996bf0;
-	}
 	.notice-tbl a:hover{
 		text-decoration: underline;
 		font-weight: bold;
+		color: #9d91a4;
 	}
 	.notice-tbl tr{
 		border-bottom: 1px solid #ccc;
@@ -64,7 +62,7 @@
 		<div class="content-title" style="margin-bottom: 20px;">공지사항 게시판</div>
 		<%if(m != null && m.getMemberLevel() == 0) {%>
 		<div class="writebox">
-			<a class="btn btn-dark" href="/noticeWirteFrm.do" style="margin-bottom: 10px; font-size: 18px; line-height: 18px">글쓰기</a>
+			<a class="btn btn-dark" href="/noticeWriteFrm.do" style="margin-bottom: 10px; font-size: 18px; line-height: 18px">글쓰기</a>
 		</div>
 		<%} %>
 		<table class="table tabel-hover notice-tbl">
