@@ -51,7 +51,7 @@
 			</div>
 			<div class="input-wrap">
 				<label for="memberPw">비밀번호</label>
-				<input class="form-control form-control-lg" type="password" name="memberPw" id="memberPw">
+				<input class="form-control form-control-lg" type="password" name="memberPw2" id="memberPw2">
 			</div>
 			<div class="input-wrap">
 				<label for="memberPwRe">비밀번호확인</label>
@@ -131,7 +131,7 @@
 	            	$("#ajaxCheckResult1").text("비밀번호가 일치합니다.");
 					$("#ajaxCheckResult1").css("color","#00adb5");
 	            } else {
-	            	$("#ajaxCheckResult1").text("이미 사용중인 아이디입니다.");
+	            	$("#ajaxCheckResult1").text("비밀번호가 일치하지 않습니다.");
 					$("#ajaxCheckResult1").css("color","#ff2e63");
 	            }
 	        }

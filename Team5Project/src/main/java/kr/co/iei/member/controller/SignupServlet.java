@@ -36,7 +36,7 @@ public class SignupServlet extends HttpServlet {
 		//2. 값추출
 		Member m = new Member();
 		m.setMemberId(request.getParameter("memberId"));
-		m.setMemberPw(request.getParameter("memberPw"));
+		m.setMemberPw(request.getParameter("memberPw2"));
 		m.setMemberName(request.getParameter("memberName"));
 		m.setMemberNickname(request.getParameter("memberNickname"));
 		m.setPhone(request.getParameter("phone"));
