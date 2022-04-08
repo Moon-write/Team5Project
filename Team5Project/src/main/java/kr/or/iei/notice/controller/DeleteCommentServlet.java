@@ -10,20 +10,18 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import kr.or.iei.notice.service.NoticeService;
-import kr.or.iei.notice.vo.Notice;
-import kr.or.iei.notice.vo.NoticeViewData;
 
 /**
- * Servlet implementation class NoticeViewServlet
+ * Servlet implementation class DeleteCommentServlet
  */
-@WebServlet(name = "NoticeView", urlPatterns = { "/noticeView.do" })
-public class NoticeViewServlet extends HttpServlet {
+@WebServlet(name = "DeleteComment", urlPatterns = { "/deleteComment.do" })
+public class DeleteCommentServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public NoticeViewServlet() {
+    public DeleteCommentServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -35,16 +33,23 @@ public class NoticeViewServlet extends HttpServlet {
 		//1.인코딩
 		request.setCharacterEncoding("utf-8");
 		//2.값추출
+		int ncNo = Integer.parseInt(request.getParameter("ncNo"));
 		int noticeNo = Integer.parseInt(request.getParameter("noticeNo"));
-		//3. 비즈니스로직
+		//3.비즈니스로직
 		NoticeService service = new NoticeService();
-		NoticeViewData nvd = service.selectNoticeView(noticeNo);
-		//Notice n = service.selectOneNotice(noticeNo);
-		//4. 결과처리
-		RequestDispatcher view = request.getRequestDispatcher("/WEB-INF/views/notice/noticeView.jsp");
-		request.setAttribute("n",nvd.getN());
-		request.setAttribute("commentList", nvd.getCommentList());
-		request.setAttribute("reCommentList", nvd.getReCommentList());
+		int result = service.deleteNoticeComment(ncNo);
+		//4.화면처리
+		RequestDispatcher view = request.getRequestDispatcher("/WEB-INF/views/common/msg.jsp");
+		if(result>0) {
+			request.setAttribute("title", "성공");
+			request.setAttribute("msg", "댓글 삭제 완료");
+			request.setAttribute("icon", "success");
+		}else {
+			request.setAttribute("title", "실패");
+			request.setAttribute("msg", "댓글 삭제 중 문제가 발생했습니다.");
+			request.setAttribute("icon", "error");
+		}
+		request.setAttribute("loc", "/noticeView.do?noticeNo="+noticeNo);
 		view.forward(request, response);
 	}
 

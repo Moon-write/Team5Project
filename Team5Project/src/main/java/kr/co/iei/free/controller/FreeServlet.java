@@ -37,13 +37,25 @@ public class FreeServlet extends HttpServlet {
 		//2.값추출
 		int reqPage = Integer.parseInt(request.getParameter("reqPage"));
 		int numPage = Integer.parseInt(request.getParameter("numPage"));
+		String keyword = request.getParameter("keyword");
+		int sort = Integer.parseInt(request.getParameter("Sort"));
+		//int sort = Integer.parseInt(request.getParameter("Sort"));
 		//3.비지니스로직
 		FreeService service = new FreeService();
-		ArrayList<FreeboardTable> freeboard = service.selectFreeList(reqPage, numPage);
+		ArrayList<FreeboardTable> freeboard = new ArrayList<FreeboardTable>();	
 		
+		if(sort==1) {
+			
+		}else if(sort==2) {
+			
+		}else {
+			freeboard = service.selectFreeList(reqPage, numPage, keyword);			
+		}
+		String pageNavi = service.totalPage(reqPage, numPage);
 		//4.결과처리
 		RequestDispatcher view = request.getRequestDispatcher("WEB-INF/views/free/freeBoard.jsp");
 		request.setAttribute("list", freeboard);
+		request.setAttribute("pageNavi", pageNavi);
 		view.forward(request, response);
 	}
 

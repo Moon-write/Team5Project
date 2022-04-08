@@ -52,7 +52,7 @@ public class NewMsgServlet extends HttpServlet {
 		// 결과처리
 		if(result>0) {
 			returnMent = "전송 성공!";
-			loc= "/gotoSendMsg.do?memberId="+msgSender;
+			loc= "/gotoReceiveMsg.do?msgBoardTitle=sendMsg&pageNo=1&memberId="+msgSender;
 		} else {
 			returnMent = "전송 실패!관리자에게 문의하세요";
 			loc = "/gotoWriteMsg.do?memberId="+msgSender;

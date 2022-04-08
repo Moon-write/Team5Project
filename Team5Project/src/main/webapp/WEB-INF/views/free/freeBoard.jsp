@@ -4,12 +4,14 @@
     pageEncoding="UTF-8"%>
     <%
     	ArrayList<FreeboardTable> list = (ArrayList<FreeboardTable>)request.getAttribute("list");
+    	int reqPage = Integer.parseInt(request.getParameter("reqPage"));
+    	String pageNavi = (String)request.getAttribute("pageNavi");
     %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>자유게시판 메인페이지</title>
 </head>
 <style>
 	.tr1 td>a:hover{
@@ -60,6 +62,9 @@
 	.check-button>p{
 		height:100%;
 	}
+	.paging>.pagination-lg{ 
+		justify-content: center;
+	}
 </style>
 <body>
 	<%@include file="/WEB-INF/views/common/header.jsp" %>
@@ -71,7 +76,7 @@
 	        	<a type="button" class="btn btn-outline-primary" href="/freeInsert.do">글쓰기</a>
         	</div>
 			
-			<form action="/search.do" method="get" name="search">
+			<form action="/free.do" method="get" name="search">
 				<fieldset>
 					<div class="input-group mb-3">
 						<div class="btn-group" role="group" aria-label="Basic radio toggle button group">
@@ -82,6 +87,7 @@
 						  <input type="radio" class="btn-check" name="Sort" id="btnradio3" value="3">
 						  <label class="btn btn-outline-primary" for="btnradio3">최신순</label>
 						</div>
+						<input type="hidden" name="reqPage" id="reqPage" value="<%=reqPage%>">
 						<select class="form-select" id="exampleSelect1" name="numPage">
 					        <option>10</option>
 					        <option>20</option>
@@ -113,7 +119,7 @@
 		  <%for(FreeboardTable fbt : list){ %>
 		    <tr class="btn-lg btn-light tr1">
 		      <th scope="row"><%=fbt.getNo() %></th>
-		      <td><a href="/noticeView.do?noticeNo=<%=fbt.getNo() %>"><%=fbt.getTitle() %></a></td>
+		      <td><a href="/FreeView.do?FreeNo=<%=fbt.getNo() %>"><%=fbt.getTitle() %></a></td>
 		      <td><%=fbt.getWriter() %></td>
 		      <td><%=fbt.getDate() %></td>
 		      <td><%=fbt.getViewCount() %></td>
@@ -122,8 +128,30 @@
 		   <%} %>
 		  </tbody>
 		</table>
+		
+		<div class="paging">
+			<ul class="pagination pagination-lg">
+				<%=pageNavi %>
+		  	</ul>
+		</div>
     </div>
 	<script>
+		const pagebtn = $(".pagebtn");
+		pagebtn.on("click",function(){
+			//console.log($(this).text());
+			$("#reqPage").val($(this).text());
+			$(".btn-primary").trigger("click");
+		});
+		const prev = $(".prev");
+		prev.on("click",function(){ 
+			$("#reqPage").val(parseInt($("#reqPage").val())-1);
+			$(".btn-primary").trigger("click");
+		})
+		const next = $(".next");
+		next.on("click",function(){ 
+			$("#reqPage").val( parseInt($("#reqPage").val())+1);
+			$(".btn-primary").trigger("click");
+		})
 	</script>
 	<%@include file="/WEB-INF/views/common/footer.jsp" %>
 </body>

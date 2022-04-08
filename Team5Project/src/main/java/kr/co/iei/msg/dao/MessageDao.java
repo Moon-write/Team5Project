@@ -10,7 +10,6 @@ import common.JDBCTemplate;
 import kr.co.iei.msg.vo.Message;
 
 public class MessageDao {
-	private int rowOfList = 7;
 	
 	private Message getMsg(ResultSet rset) {
 		Message msg = new Message();
@@ -157,18 +156,16 @@ public class MessageDao {
 		return result;
 	}
 
-	public ArrayList<Message> readAllMsgSender(Connection conn, String memberId, int pageNo) {
+	public ArrayList<Message> readAllMsgSender(Connection conn, String memberId) {
 		// 보낸편지함 읽기
 		PreparedStatement pstmt = null;
-		ArrayList<Message> list = null;
+		ArrayList<Message> list = new ArrayList<Message>();
 		ResultSet rset = null;
-		String query = "SELECT * FROM (SELECT ROWNUM AS RNUM, MSG.* FROM (SELECT * FROM MSG_VIEW)MSG WHERE MSG_SENDER=? AND MSG_SENDER_DEL=0) WHERE (RNUM BETWEEN ? AND ?)";
+		String query = "SELECT * FROM (SELECT ROWNUM AS RNUM, MSG.* FROM (SELECT * FROM MSG_VIEW)MSG WHERE MSG_SENDER=? AND MSG_SENDER_DEL=0)";
 		
 		try {
 			pstmt = conn.prepareStatement(query);
 			pstmt.setString(1, memberId);
-			pstmt.setInt(2, (pageNo-1)*rowOfList+1);
-			pstmt.setInt(3, pageNo*rowOfList);
 			rset = pstmt.executeQuery();
 			
 			while(rset.next()) {
@@ -186,18 +183,16 @@ public class MessageDao {
 		return list;
 	}
 	
-	public ArrayList<Message> readAllMsgReceiver(Connection conn, String memberId, int pageNo) {
+	public ArrayList<Message> readAllMsgReceiver(Connection conn, String memberId) {
 		// 받은편지함 읽기
 		PreparedStatement pstmt = null;
-		ArrayList<Message> list = null;
+		ArrayList<Message> list = new ArrayList<Message>();
 		ResultSet rset = null;
-		String query = "SELECT * FROM (SELECT ROWNUM AS RNUM, MSG.* FROM (SELECT * FROM MSG_VIEW)MSG WHERE MSG_RECEIVER=? AND MSG_RECEIVER_DEL=0) WHERE (RNUM BETWEEN ? AND ?)";
+		String query = "SELECT * FROM (SELECT ROWNUM AS RNUM, MSG.* FROM (SELECT * FROM MSG_VIEW)MSG WHERE MSG_RECEIVER=? AND MSG_RECEIVER_DEL=0)";
 		
 		try {
 			pstmt = conn.prepareStatement(query);
 			pstmt.setString(1, memberId);
-			pstmt.setInt(2, (pageNo-1)*rowOfList+1);
-			pstmt.setInt(3, pageNo*rowOfList);
 			rset = pstmt.executeQuery();
 			
 			while(rset.next()) {

@@ -38,7 +38,7 @@
                         	<a href="/logout.do"><span class="material-icons">logout</span>
                         	<span class="member-content">로그아웃</span></a>
                    	 	</div>
-                 	 	<div class="member-title">
+                 	 	<div class="member-title" id="sendMsg">
                         	<a href="#"><span class="material-icons">message</span>
                         	<span class="member-content">쪽지</span></a>
                     	</div>
@@ -115,6 +115,8 @@
       </div>
       <script>
       	$("#sendMsg").on("click",function(){
+      		const memberId = $("#memberId").val();
+      		$("#msgBox").attr("src", "/gotoReceiveMsg.do?msgBoardTitle=receiveMsg&pageNo=1&memberId="+memberId);
       		$("#msg-modal").show();
       	})
       	$("#writeBtn").on("click",function(){
@@ -131,8 +133,8 @@
           }
       	})
 
-        $("#msg-modal button[data-bs-dismiss=modal]").on("click",function(){                    
-          $("#msg-modal").hide();
+        $("#msg-modal button[data-bs-dismiss=modal]").on("click",function(){         
+        	  $("#msg-modal").hide();
         })
       </script>
       <%} %> <!-- 로그인 되었을때에는 로그인 modal필요 없으므로 if문 처리 -->

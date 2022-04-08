@@ -16,7 +16,7 @@ public class freeDao {
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
 		int result = 0;
-		String query = "select count(*) as cnt from free_tbl";
+		String query = "select count(*) as cnt from FreeBoard_tbl";
 		try {
 			pstmt = conn.prepareStatement(query);
 			rset = pstmt.executeQuery();
@@ -34,19 +34,25 @@ public class freeDao {
 		return result;
 	}
 
-	public ArrayList<FreeboardTable> selectFreeBoardTable(Connection conn, int start, int end) {
+	public ArrayList<FreeboardTable> selectFreeBoardTable(Connection conn, int start, int end, String keyword) {
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
 		ArrayList<FreeboardTable> list = new ArrayList<FreeboardTable>();
-		String query = "select * from \r\n"
-				+ "(select rownum as rnum,n.* from \r\n"
-				+ "(select t1.free_no, t2.member_nickname,t1.free_title, t1.free_date, t1.free_count, (select count(*) from like2_tbl t3 where t3.free_no=t1.free_no)likes from \r\n"
-				+ "freeboard_tbl t1 inner join member_tbl t2 on t1.free_id = t2.member_id order by free_no desc)n) \r\n"
+		String query = "select * from (select rownum as rnum,n.* from \r\n"
+				+ "(select t1.free_no, t2.member_nickname,t1.free_title, t1.free_date, t1.free_count, \r\n"
+				+ "(select count(*) from like2_tbl t3 where t3.free_no=t1.free_no) likes \r\n"
+				+ "from freeboard_tbl t1 inner join member_tbl t2 on t1.free_id = t2.member_id \r\n"
+				+ "where (t2.member_nickname LIKE ('%'||?||'%') or t1.free_title LIKE ('%'||?||'%')) \r\n"
+				+ "order by free_no desc)n) \r\n"
 				+ "where rnum between ? and ?";
+
+				
 		try {
 			pstmt = conn.prepareStatement(query);
-			pstmt.setInt(1,  start);
-			pstmt.setInt(2,  end);
+			pstmt.setString(1,  keyword);
+			pstmt.setString(2,  keyword);
+			pstmt.setInt(3,  start);
+			pstmt.setInt(4,  end);
 			rset = pstmt.executeQuery();
 			while(rset.next()) {
 				FreeboardTable fbt = new FreeboardTable();

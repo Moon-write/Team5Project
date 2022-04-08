@@ -5,6 +5,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+
 <style>
 	.input-form{
 		width: 100%;
@@ -29,7 +30,7 @@
 				<tr class="table-success">
 					<th class="table-light">제목</th>
 					<td colspan="8">
-						<input type="text" name="noticeTitle" class="input-form">
+						<input type="text" name="noticeTitle" class="form-control">
 					</td>
 				</tr>
 				<tr class="table-success">
@@ -41,7 +42,7 @@
 					<td><input type="file" name="file"></td>
 				</tr>
 				<tr class="table-success">
-					<td colspan="4"><textarea name="noticeContent" class="input-form"></textarea></td>
+					<td colspan="4" style="text-align: left;"><textarea id="noticeContent" name="noticeContent" class="form-control"></textarea></td>
 				</tr>
 				<tr>
 					<td colspan="4" id="submitbutton"><button type="submit" class="btn btn-primary">공지사항등록</button></td>
