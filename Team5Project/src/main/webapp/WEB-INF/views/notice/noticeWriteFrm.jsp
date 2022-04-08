@@ -41,7 +41,7 @@
 					<td><input type="file" name="file"></td>
 				</tr>
 				<tr class="table-success">
-					<td colspan="4" id="writeboard" style="text-align: left;"><textarea id="noticeContent"  name="noticeContent" class="input-form"></textarea></td>
+					<td colspan="4"><textarea name="noticeContent" class="input-form"></textarea></td>
 				</tr>
 				<tr>
 					<td colspan="4" id="submitbutton"><button type="submit" class="btn btn-primary">공지사항등록</button></td>

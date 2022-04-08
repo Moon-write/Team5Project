@@ -125,4 +125,17 @@ public class NoticeService {
 		return result;
 	}
 
+	public int noticeUpdate(Notice n) {
+		Connection conn = JDBCTemplate.getConnection();
+		NoticeDao dao = new NoticeDao();
+		int result = dao.noticeUpdate(conn,n);
+		if(result>0) {
+			JDBCTemplate.commit(conn);
+		}else {
+			JDBCTemplate.rollback(conn);
+		}
+		JDBCTemplate.close(conn);
+		return result;
+	}
+
 }

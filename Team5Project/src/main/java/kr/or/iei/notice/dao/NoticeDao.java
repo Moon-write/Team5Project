@@ -153,4 +153,25 @@ public class NoticeDao {
 		return result;
 	}
 
+	public int noticeUpdate(Connection conn, Notice n) {
+		PreparedStatement pstmt = null;
+		int result = 0;
+		String query = "update notice set notice_title=?, notice_content=?, filename=?, filepath=? where notice_no=?";
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, n.getNoticeTitle());
+			pstmt.setString(2, n.getNoticeContent());
+			pstmt.setString(3, n.getFilename());
+			pstmt.setString(4, n.getFilepath());
+			pstmt.setInt(5, n.getNoticeNo());
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			JDBCTemplate.close(pstmt);
+		}
+		return result;
+	}
+
 }

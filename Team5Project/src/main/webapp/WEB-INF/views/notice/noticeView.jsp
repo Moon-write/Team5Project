@@ -10,8 +10,14 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <style>
+	#noticeView{
+		border : 1.5px solid #907bb6;
+	}
 	#noticeView th, #noticeView td{
-		border : 1px solid #eee;
+		border : 1px solid #ccc;
+	}
+	#noticeView td{
+		background-color: #fff;
 	}
 	#noticeContent{
 		min-height: 300px;
@@ -40,10 +46,11 @@
 			<tr class="table-success">
 				<th class="table-light">첨부파일</th>
 				<td colspan="7">
-				<%if(n.getFilename() != null) {%>
-					<img src="/img/file.png" width="16px">
-					<a href="/fileDown.do?noticeNo=<%=n.getNoticeNo() %>"><%=n.getFilename() %></a>
-				<%} %>
+					<%if(n.getFilename() != null) {%>
+						<img src="/img/file.png" width="16px">
+						<a href="/fileDown.do?noticeNo=<%=n.getNoticeNo() %>"><%=n.getFilename() %></a>
+					<%} %>
+				</td>
 			</tr>
 			<tr class="table-success">
 				<th class="table-light">내용</th>
