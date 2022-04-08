@@ -8,6 +8,7 @@ import java.util.ArrayList;
 
 import common.JDBCTemplate;
 import kr.or.iei.notice.vo.Notice;
+import kr.or.iei.notice.vo.NoticeComment;
 import oracle.net.aso.n;
 
 public class NoticeDao {
@@ -164,6 +165,119 @@ public class NoticeDao {
 			pstmt.setString(3, n.getFilename());
 			pstmt.setString(4, n.getFilepath());
 			pstmt.setInt(5, n.getNoticeNo());
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			JDBCTemplate.close(pstmt);
+		}
+		return result;
+	}
+
+	public int insertNoticeComment(Connection conn, NoticeComment nc) {
+		PreparedStatement pstmt = null;
+		int result = 0;
+		String query = "insert into notice_comment values(nc_seq.nextval,?,?,to_char(sysdate,'yyyy-mm-dd'),?,?)";
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, nc.getNcWriter());
+			pstmt.setString(2, nc.getNcContent());
+			pstmt.setInt(3, nc.getNoticeRef());
+			pstmt.setString(4, (nc.getNcRef()==0)?null:String.valueOf(nc.getNcRef()));
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			JDBCTemplate.close(pstmt);
+		}
+		return result;
+	}
+
+	public ArrayList<NoticeComment> selectNoticeComment(Connection conn, int noticeNo) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		ArrayList<NoticeComment> list = new ArrayList<NoticeComment>();
+		String query = "select * from notice_comment where notice_ref=? and nc_ref is null";
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setInt(1, noticeNo);
+			rset = pstmt.executeQuery();
+			while(rset.next()) {
+				NoticeComment nc = new NoticeComment();
+				nc.setNcNo(rset.getInt("nc_no"));
+				nc.setNcWriter(rset.getString("nc_writer"));
+				nc.setNcContent(rset.getString("nc_content"));
+				nc.setNcDate(rset.getString("nc_date"));
+				nc.setNoticeRef(rset.getInt("notice_ref"));
+				nc.setNcRef(rset.getInt("nc_ref"));
+				list.add(nc);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			JDBCTemplate.close(rset);
+			JDBCTemplate.close(pstmt);
+		}
+		return list;
+	}
+
+	public ArrayList<NoticeComment> selectNoticeReComment(Connection conn, int noticeNo) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		ArrayList<NoticeComment> list = new ArrayList<NoticeComment>();
+		String query = "select * from notice_comment where notice_ref=? and nc_ref is not null";
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setInt(1, noticeNo);
+			rset = pstmt.executeQuery();
+			while(rset.next()) {
+				NoticeComment nc = new NoticeComment();
+				nc.setNcNo(rset.getInt("nc_no"));
+				nc.setNcWriter(rset.getString("nc_writer"));
+				nc.setNcContent(rset.getString("nc_content"));
+				nc.setNcDate(rset.getString("nc_date"));
+				nc.setNoticeRef(rset.getInt("notice_ref"));
+				nc.setNcRef(rset.getInt("nc_ref"));
+				list.add(nc);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			JDBCTemplate.close(rset);
+			JDBCTemplate.close(pstmt);
+		}
+		return list;
+	}
+
+	public int updateNoticeComment(Connection conn, NoticeComment nc) {
+		PreparedStatement pstmt = null;
+		int result = 0;
+		String query = "update notice_comment set nc_content=? where nc_no=?";
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, nc.getNcContent());
+			pstmt.setInt(2, nc.getNcNo());
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			JDBCTemplate.close(pstmt);
+		}
+		return result;
+	}
+
+	public int deleteNoticeComment(Connection conn, int ncNo) {
+		PreparedStatement pstmt = null;
+		int result = 0;
+		String query = "delete from notice_comment where nc_no=?";
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setInt(1, ncNo);
 			result = pstmt.executeUpdate();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block

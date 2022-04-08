@@ -38,25 +38,34 @@ public class NoticeUpdateServlet extends HttpServlet {
 		//1.인코딩
 		request.setCharacterEncoding("utf-8");
 		//2.값추출
-		//파일업로드 준비
-		//파일업로드 경로 설정
+		//경로 설정
 		String root = getServletContext().getRealPath("/");
 		String saveDirectory = root+"upload/notice";
 		int maxSize = 10*1024*1024;
-		//request -> MultipartRequest로 변환(파일이 업로드되는 시점)
+		//MultipartRequest로 변환
 		MultipartRequest mRequest = new MultipartRequest(request, saveDirectory, maxSize, "UTF-8", new DefaultFileRenamePolicy());
 		int noticeNo = Integer.parseInt(mRequest.getParameter("noticeNo"));
 		String noticeTitle = mRequest.getParameter("noticeTitle");
 		String noticeContent = mRequest.getParameter("noticeContent");
-		//filename, filepath는 새 첨부파일이 있으면 파일명으로 새 첨부파일이 없으면 null
 		String filename = mRequest.getOriginalFileName("file");
 		String filepath = mRequest.getFilesystemName("file");
-		//수정전 파일을 유지했으면 stay, 수정 전 삭제했으면 delete
+		//수정전 파일을 유지는 stay, 수정 전 삭제는 delete
 		String status = mRequest.getParameter("status");
-		//수정 전 파일이 존재했으면 값이 있고 수정 전 파일이 없으면 null
+		//수정 전 파일이 잇다면!!!! 값이 있고 수정 전 파일이 없다면!! null
 		String oldFilename = mRequest.getParameter("oldFilename");
 		String oldFilepath = mRequest.getParameter("oldFilepath");
-		if(status.equals("delete")) {	//수정 전 파일을 삭제한 경우 서버에서 파일 삭제
+		//파일수정사항 case
+		/*
+		 * 1.기존첨부파일 있는경우
+		 * 1-1. 기존 첨부파일 유지하는경우
+		 * 1-2. 기존 첨부파일을 삭제하는경우
+		 * 1-3. 기존첨부파일을 삭제하고, 새 첨부파일을 업로드하는경우
+		 * 
+		 * 2. 기존첨부파일이 없는경우
+		 * 2-1. 수정시 첨부파일이 없는경우
+		 * 2-2. 수정시 첨부파일이 있는경우
+		 * */
+		if(status.equals("delete")) {
 			File delFile = new File(saveDirectory+"/"+oldFilepath);
 			delFile.delete();
 		}else if(oldFilename != null) {
@@ -72,7 +81,7 @@ public class NoticeUpdateServlet extends HttpServlet {
 		//3.비즈니스로직
 		NoticeService service = new NoticeService();
 		int result = service.noticeUpdate(n);
-		//4.결과처리
+		//4.결과처리->msg받기
 		RequestDispatcher view = request.getRequestDispatcher("/WEB-INF/views/common/msg.jsp");
 		if(result>0) {
 			request.setAttribute("title", "성공");

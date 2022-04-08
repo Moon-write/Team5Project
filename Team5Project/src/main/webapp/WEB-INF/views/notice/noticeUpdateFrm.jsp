@@ -37,12 +37,13 @@
 				<tr class="table-success">
 					<th class="table-light">제목</th>
 					<td>
-						<input type="text" name="noticeTitle" class="input-form" value="<%=n.getNoticeTitle()%>">
+						<input type="text" name="noticeTitle" class="form-control" value="<%=n.getNoticeTitle()%>">
 					</td>
 				</tr>
 				<tr class="table-success">
 					<th class="table-light">첨부파일</th>
 					<td>
+						<input type="hidden" name="status" value="stay">
 						<%if(n.getFilepath() != null) {%>
 							<div class="file-box">
 								<img src="/img/file.png" width="16px" class="delFile">
@@ -59,7 +60,7 @@
 				</tr>
 				<tr class="table-success">
 					<th class="table-light">내용</th>
-					<td><textarea class="input-form" name="noticeContent"><%=n.getNoticeContent() %></textarea></td>
+					<td><textarea class="form-control" name="noticeContent"><%=n.getNoticeContent() %></textarea></td>
 				</tr>
 				<tr class="table-success">
 					<th class="modifybtn" colspan="2"><button class="btn btn-dark" id="modifybtn">수정 완료</button></th>
