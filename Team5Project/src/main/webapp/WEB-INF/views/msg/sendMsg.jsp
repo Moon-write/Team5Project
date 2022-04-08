@@ -1,11 +1,5 @@
-<%@page import="kr.co.iei.msg.vo.Message"%>
-<%@page import="java.util.ArrayList"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-   	<%
-		ArrayList<Message> list = (ArrayList<Message>) request.getAttribute("list");
-   		Integer pageNo = (Integer) request.getAttribute("pageNo");
-	%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -45,9 +39,12 @@
 		width: 20%;
 	}
 	.table>li>ul>li:nth-child(3){
-		width: 50%;
+		width: 30%;
 	}
 	.table>li>ul>li:nth-child(4){
+		width: 20%;
+	}
+	.table>li>ul>li:nth-child(5){
 		width: 20%;
 	}
 
@@ -96,6 +93,13 @@
 		display: block;
 	}
 
+	.msg-content>li:nth-of-type(5){ /*수신확인 전용*/
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+
+
 	/*- - - - - - - - - - - - 페이지처리 영역*/
 	.pagination{
 		justify-content: center;
@@ -119,59 +123,21 @@
 </style>
 <body>
 	<div class="title-wrap">
-		<span>받은쪽지함</span>
+		<span>보낸쪽지함</span>
 	</div>
 	<div class="btn-wrap" style="text-align: right;">
-		<a href="/gotoSendMsg.do" class="btn btn-sm btn-primary">보낸쪽지함으로 이동</a>
-		<button class="btn btn-sm btn-secondary">수신확인</button>
+		<a href="/gotoReceiveMsg.do" class="btn btn-sm btn-primary">받은쪽지함으로 이동</a>
+		<button class="btn btn-sm btn-secondary">발송취소</button>
 		<button class="btn btn-sm btn-secondary">선택삭제</button>
 	</div>
 	<ul class="table">
 		<li class="table-light">
 			<ul>
 				<li id="checkboxCol"><span class="material-icons" style="color:#a393ac;">check_box</span></li>
-				<li id="nameCol">보낸이</li>
-				<li id="contentCol">내용</>
+				<li id="nameCol">받는이</li>
+				<li id="contentCol">내용</li>
 				<li id="dateCol">날짜</li>
-			</ul>
-		</li>
-		<% if(list.size()==0){ %>
-		<li class="table-default"  style="border-top: 1px solid #ccc;">
-			<ul class="msg-content">
-				<li style="width:100%">받은 쪽지가 없습니다!</li>
-			</ul>
-		</li>
-		<% } else { %>
-			<% for(int i=0;i<list.size();i++) { %>
-		<li class="table-default"  style="border-top: 1px solid #ccc;">
-			<ul class="msg-content">
-				<li><input class="form-check-input" type="checkbox" value="" id="flexCheckChecked"></li>
-				<li>
-					<span><b>list.get( )가나다라마</b></span>
-					<span>user01</span>
-				</li>
-				<li>consectetur adipisicing elit. Natus vel nisi, ipsam reiciendis est exercitationem</li>
-				<li>
-					<span>2020-02-22</span>
-					<span>11:10</span>
-				</li>
-			</ul>
-		</li>	
-			<% } %>
-		<% } %>
-		
-		<li class="table-default"  style="border-top: 1px solid #ccc;">
-			<ul class="msg-content">
-				<li><input class="form-check-input" type="checkbox" value="" id="flexCheckChecked"></li>
-				<li>
-					<span><b>가나다라마</b></span>
-					<span>user01</span>
-				</li>
-				<li>consectetur adipisicing elit. Natus vel nisi, ipsam reiciendis est exercitationem</li>
-				<li>
-					<span>2020-02-22</span>
-					<span>11:10</span>
-				</li>
+				<li id="readCol">수신확인</li>
 			</ul>
 		</li>
 		<li class="table-default"  style="border-top: 1px solid #ccc;">
@@ -186,6 +152,7 @@
 					<span>2020-02-22</span>
 					<span>11:10</span>
 				</li>
+				<li>읽지않음</li>
 			</ul>
 		</li>
 		<li class="table-default"  style="border-top: 1px solid #ccc;">
@@ -200,6 +167,7 @@
 					<span>2020-02-22</span>
 					<span>11:10</span>
 				</li>
+				<li>읽지않음</li>
 			</ul>
 		</li>
 		<li class="table-default"  style="border-top: 1px solid #ccc;">
@@ -214,6 +182,7 @@
 					<span>2020-02-22</span>
 					<span>11:10</span>
 				</li>
+				<li>읽음</li>
 			</ul>
 		</li>
 		<li class="table-default"  style="border-top: 1px solid #ccc;">
@@ -228,6 +197,7 @@
 					<span>2020-02-22</span>
 					<span>11:10</span>
 				</li>
+				<li>읽음</li>
 			</ul>
 		</li>
 		<li class="table-default"  style="border-top: 1px solid #ccc;">
@@ -242,6 +212,37 @@
 					<span>2020-02-22</span>
 					<span>11:10</span>
 				</li>
+				<li>읽음</li>
+			</ul>
+		</li>
+		<li class="table-default"  style="border-top: 1px solid #ccc;">
+			<ul class="msg-content">
+				<li><input class="form-check-input" type="checkbox" value="" id="flexCheckChecked"></li>
+				<li>
+					<span><b>가나다라마</b></span>
+					<span>user01</span>
+				</li>
+				<li>consectetur adipisicing elit. Natus vel nisi, ipsam reiciendis est exercitationem</li>
+				<li>
+					<span>2020-02-22</span>
+					<span>11:10</span>
+				</li>
+				<li>읽지않음</li>
+			</ul>
+		</li>
+		<li class="table-default"  style="border-top: 1px solid #ccc;">
+			<ul class="msg-content">
+				<li><input class="form-check-input" type="checkbox" value="" id="flexCheckChecked"></li>
+				<li>
+					<span><b>가나다라마</b></span>
+					<span>user01</span>
+				</li>
+				<li>consectetur adipisicing elit. Natus vel nisi, ipsam reiciendis est exercitationem</li>
+				<li>
+					<span>2020-02-22</span>
+					<span>11:10</span>
+				</li>
+				<li>읽음</li>
 			</ul>
 		</li>
 	</ul>

@@ -121,7 +121,7 @@
 		});
 		
 		$("[name=memberPwRe]").on("change",function (){
-	        var pwd1 = $("#memberPw");
+	        var pwd1 = $("#memberPw").val();
 	        var pwd2 = $("#memberPwRe").val();
 	        console.log(pwd1);
 	        console.log(pwd2);
