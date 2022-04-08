@@ -7,6 +7,7 @@
     	String sido = (String)request.getAttribute("sido");
     	String gugun = (String)request.getAttribute("gugun");
     	String detail = (String)request.getAttribute("detailAddr");
+    	String pageNum = (String)request.getAttribute("pageNum");
     %>
 <!DOCTYPE html>
 <html>
@@ -47,7 +48,6 @@
 		width: 100%;
 		text-align: center;
 	}
-	
 
 	@media screen and (max-width: 768px) {
 		#clinicList {
@@ -63,9 +63,10 @@
 		.pcRat{
 			text-align: center;
 			margin-bottom: 10px;
+			font-size: 1.2em;
 		}
 		.pcRat>span>span{
-			font-size: 0.9em;
+			font-size: 1.1em;
 		}
 		
 	}
@@ -80,11 +81,11 @@
 		}	
 		.pcRat{
 			text-align: right;
-			font-size: 1em;
-			margin-bottom: 5px;	
+			font-size: 1.1em;
+			margin-bottom: 10px;	
 		}
 		.pcRat>span>span{
-			font-size: 0.9em;
+			font-size: 1em;
 		}
 	}
 
@@ -99,19 +100,28 @@
 		}
 		.pcRat{
 			text-align: right;
-			font-size: 0.9em;
+			font-size: 1em;
 		}
 		.pcRat>span>span{
-			font-size: 0.8em;
+			font-size: 0.9em;
 		}
 	}
-
+	#clinic-map-box{
+		width: 100%;
+		height: 300px;
+		margin-bottom: 30px;
+	}
+	.pagination{
+		margin-bottom: 50px;
+	}
 </style>
+<script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=zuy6mbvpe0&submodules=geocoder"></script>
 </head>
 <body>
-	<input type="text" id="sidoInfo" value='<%= sido %>'>
+	<input type="hidden" id="sidoInfo" value='<%= sido %>'>
 	<input type="hidden" id="gugunInfo" value="<%= gugun %>">
 	<input type="hidden" id="detailInfo" value="<%= detail %>">
+	<input type="hidden" id="pageInfo" value="<%= pageNum %>">
 	<%@include file="/WEB-INF/views/common/header.jsp" %>
 	<div class="div-content">
 		<div class="content-title">주변 진료소 찾기</div>
@@ -139,7 +149,7 @@
 				</select>
 			</span>
 			<span class="selectDistrict">
-				<select name="sgguCdNm" id="sgguCdNm" class="form-select">
+				<select name="sgguCdNm" id="sgguCdNm" class="form-select"  style="padding-left: 0.75em;">
 					<option>구/군</option>
 					<!-- 선택정렬 -->
 				</select>
@@ -154,11 +164,11 @@
 		<div class="result-list">
 			<div class="pcRat">
 				<span>
-					<span class="material-icons">face</span>
+					<span class="material-icons" style="color:#29abe0;">verified</span>
 					신속항원검사
 				</span>
 				<span>
-					<span class="material-icons">face</span>
+					<span class="material-icons" style="color:#d9534f;">local_parking</span>
 					PCR검사
 				</span>
 			</div>
@@ -189,56 +199,49 @@
 									종합병원
 								<% } %>
 							</td>
-							<td><%= result.get(i).getClinicName() %></td>
+							<th><%= result.get(i).getClinicName() %></th>
 							<td><%= result.get(i).getClinicAddr() %></td>
 							<td><%= result.get(i).getTelNo() %></td>
 							<td>
 								<% if(result.get(i).getRatAble().equals("Y")){ %>
-									<span class="material-icons">face</span>
+									<span class="material-icons" style="color:#29abe0;">verified</span>
 								<% } %>
 								<% if(result.get(i).getPcrAble().equals("Y")){ %>
-									<span class="material-icons">face</span>
+									<span class="material-icons" style="color:#d9534f;">local_parking</span>
 								<% } %>
 							</td>
-							<td><span class="material-icons">face</span></td>
+							<td>
+								<span class="material-icons clinic-map-marker" style="color:#d9534f;">place</span>
+								<input type="hidden" value="<%=result.get(i).getxPos()%>">
+								<input type="hidden" value="<%=result.get(i).getyPos()%>">
+							</td>
 						</tr>
 					<% } %>
 				<%} %>
 			</table>
 			<div id="clinic-map-box">
-				여기에 지도가 들어갈것임
 			</div>
 			<div id="page-wrap">
-				<ul class="pagination" style="justify-content: center;">
-					<li class="page-item">
-						<a class="page-link" href="#">«</a>
+				<%if(result!=null){ %>
+				<ul class="pagination pagination-lg" style="justify-content: center;">
+					<% if(!pageNum.equals("1")) {%>
+					<li class="page-item" id="prevpage">
+						<a class="page-link" href="javascript:void(0)" style="font-size:2em;">«</a>
 					</li>
-					<li class="page-item active">
-						<a class="page-link" href="#">1</a>
+					<% } %>
+					<% if(result.size()==5){ %>
+					<li class="page-item" id="nextpage">
+						<a class="page-link" href="javascript:void(0)" style="font-size:2em;">»</a>
 					</li>
-					<li class="page-item">
-						<a class="page-link" href="#">2</a>
-					</li>
-					<li class="page-item">
-						<a class="page-link" href="#">3</a>
-					</li>
-					<li class="page-item">
-						<a class="page-link" href="#">4</a>
-					</li>
-					<li class="page-item">
-						<a class="page-link" href="#">5</a>
-					</li>
-					<li class="page-item">
-						<a class="page-link" href="#">»</a>
-					</li>
+					<%} %>
 				</ul>
+				<%} %>
 			</div>
 		</div>
 	</div>
 	<%@include file="/WEB-INF/views/common/footer.jsp" %>
 	<script>
 	$("#sidoCdNm").on("change",function(){
-	    console.log($(this).val());
 	    $.ajax({
 	        type: 'post',
 	        url : '/selectDistrict.do',
@@ -264,23 +267,82 @@
 	    const gugun = $("#sgguCdNm").val();
 	    const detailAddr = $("#detailAddr").val();
 	    
-	    console.log(sido);
-	    console.log(gugun);
-	    console.log(detailAddr);
-	    
 	    location.href= "/clinicList2.do?sidoNm="+sido+"&sgguNm="+gugun+"&detailAddr="+detailAddr+"&pageNo=1";
 	});
+	
+	// 온로드함수
 	$(function(){
-		const sidoinfo = $("#sidoInfo").val()
-
-		if(sidoinfo==null){
-			console.log("정보없땨");
-		}else if(sidoinfo==""){
-			console.log("공백");
-		}else{
-			console.log(sidoinfo);
+		const sidoInfo = $("#sidoInfo").val();
+		const gugunInfo = $("#gugunInfo").val();
+		const detailInfo = $("#detailInfo").val();
+		const pageNum = $("#pageInfo").val();
+		
+		if(sidoInfo!="null"){
+			
+			$('#sidoCdNm option[value="'+sidoInfo+'"]').attr("selected", true).trigger("change");
+			setTimeout(function(){
+				if(gugunInfo!="null"){
+						$('#sgguCdNm option[value="'+gugunInfo+'"]').attr("selected", true);
+				}
+			},100);
 		}
-	})
+
+		if(detailInfo!="null"){
+			$('#detailAddr').val(detailInfo);
+		}
+		
+		$("#prevpage").on("click", function(){
+			const prevPage = parseInt(pageNum)-1;
+			location.href= "/clinicList2.do?sidoNm="+sidoInfo+"&sgguNm="+gugunInfo+"&detailAddr="+detailInfo+"&pageNo="+prevPage;
+		});
+		$("#nextpage").on("click", function(){
+			const nextPage = parseInt(pageNum)+1;
+			location.href= "/clinicList2.do?sidoNm="+sidoInfo+"&sgguNm="+gugunInfo+"&detailAddr="+detailInfo+"&pageNo="+nextPage;
+		});
+
+		if($(".clinic-map-marker").length==0){
+			$("#clinic-map-box").hide();
+		} else {
+			$("#clinic-map-box").slideDown();
+		}
+
+		const map = new naver.maps.Map("clinic-map-box",{
+			zoom: 13,
+			center : new naver.maps.LatLng($(".clinic-map-marker").eq(0).next().next().val(), $(".clinic-map-marker").eq(0).next().val())
+		});
+		
+
+		$(".clinic-map-marker").each(function(index, item){
+			const xPos = $(item).next().val();
+			const yPos = $(item).next().next().val();
+
+			marking(yPos, xPos, map);
+		})
+
+
+		$(".clinic-map-marker").on("click",function(){
+			const PickxPos = $(this).next().val();
+			const PickyPos = $(this).next().next().val();
+
+			const map2 = new naver.maps.Map("clinic-map-box", {
+				center : new naver.maps.LatLng(PickyPos, PickxPos),
+				zoom : 15,
+				zoomControl : true,
+			})
+
+			marking(PickyPos, PickxPos, map2);
+		})
+		
+		function marking(lat, lng, mapName){
+			const marker = new naver.maps.Marker({
+				position : new naver.maps.LatLng(lat, lng),
+				map : mapName,
+			})
+		}
+		
+	});
+	
+	
 	</script>
 </body>
 </html>

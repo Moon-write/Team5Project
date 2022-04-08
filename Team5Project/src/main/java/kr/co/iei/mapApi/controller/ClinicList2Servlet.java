@@ -42,7 +42,7 @@ public class ClinicList2Servlet extends HttpServlet {
 		
 		ApiExplorer api = new ApiExplorer();
 		ArrayList<Clinic> list = api.getData(sidoNm, sgguNm, detailAddr, pageNo);
-		
+		System.out.println("조회 완료!");
 		// 결과 list를 보내줄거임
 
 		
@@ -50,6 +50,7 @@ public class ClinicList2Servlet extends HttpServlet {
 		request.setAttribute("sido", sidoNm);
 		request.setAttribute("gugun", sgguNm);
 		request.setAttribute("detailAddr", detailAddr);
+		request.setAttribute("pageNum", Integer.toString(pageNo));
 		request.setAttribute("result", list);
 		view.forward(request, response);
 	}

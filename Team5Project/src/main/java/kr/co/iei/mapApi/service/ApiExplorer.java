@@ -23,7 +23,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 
 public class ApiExplorer {
-    public static String main(String pageNo, String numOfRows) throws IOException {
+    public String main(String pageNo, String numOfRows) throws IOException {
         StringBuilder urlBuilder = new StringBuilder("http://apis.data.go.kr/B551182/rprtHospService/getRprtHospService"); /*URL*/
         urlBuilder.append("?" + URLEncoder.encode("serviceKey","UTF-8") + "=aZgnd9FXHlwr%2FaUjJKh8XgW7sh9DIiuxXVRki%2Beg6LzQC3GGaLH7uVm16NtYTSmJYE6tWEZ%2BaCiHGP31GFG%2Big%3D%3D"); /*Service Key*/
         urlBuilder.append("&" + URLEncoder.encode("pageNo","UTF-8") + "=" + URLEncoder.encode(pageNo, "UTF-8")); /*페이지번호*/
@@ -57,16 +57,24 @@ public class ApiExplorer {
 		// sidoNm/sgguNm이 일치하고 detailAddr을 포함하는 리스트의 requestPage를 불러온다.
 		// 한 페이지당 리스트 수
 		int pageRow = 5;
-		int listRow = requestPage*pageRow;
+		int listRow = (requestPage-1)*pageRow; // 이전페이지까지 범위
 		
 		// requestPage*pageRow 만큼 리턴받기 = 리스트 이만큼 리턴받으면 됨
-		ArrayList<Clinic> list = parsingData(sidoNm, sgguNm, detailAddr, listRow);
+		ArrayList<Clinic> list = parsingData(sidoNm, sgguNm, detailAddr, listRow+pageRow);
 
-		// 리스트 뒤로부터 pageRow만큼 빼오기
-		List<Clinic> subList = list.subList(listRow-pageRow, listRow);
-		ArrayList<Clinic> answerList = new ArrayList<Clinic>(subList);
 		
-		return answerList;
+		if(requestPage==1) {
+			return list;
+		} else if(list.size()<=listRow) { // 이전 페이지까지 범위보다 작거나 같으면
+			return null;			
+		} else {	
+			// 리스트 뒤로부터 pageRow만큼 빼오기
+			List<Clinic> subList = list.subList(listRow, list.size());
+			ArrayList<Clinic> answerList = new ArrayList<Clinic>(subList);			
+
+			return answerList;
+		}
+		
 	}
 	
 	private ArrayList<Clinic> parsingData(String sidoNm, String sgguNm, String detailAddr, int listRow){
@@ -80,7 +88,7 @@ public class ApiExplorer {
 		while(true) {
 			// parsing 할 url 지정 (API키 포함)
 			String url = "http://apis.data.go.kr/B551182/rprtHospService/getRprtHospService?serviceKey=aZgnd9FXHlwr%2FaUjJKh8XgW7sh9DIiuxXVRki%2Beg6LzQC3GGaLH7uVm16NtYTSmJYE6tWEZ%2BaCiHGP31GFG%2Big%3D%3D&pageNo="+pageNo+"&numOfRows=1000";
-			
+			System.out.println(pageNo + "페이지 탐색중");
 			// 페이지에 접근해줄 Document 객체 생성
 			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 
@@ -137,7 +145,8 @@ public class ApiExplorer {
 				e.printStackTrace();
 			}
 			
-			if(list.size()==listRow) {
+			// 리스트 목표치만큼 받았거나, 11페이지(11000건)를 조회했는데도 끝이 안나면 멈추기
+			if(list.size()==listRow||pageNo==11) {
 				break;
 			}
 			// 한바퀴를 다 돌았으면 pageNo 추가
@@ -149,11 +158,14 @@ public class ApiExplorer {
 	
     // tag값의 정보를 가져오는 메소드
 	private String getTagValue(String tag, Element eElement) {
-	    NodeList nlList = eElement.getElementsByTagName(tag).item(0).getChildNodes();
-	    Node nValue = (Node) nlList.item(0);
-	    if(nValue == null) 
-	        return null;
-	    return nValue.getNodeValue();
-	}
-    
+		if(eElement.getElementsByTagName(tag).item(0)==null) {
+			return null;
+		}else {			
+			NodeList nlList = eElement.getElementsByTagName(tag).item(0).getChildNodes();
+		    Node nValue = (Node) nlList.item(0);
+		    if(nValue == null) 
+		        return null;
+		    return nValue.getNodeValue();
+		}
+	}    
 }
