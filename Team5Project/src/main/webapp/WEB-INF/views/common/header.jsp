@@ -38,8 +38,8 @@
                         	<a href="/logout.do"><span class="material-icons">logout</span>
                         	<span class="member-content">로그아웃</span></a>
                    	 	</div>
-                 	 	<div class="member-title" id="sendMsg">
-                        	<a href="#" onclick="javascript:void(0)"><span class="material-icons">message</span>
+                 	 	<div class="member-title">
+                        	<a href="#"><span class="material-icons">message</span>
                         	<span class="member-content">쪽지</span></a>
                     	</div>
                     	<div class="member-title">
@@ -54,7 +54,7 @@
                 <ul class="menu-list row">
                     <li class="col-md-3"><a href="/noticeList.do?reqPage=1">공지사항</a></li>
                     <li class="col-md-3"><a href="/free.do?reqPage=1&numPage=10">자유게시판</a></li>
-                    <li class="col-md-3"><a href="#">질문/답변</a></li>
+                    <li class="col-md-3"><a href="/questionList.do?reqPage=1">질문/답변</a></li>
                     <li class="col-md-3"><a href="/searchClinic.do">주변 진료소 찾기</a></li>
                 </ul>
             </div>
