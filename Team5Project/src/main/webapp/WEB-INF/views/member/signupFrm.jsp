@@ -47,14 +47,16 @@
 					<input class="form-control form-control-lg" id="inputLarge11" type="text" name="memberId" id="memberId">
 					<button class="btn btn-primary" type="button" id="button-addon2" class="">Checked</button>
 				</div>
+				<span id="ajaxCheckResult"></span>
 			</div>
 			<div class="input-wrap">
 				<label for="memberPw">비밀번호</label>
-				<input class="form-control form-control-lg" type="password" name="memberPw" id=memberPw">
+				<input class="form-control form-control-lg" type="password" name="memberPw" id="memberPw">
 			</div>
 			<div class="input-wrap">
 				<label for="memberPwRe">비밀번호확인</label>
-				<input class="form-control form-control-lg" type="password" name="memberPwRe" id="memberPwRe">			
+				<input class="form-control form-control-lg" type="password" name="memberPwRe" id="memberPwRe">
+				<span id="ajaxCheckResult1"></span>			
 			</div>
 			<div class="input-wrap">
 				<label for="memberName">이름</label>
@@ -94,6 +96,52 @@
 			</div>
 		</form>
 	</div>
+	<script>
+		$("#button-addon2").on("click",function(){
+			const memberId = $(this).prev().val();
+			//유효성검사(아이디 몇글자이상 영어 숫자조합)
+			//유효성검사 통과된경우 DB에 중복체크
+			$.ajax({
+				url : "/ajaxCheckId.do",
+				type : "get",
+				data : {memberId:memberId},
+				success : function(data){
+					if(data == "1"){
+						$("#ajaxCheckResult").text("이미 사용중인 아이디입니다.");
+						$("#ajaxCheckResult").css("color","#ff2e63");
+					}else if(data == "0"){
+						$("#ajaxCheckResult").text("사용가능한 아이디입니다.");
+						$("#ajaxCheckResult").css("color","#00adb5");
+					}
+				},
+				error : function(){
+					console.log("서버요청실패");
+				}
+			});
+		});
+		
+		$("[name=memberPwRe]").on("change",function (){
+	        var pwd1 = $("#memberPw");
+	        var pwd2 = $("#memberPwRe").val();
+	        console.log(pwd1);
+	        console.log(pwd2);
+	        console.log(pwd1);
+	  
+	        
+	        /*
+	        if (pwd1 != '' && pwd2 == '') {
+	            null;
+	        }else if (pwd1 != "" || pwd2 != "") {
+	            if (pwd1 == pwd2) {
+	                console.log("비밀번호가 일치합니다.");
+	            } else {
+	            	console.log("비밀번호가 일치하지 않습니다.");
+	            }
+	        }
+	        */
+	    });
+		
+	</script>
 	<%@include file ="/WEB-INF/views/common/footer.jsp" %>
 </body>
 </html>

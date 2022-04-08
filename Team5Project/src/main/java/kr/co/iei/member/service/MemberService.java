@@ -29,4 +29,10 @@ public class MemberService {
 		return result;
 	}
 
+	public Member selectOneMember(String memberId) {
+		Connection conn = JDBCTemplate.getConnection();
+		MemberDao dao = new MemberDao();
+		Member m = dao.selectOneMember(conn, memberId);
+		return m;
+	}
 }
