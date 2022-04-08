@@ -2,10 +2,12 @@ package kr.co.iei.msg.service;
 
 import java.sql.Connection;
 import java.util.ArrayList;
+import java.util.List;
 
 import common.JDBCTemplate;
 import kr.co.iei.msg.dao.MessageDao;
 import kr.co.iei.msg.vo.Message;
+import kr.co.iei.msg.vo.MessageList;
 
 public class MessageService {
 
@@ -59,7 +61,6 @@ public class MessageService {
 		// 상대편이 해당메세지 삭제했는지 여부 체크
 		Message msg = dao.selectMsg(conn, msgNo);
 		int delChk = 2;
-		String deleteFrom = null; // 보내는 사람이 누군지 확인
 		
 		if(deleteId.equals(msg.getMsgSender())) {
 			// 보낸사람이 지우려면
@@ -100,18 +101,19 @@ public class MessageService {
 		return result;
 	}
 
-	public ArrayList<Message> readAllMsg(String memberId, String msgBoardTitle, int pageNo) {
+	public ArrayList<Message> readAllMsg(String memberId, String msgBoardTitle) {
 		Connection conn = JDBCTemplate.getConnection();
 		MessageDao dao = new MessageDao();
 		ArrayList<Message> list = null; 
 		
+		// 전체 메세지갯수 리턴하기
 		if(msgBoardTitle.equals("sendMsg")) {
 			// 보낸편지함일때
-			list = dao.readAllMsgSender(conn, memberId, pageNo);
+			list = dao.readAllMsgSender(conn, memberId);
 			
 		}else if(msgBoardTitle.equals("receiveMsg")) {
 			// 받은편지함일때
-			list = dao.readAllMsgReceiver(conn, memberId, pageNo);
+			list = dao.readAllMsgReceiver(conn, memberId);
 		}
 		
 		JDBCTemplate.close(conn);
@@ -140,6 +142,53 @@ public class MessageService {
 		}		
 		JDBCTemplate.close(conn);
 		return result;
+	}
+
+	public MessageList selectMsgList(ArrayList<Message> allList, int pageNo) {
+		// 최종보낼객체
+		MessageList list = new MessageList();
+		
+		// 매개변수로 온 pageNo은 요청한 페이지
+				
+		int rowOfList = 3; // 페이지당 줄 수
+		int totalRow = allList.size() ; // 총 사이즈
+		int totalPage = 0; // 최종 페이지
+		
+		int prevRow = rowOfList*(pageNo-1); // 이전페이지의 끝
+		int nextRow = rowOfList*pageNo+1; // 다음페이지의 시작
+		
+		if(allList.size()!=0) {
+			// 공허한 리스트가 아니라면
+			if(totalRow%rowOfList==0) {
+				// 나머지가 0이면= 딱 떨어지면
+				totalPage = totalRow / rowOfList;
+			} else {
+				// 나머지가 있으면 = 1페이지 추가
+				totalPage = (totalRow / rowOfList) +1;
+			}
+		}
+		
+		// 요소 1개 보냄
+		list.setTotalPage(totalPage);
+		
+		// 리스트 자르기
+		ArrayList<Message> mainList = new ArrayList<Message>();
+		
+		// 경우1. 이전페이지보다 작을때
+		if(totalRow<=prevRow) {
+			
+		} else if(totalRow>prevRow&&totalRow<nextRow) {
+			// 경우2. 다음페이지에는 못미칠때
+			List<Message> subList = allList.subList(prevRow, totalRow);
+			mainList =  new ArrayList<Message>(subList);
+		} else if(totalRow>prevRow&&totalRow>=nextRow) {
+			List<Message> subList = allList.subList(prevRow, nextRow);
+			mainList =  new ArrayList<Message>(subList);
+		}
+		
+		list.setList(allList);
+		
+		return list;
 	}
 
 }

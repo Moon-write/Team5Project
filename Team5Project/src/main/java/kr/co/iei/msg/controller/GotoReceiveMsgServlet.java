@@ -3,6 +3,7 @@ package kr.co.iei.msg.controller;
 import java.io.IOException;
 import java.util.ArrayList;
 
+
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -12,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import kr.co.iei.msg.service.MessageService;
 import kr.co.iei.msg.vo.Message;
+import kr.co.iei.msg.vo.MessageList;
 
 /**
  * Servlet implementation class ReceiveMsgServlet
@@ -42,9 +44,15 @@ public class GotoReceiveMsgServlet extends HttpServlet {
 		String msgBoardTitle = request.getParameter("msgBoardTitle"); // 받은편지함인지 보낸편지함인지 구분할거임
 		int pageNo = Integer.parseInt(request.getParameter("pageNo"));				
 		
+		// 3 비즈니스로직
+		// 3-1 전체목록 불러오기
 		MessageService service = new MessageService();
-		ArrayList<Message> list = service.readAllMsg(memberId, msgBoardTitle, pageNo);
+		ArrayList<Message> allList = service.readAllMsg(memberId, msgBoardTitle);
 		
+		MessageList list = service.selectMsgList(allList, pageNo);
+		
+		ArrayList<Message> answerList = list.getList();
+		System.out.println(answerList.size());
 		// 3 화면구현
 		String loc ="";
 		if(msgBoardTitle.equals("sendMsg")) {
@@ -53,8 +61,10 @@ public class GotoReceiveMsgServlet extends HttpServlet {
 			loc = "WEB-INF/views/msg/receiveMsg.jsp";
 		}
 		RequestDispatcher view = request.getRequestDispatcher(loc);
-		request.setAttribute("list", list);
+		request.setAttribute("memberId", memberId);
+		request.setAttribute("list", answerList);
 		request.setAttribute("pageNo", pageNo);
+		request.setAttribute("totalPage", list.getTotalPage());
 		view.forward(request, response);
 
 	}

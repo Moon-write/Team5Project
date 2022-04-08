@@ -5,6 +5,8 @@
    	<%
 		ArrayList<Message> list = (ArrayList<Message>) request.getAttribute("list");
    		Integer pageNo = (Integer) request.getAttribute("pageNo");
+   		Integer totalPage = (Integer) request.getAttribute("totalPage");
+   		String memberId = (String)request.getAttribute("memberId");
 	%>
 <!DOCTYPE html>
 <html>
@@ -25,7 +27,7 @@
 	body{
 		width:100%; height: 600px;
 		padding: 0px; margin: 0px;
-		justify-content: center;
+		
 	}
 	ul, li{
 		margin: 0px;
@@ -122,7 +124,7 @@
 		<span>받은쪽지함</span>
 	</div>
 	<div class="btn-wrap" style="text-align: right;">
-		<a href="/gotoSendMsg.do" class="btn btn-sm btn-primary">보낸쪽지함으로 이동</a>
+		<a href="/gotoReceiveMsg.do?msgBoardTitle=sendMsg&pageNo=1&memberId=<%=memberId %>" class="btn btn-sm btn-primary">보낸쪽지함으로 이동</a>
 		<button class="btn btn-sm btn-secondary">수신확인</button>
 		<button class="btn btn-sm btn-secondary">선택삭제</button>
 	</div>
@@ -135,7 +137,7 @@
 				<li id="dateCol">날짜</li>
 			</ul>
 		</li>
-		<% if(list.size()==0){ %>
+		<% if(list==null||list.size()==0){ %>
 		<li class="table-default"  style="border-top: 1px solid #ccc;">
 			<ul class="msg-content">
 				<li style="width:100%">받은 쪽지가 없습니다!</li>
@@ -147,111 +149,38 @@
 			<ul class="msg-content">
 				<li><input class="form-check-input" type="checkbox" value="" id="flexCheckChecked"></li>
 				<li>
-					<span><b>list.get( )가나다라마</b></span>
-					<span>user01</span>
+					<span><b><%=list.get(i).getSenderName() %></b></span>
+					<span><%=list.get(i).getMsgSender() %></span>
 				</li>
-				<li>consectetur adipisicing elit. Natus vel nisi, ipsam reiciendis est exercitationem</li>
+				<li><%=list.get(i).getMsgContent() %></li>
 				<li>
-					<span>2020-02-22</span>
-					<span>11:10</span>
+					<span><%=list.get(i).getMsgDate().substring(0, 10) %></span>
+					<span><%=list.get(i).getMsgDate().substring(11) %></span>
 				</li>
 			</ul>
 		</li>	
 			<% } %>
 		<% } %>
-		
-		<li class="table-default"  style="border-top: 1px solid #ccc;">
-			<ul class="msg-content">
-				<li><input class="form-check-input" type="checkbox" value="" id="flexCheckChecked"></li>
-				<li>
-					<span><b>가나다라마</b></span>
-					<span>user01</span>
-				</li>
-				<li>consectetur adipisicing elit. Natus vel nisi, ipsam reiciendis est exercitationem</li>
-				<li>
-					<span>2020-02-22</span>
-					<span>11:10</span>
-				</li>
-			</ul>
-		</li>
-		<li class="table-default"  style="border-top: 1px solid #ccc;">
-			<ul class="msg-content">
-				<li><input class="form-check-input" type="checkbox" value="" id="flexCheckChecked"></li>
-				<li>
-					<span><b>가나다라마</b></span>
-					<span>user01</span>
-				</li>
-				<li>consectetur adipisicing elit. Natus vel nisi, ipsam reiciendis est exercitationem</li>
-				<li>
-					<span>2020-02-22</span>
-					<span>11:10</span>
-				</li>
-			</ul>
-		</li>
-		<li class="table-default"  style="border-top: 1px solid #ccc;">
-			<ul class="msg-content">
-				<li><input class="form-check-input" type="checkbox" value="" id="flexCheckChecked"></li>
-				<li>
-					<span><b>가나다라마</b></span>
-					<span>user01</span>
-				</li>
-				<li>consectetur adipisicing elit. Natus vel nisi, ipsam reiciendis est exercitationem</li>
-				<li>
-					<span>2020-02-22</span>
-					<span>11:10</span>
-				</li>
-			</ul>
-		</li>
-		<li class="table-default"  style="border-top: 1px solid #ccc;">
-			<ul class="msg-content">
-				<li><input class="form-check-input" type="checkbox" value="" id="flexCheckChecked"></li>
-				<li>
-					<span><b>가나다라마</b></span>
-					<span>user01</span>
-				</li>
-				<li>consectetur adipisicing elit. Natus vel nisi, ipsam reiciendis est exercitationem</li>
-				<li>
-					<span>2020-02-22</span>
-					<span>11:10</span>
-				</li>
-			</ul>
-		</li>
-		<li class="table-default"  style="border-top: 1px solid #ccc;">
-			<ul class="msg-content">
-				<li><input class="form-check-input" type="checkbox" value="" id="flexCheckChecked"></li>
-				<li>
-					<span><b>가나다라마</b></span>
-					<span>user01</span>
-				</li>
-				<li>consectetur adipisicing elit. Natus vel nisi, ipsam reiciendis est exercitationem</li>
-				<li>
-					<span>2020-02-22</span>
-					<span>11:10</span>
-				</li>
-			</ul>
-		</li>
-		<li class="table-default"  style="border-top: 1px solid #ccc;">
-			<ul class="msg-content">
-				<li><input class="form-check-input" type="checkbox" value="" id="flexCheckChecked"></li>
-				<li>
-					<span><b>가나다라마</b></span>
-					<span>user01</span>
-				</li>
-				<li>consectetur adipisicing elit. Natus vel nisi, ipsam reiciendis est exercitationem</li>
-				<li>
-					<span>2020-02-22</span>
-					<span>11:10</span>
-				</li>
-			</ul>
-		</li>
+
 	</ul>
 	<div class="page-wrap">
 		<ul class="pagination">
+		<% if(totalPage==0) { %>
+		<% } else { %>
+			<% if(pageNo>3){ %>
 			<li class="page-item"><a href="#" class="page-link"><<</a></li>
-			<li class="page-item"><a href="#" class="page-link">1</a></li>
-			<li class="page-item"><a href="#" class="page-link">2</a></li>
-			<li class="page-item"><a href="#" class="page-link">3</a></li>
+			<% } %>
+			<% if(pageNo>2) { %>
+			<li class="page-item"><a href="#" class="page-link"><%=pageNo-1 %></a></li>
+			<% } %>
+			<li class="page-item"><a href="#" class="page-link"><%=pageNo %></a></li>
+			<% if(pageNo<totalPage) { %>
+			<li class="page-item"><a href="#" class="page-link"><%=pageNo+1 %></a></li>
+			<% } %>
+			<% if(pageNo+1<totalPage) { %>
 			<li class="page-item"><a href="#" class="page-link">>></a></li>
+			<% } %>
+		<% } %>
 		</ul>
 	</div>
 </body>
