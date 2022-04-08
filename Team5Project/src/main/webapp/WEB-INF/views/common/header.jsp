@@ -54,7 +54,7 @@
                 <ul class="menu-list row">
                     <li class="col-md-3"><a href="/noticeList.do?reqPage=1">공지사항</a></li>
                     <li class="col-md-3"><a href="/free.do?reqPage=1&numPage=10">자유게시판</a></li>
-                    <li class="col-md-3"><a href="#">질문/답변</a></li>
+                    <li class="col-md-3"><a href="/questionList.do?reqPage=1">질문/답변</a></li>
                     <li class="col-md-3"><a href="/searchClinic.do">주변 진료소 찾기</a></li>
                 </ul>
             </div>
@@ -92,8 +92,49 @@
           </div>
         </div>
       </div>
-      <%}else{ %>
-      
+      <%}else{ %> <!-- 로그인시 쪽지모달 사용 -->
+      	<div class="modal" style="display: none;" id="msg-modal">
+        <div class="modal-dialog" role="document"  style="min-width: 470px;">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Message</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true"></span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <iframe id="msgBox" src="/gotoReceiveMsg.do?memberId=<%=m.getMemberId() %>&msgBoardTitle=receiveMsg&pageNo=1" style="width:100%; height:600px;"></iframe>
+            </div>
+            <div class="modal-footer">
+              <button id="writeBtn" type="button" class="btn btn-primary">WRITE</button>
+              <input type="hidden" value="<%=m.getMemberId()%>" id="memberId">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <script>
+      	$("#sendMsg").on("click",function(){
+      		$("#msg-modal").show();
+      	})
+      	$("#writeBtn").on("click",function(){
+          if($(this).text()=="WRITE"){
+            const memberId = $("#memberId").val();
+            $("#msgBox").attr("src", "/gotoWriteMsg.do?memberId="+memberId);
+            $(this).toggleClass("btn-primary").toggleClass("btn-secondary");
+            $(this).text("BACK")
+            
+          } else {
+            history.back($("#msgBox"));            
+            $(this).text("WRITE");
+            $(this).toggleClass("btn-primary").toggleClass("btn-secondary");
+          }
+      	})
+
+        $("#msg-modal button[data-bs-dismiss=modal]").on("click",function(){                    
+          $("#msg-modal").hide();
+        })
+      </script>
       <%} %> <!-- 로그인 되었을때에는 로그인 modal필요 없으므로 if문 처리 -->
     <script>
     	$("#login-btn").on("click",function(){

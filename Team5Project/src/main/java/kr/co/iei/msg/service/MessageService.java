@@ -100,18 +100,18 @@ public class MessageService {
 		return result;
 	}
 
-	public ArrayList<Message> readAllMsg(String memberId, String msgBoardTitle) {
+	public ArrayList<Message> readAllMsg(String memberId, String msgBoardTitle, int pageNo) {
 		Connection conn = JDBCTemplate.getConnection();
 		MessageDao dao = new MessageDao();
 		ArrayList<Message> list = null; 
 		
 		if(msgBoardTitle.equals("sendMsg")) {
 			// 보낸편지함일때
-			list = dao.readAllMsgSender(conn, memberId);
+			list = dao.readAllMsgSender(conn, memberId, pageNo);
 			
 		}else if(msgBoardTitle.equals("receiveMsg")) {
 			// 받은편지함일때
-			list = dao.readAllMsgReceiver(conn, memberId);
+			list = dao.readAllMsgReceiver(conn, memberId, pageNo);
 		}
 		
 		JDBCTemplate.close(conn);

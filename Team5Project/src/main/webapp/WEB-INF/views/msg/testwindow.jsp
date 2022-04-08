@@ -8,8 +8,8 @@
 </head>
 <body>
 <%@ include file="/WEB-INF/views/common/header.jsp" %>
-	<div class="modal" style="display: block;" id="msgModal">
-        <div class="modal-dialog" role="document">
+	<div class="modal" style="display: block;" id="msg-modal">
+        <div class="modal-dialog" role="document"  style="min-width: 470px;">
           <div class="modal-content">
             <div class="modal-header">
               <h5 class="modal-title">Message</h5>
@@ -18,14 +18,34 @@
               </button>
             </div>
             <div class="modal-body">
-              <iframe src="/receiveMsg.do" style="width:100%; height:600px; border:1px solid #ccc; box-sizing: content-box;"></iframe>
+              <iframe id="msgBox" src="/gotoReceiveMsg.do" style="width:100%; height:600px;"></iframe>
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-primary"><b>쪽지 쓰기</b></button>
+              <button id="writeBtn" type="button" class="btn btn-primary">WRITE</button>
+              <input type="hidden" value="<%=m.getMemberId()%>" id="memberId">
               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
             </div>
           </div>
         </div>
       </div>
+      <script>
+      	$("#writeBtn").on("click",function(){
+          if($(this).text()=="WRITE"){
+            const memberId = $("#memberId").val();
+            $("#msgBox").attr("src", "/gotoWriteMsg.do?memberId="+memberId);
+            $(this).toggleClass("btn-primary").toggleClass("btn-secondary");
+            $(this).text("BACK")
+            
+          } else {
+            history.back($("#msgBox"));            
+            $(this).text("WRITE");
+            $(this).toggleClass("btn-primary").toggleClass("btn-secondary");
+          }
+      	})
+
+        $("#msg-modal button[data-bs-dismiss=modal]").on("click",function(){                    
+          $("#msg-modal").hide();
+        })
+      </script>
 </body>
 </html>

@@ -10,6 +10,8 @@ import common.JDBCTemplate;
 import kr.co.iei.msg.vo.Message;
 
 public class MessageDao {
+	private int rowOfList = 7;
+	
 	private Message getMsg(ResultSet rset) {
 		Message msg = new Message();
 		try {
@@ -76,7 +78,7 @@ public class MessageDao {
 		Message msg = null;
 		ResultSet rset = null;
 		
-		String query = "SELECT MSG.*, M.MEMBER_NICKNAME AS SENDER_NAME, M2.MEMBER_NICKNAME AS RECEIVER_NAME FROM MESSAGE_TBL MSG JOIN MEMBER_TBL M ON (MSG.MSG_SENDER=M.MEMBER_ID) JOIN MEMBER_TBL M2 ON (MSG.MSG_RECEIVER=M2.MEMBER_ID) WHERE MSG_No=?";
+		String query = "SELECT * FROM MSG_VIEW WHERE MSG_NO=?";
 		
 		try {
 			pstmt = conn.prepareStatement(query);
@@ -155,16 +157,18 @@ public class MessageDao {
 		return result;
 	}
 
-	public ArrayList<Message> readAllMsgSender(Connection conn, String memberId) {
+	public ArrayList<Message> readAllMsgSender(Connection conn, String memberId, int pageNo) {
 		// 보낸편지함 읽기
 		PreparedStatement pstmt = null;
 		ArrayList<Message> list = null;
 		ResultSet rset = null;
-		String query = "SELECT MSG.*, M.MEMBER_NICKNAME AS SENDER_NAME, M2.MEMBER_NICKNAME AS RECEIVER_NAME FROM MESSAGE_TBL MSG JOIN MEMBER_TBL M ON (MSG.MSG_SENDER=M.MEMBER_ID) JOIN MEMBER_TBL M2 ON (MSG.MSG_RECEIVER=M2.MEMBER_ID) WHERE MSG_SENDER=? AND MSG_SENDER_DEL=0";
+		String query = "SELECT * FROM (SELECT ROWNUM AS RNUM, MSG.* FROM (SELECT * FROM MSG_VIEW)MSG WHERE MSG_SENDER=? AND MSG_SENDER_DEL=0) WHERE (RNUM BETWEEN ? AND ?)";
 		
 		try {
 			pstmt = conn.prepareStatement(query);
 			pstmt.setString(1, memberId);
+			pstmt.setInt(2, (pageNo-1)*rowOfList+1);
+			pstmt.setInt(3, pageNo*rowOfList);
 			rset = pstmt.executeQuery();
 			
 			while(rset.next()) {
@@ -182,16 +186,18 @@ public class MessageDao {
 		return list;
 	}
 	
-	public ArrayList<Message> readAllMsgReceiver(Connection conn, String memberId) {
+	public ArrayList<Message> readAllMsgReceiver(Connection conn, String memberId, int pageNo) {
 		// 받은편지함 읽기
 		PreparedStatement pstmt = null;
 		ArrayList<Message> list = null;
 		ResultSet rset = null;
-		String query = "SELECT MSG.*, M.MEMBER_NICKNAME AS SENDER_NAME, M2.MEMBER_NICKNAME AS RECEIVER_NAME FROM MESSAGE_TBL MSG JOIN MEMBER_TBL M ON (MSG.MSG_SENDER=M.MEMBER_ID) JOIN MEMBER_TBL M2 ON (MSG.MSG_RECEIVER=M2.MEMBER_ID) WHERE MSG_RECEIVER=? AND MSG_RECEIVER_DEL=0";
+		String query = "SELECT * FROM (SELECT ROWNUM AS RNUM, MSG.* FROM (SELECT * FROM MSG_VIEW)MSG WHERE MSG_RECEIVER=? AND MSG_RECEIVER_DEL=0) WHERE (RNUM BETWEEN ? AND ?)";
 		
 		try {
 			pstmt = conn.prepareStatement(query);
 			pstmt.setString(1, memberId);
+			pstmt.setInt(2, (pageNo-1)*rowOfList+1);
+			pstmt.setInt(3, pageNo*rowOfList);
 			rset = pstmt.executeQuery();
 			
 			while(rset.next()) {
