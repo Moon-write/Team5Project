@@ -32,6 +32,7 @@
 		.notice-tbl tr>th:last-child{
 			width:10%;
 		}
+		
 	</style>
 </head>
 <body>

@@ -10,6 +10,7 @@ import kr.co.iei.question.vo.Question;
 public class QuestionService {
 
 	public ArrayList<Question> selectQuestionList() {
+		//연결
 		Connection conn = JDBCTemplate.getConnection();
 		QuestionDao dao = new QuestionDao();
 		ArrayList<Question> list = dao.selectQuestionList(conn);

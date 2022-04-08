@@ -12,6 +12,7 @@ import kr.co.iei.question.vo.Question;
 public class QuestionDao {
 
 	public ArrayList<Question> selectQuestionList(Connection conn) {
+		//통로
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
 		ArrayList<Question> list = new ArrayList<Question>();

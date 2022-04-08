@@ -39,7 +39,7 @@ public class QuestionListServlet extends HttpServlet {
 		//3. 비즈니스 로직
 		QuestionService service = new QuestionService();
 		ArrayList<Question> list = service.selectQuestionList();
-		//4. 결과처리
+		//4. 결과처리.
 		RequestDispatcher view
 		= request.getRequestDispatcher("/WEB-INF/views/question/questionList.jsp");
 		request.setAttribute("list", list);
