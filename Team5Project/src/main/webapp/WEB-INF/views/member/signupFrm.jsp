@@ -121,11 +121,7 @@
 		});
 		
 		$("[name=memberPwRe]").on("change",function (){
-<<<<<<< HEAD
 	        var pwd1 = $("#memberPw2").val();
-=======
-	        var pwd1 = $("#memberPw").val();
->>>>>>> branch 'master' of https://github.com/Moon-write/Team5Project.git
 	        var pwd2 = $("#memberPwRe").val();
 	        
 	        if (pwd1 != '' && pwd2 == '') {
