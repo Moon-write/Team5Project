@@ -121,24 +121,20 @@
 		});
 		
 		$("[name=memberPwRe]").on("change",function (){
-	        var pwd1 = $("#memberPw");
+	        var pwd1 = $("#memberPw2").val();
 	        var pwd2 = $("#memberPwRe").val();
-	        console.log(pwd1);
-	        console.log(pwd2);
-	        console.log(pwd1);
-	  
 	        
-	        /*
 	        if (pwd1 != '' && pwd2 == '') {
 	            null;
 	        }else if (pwd1 != "" || pwd2 != "") {
 	            if (pwd1 == pwd2) {
-	                console.log("비밀번호가 일치합니다.");
+	            	$("#ajaxCheckResult1").text("비밀번호가 일치합니다.");
+					$("#ajaxCheckResult1").css("color","#00adb5");
 	            } else {
-	            	console.log("비밀번호가 일치하지 않습니다.");
+	            	$("#ajaxCheckResult1").text("이미 사용중인 아이디입니다.");
+					$("#ajaxCheckResult1").css("color","#ff2e63");
 	            }
 	        }
-	        */
 	    });
 		
 	</script>
