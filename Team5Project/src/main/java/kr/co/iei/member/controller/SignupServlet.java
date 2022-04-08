@@ -46,6 +46,7 @@ public class SignupServlet extends HttpServlet {
 		//3. 비즈니스 로직
 		MemberService service = new MemberService();
 		int result = service.insertMember(m);
+		//System.out.println(m); 디버깅용 로그(넘어오는 값 확인)
 		//4. 결과처리
 		RequestDispatcher view = request.getRequestDispatcher("/WEB-INF/views/common/msg.jsp");
 		if(result>0) {

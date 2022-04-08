@@ -80,12 +80,12 @@
 				<label for="memberGender" id="memberGender">성별</label>
 				<div class="form-check">
 					<label class="form-check-label">
-						<input type="radio" class="form-check-input" name="gender" value="남">남자
+						<input type="radio" class="form-check-input" name="memberGender" value="남">남자
 					</label><br>
 				</div>
 				<div class="form-check">
 					<label class="form-check-label">
-						<input type="radio" class="form-check-input" name="gender" value="여">여자
+						<input type="radio" class="form-check-input" name="memberGender" value="여">여자
 					</label><br>
 				</div>
 			</div>

@@ -12,6 +12,14 @@ public class Member {
 	private String enrollDate;
 	private String memberGender;
 	private String email;
+	
+	@Override //디버깅 로그확인을 위한 오버라이딩
+	public String toString() {
+		return "Member [memberNo=" + memberNo + ", memberId=" + memberId + ", memberPw=" + memberPw + ", memberName="
+				+ memberName + ", memberNickname=" + memberNickname + ", memberLevel=" + memberLevel + ", phone="
+				+ phone + ", address=" + address + ", enrollDate=" + enrollDate + ", memberGender=" + memberGender
+				+ ", email=" + email + "]";
+	}
 	public Member() {
 		super();
 		// TODO Auto-generated constructor stub
