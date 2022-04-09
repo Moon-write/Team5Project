@@ -52,7 +52,7 @@ public class GotoReceiveMsgServlet extends HttpServlet {
 		MessageList list = service.selectMsgList(allList, pageNo);
 		
 		ArrayList<Message> answerList = list.getList();
-		System.out.println(answerList.size());
+		
 		// 3 화면구현
 		String loc ="";
 		if(msgBoardTitle.equals("sendMsg")) {

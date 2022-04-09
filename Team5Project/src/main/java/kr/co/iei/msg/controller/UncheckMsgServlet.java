@@ -1,25 +1,27 @@
 package kr.co.iei.msg.controller;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import kr.co.iei.msg.service.MessageService;
+
 /**
- * Servlet implementation class OpenMsgPopupServlet
+ * Servlet implementation class UncheckMsgServlet
  */
-@WebServlet(name = "OpenMsgPopup", urlPatterns = { "/openMsgPopup.do" })
-public class OpenMsgPopupServlet extends HttpServlet {
+@WebServlet(name = "UncheckMsg", urlPatterns = { "/uncheckMsg.do" })
+public class UncheckMsgServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public OpenMsgPopupServlet() {
+    public UncheckMsgServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -28,8 +30,15 @@ public class OpenMsgPopupServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		RequestDispatcher view = request.getRequestDispatcher("WEB-INF/views/msg/testwindow.jsp");
-		view.forward(request, response);
+		request.setCharacterEncoding("utf-8");
+		int msgNo = Integer.parseInt(request.getParameter("msgNo"));
+		
+		MessageService service = new MessageService();
+		int result = service.uncheckMsg(msgNo);
+		
+		response.setCharacterEncoding("utf-8");
+		PrintWriter out = response.getWriter();
+		out.print(result);
 	}
 
 	/**

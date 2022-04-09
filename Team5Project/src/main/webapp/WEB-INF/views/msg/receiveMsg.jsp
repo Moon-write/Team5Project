@@ -15,30 +15,14 @@
 <title>받은쪽지함</title>
     <!--기본 CSS-->
     <link rel="stylesheet" href="/css/index.css">
+	<link rel="stylesheet" href="/css/msg.css">
     <!--구글폰트-->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <script src="js/jquery-3.6.0.js"></script>
     <link rel="stylesheet" href="css/bootstrap.css">
     <!-- 부트스트랩 JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
-</head>
-<style>
-	/*- - - - - - - - - - - - 전체 영역*/
-	body{
-		width:100%; height: 600px;
-		padding: 0px; margin: 0px;
-		
-	}
-	ul, li{
-		margin: 0px;
-		padding: 0px;
-		list-style-type: none;
-	}
-	.table{
-		border-top: 1px solid #a393ac;
-		border-bottom: 1px solid #a393ac;
-	}
-
+	<style>
 	/*- - - - - - - - - - - - 전체 영역 (크기조정)*/
 	.table>li>ul>li:first-child{
 		width: 10%;
@@ -51,82 +35,22 @@
 	}
 	.table>li>ul>li:nth-child(4){
 		width: 20%;
+	}	
+	.read{
+		font-weight: 900 !important;
+		color : #a393ac !important;
+		text-decoration: underline !important;
 	}
-
-	/*- - - - - - - - - - - - 리스트 제목 영역*/
-	.table>li:first-child>ul{
-		height: 40px;
-		font-size: 1em;
-		line-height: 24px;
-		font-weight: 900;
-	}
-
-	/*- - - - - - - - - - - - 리스트 본문 영역*/
-	.table>li>ul{ /*제목 공통적용*/
-		display: flex;
-		height: 56px;
-		line-height: 20px;
-		font-size: 0.8em;
-		text-align: center;
-		
-	}
-	
-	.msg-content>li:nth-of-type(1){ /*체크칸 전용*/
-		display: flex;
-		justify-content: center;
-		align-items: center;
-	}
-
-
-	.msg-content>li:nth-of-type(1)>input{ /*체크칸 전용*/
-		display: block;
-		width: 18px; height: 18px;
-		margin: 0 auto;				
-	}
-
-	.msg-content>li:nth-of-type(3){ /*내용칸 전용*/
-		height: 100%;
-		display: block;
-		word-break: break-all;
-		overflow: hidden;
-		text-overflow: ellipsis;
-		white-space: nowrap;
-		line-height: 40px;
-	}
-
-	.msg-content>li>span{
-		display: block;
-	}
-
-	/*- - - - - - - - - - - - 페이지처리 영역*/
-	.pagination{
-		justify-content: center;
-	}
-
-	/*- - - - - - - - - - - - 상단 제목처리 영역*/
-	.title-wrap{
-		padding-top: 5px;
-		padding-bottom: 15px;
-	}
-	.title-wrap>span{
-		font-size: 30px;
-		font-weight: 900;
-	}
-	.btn-wrap>a{
-		float: left;
-	}
-	.btn-wrap{
-		padding-bottom: 10px;
-	}
-</style>
+	</style>
+</head>
 <body>
 	<div class="title-wrap">
 		<span>받은쪽지함</span>
 	</div>
 	<div class="btn-wrap" style="text-align: right;">
 		<a href="/gotoReceiveMsg.do?msgBoardTitle=sendMsg&pageNo=1&memberId=<%=memberId %>" class="btn btn-sm btn-primary">보낸쪽지함으로 이동</a>
-		<button class="btn btn-sm btn-secondary">수신확인</button>
-		<button class="btn btn-sm btn-secondary">선택삭제</button>
+		<button id="checkRead" class="btn btn-sm btn-secondary">수신확인</button>
+		<button id="checkDelete" class="btn btn-sm btn-secondary">선택삭제</button>
 	</div>
 	<ul class="table">
 		<li class="table-light">
@@ -147,12 +71,24 @@
 			<% for(int i=0;i<list.size();i++) { %>
 		<li class="table-default"  style="border-top: 1px solid #ccc;">
 			<ul class="msg-content">
-				<li><input class="form-check-input" type="checkbox" value="" id="flexCheckChecked"></li>
 				<li>
-					<span><b><%=list.get(i).getSenderName() %></b></span>
-					<span><%=list.get(i).getMsgSender() %></span>
+					<input class="form-check-input" type="checkbox" value="<%=list.get(i).getMsgNo() %>" id="flexCheckChecked">
+					<input type="hidden" id="memberHidden" value="<%=list.get(i).getMsgReceiver() %>">
 				</li>
-				<li><%=list.get(i).getMsgContent() %></li>
+				<li>
+					<div class="nameWrap">
+						<span><b><%=list.get(i).getSenderName() %></b></span>
+						<span><%=list.get(i).getMsgSender() %></span>
+					</div>
+					<a class="writePopup">쪽지보내기</a>
+				</li>
+				<li>
+				<% if(list.get(i).getMsgRead()==0){ %>
+					<a href="/readReceiveMsg.do?msgNo=<%=list.get(i).getMsgNo()%>" class="read" style="color:#383d40;"><%=list.get(i).getMsgContent() %></a>
+				<% } else { %>
+					<a href="/readReceiveMsg.do?msgNo=<%=list.get(i).getMsgNo()%>" style="color:#383d40;"><%=list.get(i).getMsgContent() %></a>
+				<% } %>
+				</li>
 				<li>
 					<span><%=list.get(i).getMsgDate().substring(0, 10) %></span>
 					<span><%=list.get(i).getMsgDate().substring(11) %></span>
@@ -168,20 +104,68 @@
 		<% if(totalPage==0) { %>
 		<% } else { %>
 			<% if(pageNo>3){ %>
-			<li class="page-item"><a href="#" class="page-link"><<</a></li>
+			<li class="page-item"><a href="gotoReceiveMsg.do?msgBoardTitle=receiveMsg&pageNo=<%=pageNo-2%>&memberId=<%=memberId %>" class="page-link"><<</a></li>
 			<% } %>
-			<% if(pageNo>2) { %>
-			<li class="page-item"><a href="#" class="page-link"><%=pageNo-1 %></a></li>
+			<% if(pageNo>=2) { %>
+			<li class="page-item"><a href="gotoReceiveMsg.do?msgBoardTitle=receiveMsg&pageNo=<%=pageNo-1%>&memberId=<%=memberId %>" class="page-link"><%=pageNo-1 %></a></li>
 			<% } %>
-			<li class="page-item"><a href="#" class="page-link"><%=pageNo %></a></li>
+			<li class="page-item"><a href="#" class="page-link" onclick="javascript:void(0)"><%=pageNo %></a></li>
 			<% if(pageNo<totalPage) { %>
-			<li class="page-item"><a href="#" class="page-link"><%=pageNo+1 %></a></li>
+			<li class="page-item"><a href="gotoReceiveMsg.do?msgBoardTitle=receiveMsg&pageNo=<%=pageNo+1%>&memberId=<%=memberId %>" class="page-link"><%=pageNo+1 %></a></li>
 			<% } %>
 			<% if(pageNo+1<totalPage) { %>
-			<li class="page-item"><a href="#" class="page-link">>></a></li>
+			<li class="page-item"><a href="gotoReceiveMsg.do?msgBoardTitle=receiveMsg&pageNo=<%=pageNo+2%>&memberId=<%=memberId %>" class="page-link">>></a></li>
 			<% } %>
 		<% } %>
 		</ul>
-	</div>
+	</div>	
+	<script>
+		$("#checkRead").on("click",function(){
+			const checked = $(".msg-content>li>input:checked");
+			const memberId = $("#memberHidden").val();
+			if(checked.length==0){
+				alert("선택된 쪽지가 없습니다!");
+				return;
+			}
+			const val = new Array(); // 글번호 저장용 배열
+			checked.each(function(index, item){
+				val.push($(this).val());
+			})
+			
+			$.ajax({
+				url: "/checkAllMsg.do",
+				data: {
+					"memberId" : memberId,
+					"list" : val.join("/")
+				},
+				type: "post",
+				success: function(data){
+					if(data==-3){
+						alert("읽음처리 실패! 관리자에게 문의하세요");
+					} else {
+						location.reload();						
+					}					
+				},
+				error: function(){
+					console.log('재확인');
+				},
+			});					
+		});
+		
+		$("#checkDelete").on("click",function(){
+			const checked = $(".msg-content>li>input:checked");
+			const memberId = $("#memberHidden").val();
+			if(checked.length==0){
+				alert("선택된 쪽지가 없습니다!");
+				return;
+			}
+			const val = new Array(); // 글번호 저장용 배열
+			checked.each(function(index, item){
+				val.push($(this).val());
+			})
+			location.href="/deleteAllMsg.do?msgBoardTitle=receiveMsg&memberId="+memberId+"&list="+val.join("/");				
+		});
+	</script>
+	<script type="text/javascript" src="/js/msg.js"></script>
 </body>
 </html>

@@ -1,8 +1,8 @@
 package kr.co.iei.msg.controller;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -10,19 +10,18 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import kr.co.iei.msg.service.MessageService;
-import kr.co.iei.msg.vo.Message;
 
 /**
- * Servlet implementation class ReadMsgServlet
+ * Servlet implementation class CheckAllMsgServlet
  */
-@WebServlet(name = "ReadMsg", urlPatterns = { "/readMsg.do" })
-public class ReadMsgServlet extends HttpServlet {
+@WebServlet(name = "CheckAllMsg", urlPatterns = { "/checkAllMsg.do" })
+public class CheckAllMsgServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public ReadMsgServlet() {
+    public CheckAllMsgServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -31,20 +30,16 @@ public class ReadMsgServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// 인코딩
-		request.setCharacterEncoding("UTF-8");
+		request.setCharacterEncoding("utf-8");
+		String list = request.getParameter("list");
+		String memberId = request.getParameter("memberId");
 		
-		// 데이터
-		int msgNo = Integer.parseInt(request.getParameter("msgNo"));
-		
-		// 비즈니스로직
 		MessageService service = new MessageService();
-		Message msg = service.readMsg(msgNo);
+		int result = service.checkAllMsg(list, memberId);
 		
-		// 결과구현
-		RequestDispatcher view = request.getRequestDispatcher("WEB-INF/views/msg/readMsg.jsp");
-		request.setAttribute("msg", msg);
-		view.forward(request, response);
+		response.setCharacterEncoding("utf-8");
+		PrintWriter out = response.getWriter();
+		out.print(result);
 	}
 
 	/**

@@ -30,10 +30,12 @@ public class GotoWriteMsgServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("utf-8");		
 		String memberId = request.getParameter("memberId");
+		String msgReceiver = request.getParameter("msgReceiver");
 		
 		RequestDispatcher view = request.getRequestDispatcher("WEB-INF/views/msg/writeMsg.jsp");
 		
 		request.setAttribute("memberId", memberId);
+		request.setAttribute("msgReceiver", msgReceiver);
 		
 		view.forward(request, response);
 	}

@@ -8,6 +8,7 @@ import java.util.ArrayList;
 
 import common.JDBCTemplate;
 import kr.co.iei.msg.vo.Message;
+import kr.co.iei.msg.vo.MessageName;
 
 public class MessageDao {
 	
@@ -41,7 +42,6 @@ public class MessageDao {
 			pstmt.setString(1, msg.getMsgSender());
 			pstmt.setString(2, msg.getMsgReceiver());
 			pstmt.setString(3, msg.getMsgContent());
-			
 			result = pstmt.executeUpdate();
 			
 		} catch (SQLException e) {
@@ -208,6 +208,81 @@ public class MessageDao {
 			JDBCTemplate.close(rset);
 		}		
 		return list;
+	}
+
+	public int unreadMsg(Connection conn, int msgNo) {
+		PreparedStatement pstmt = null;
+		int result = 0;
+		String query = "UPDATE MESSAGE_TBL SET MSG_READ = 0 WHERE MSG_NO=?";
+		
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setInt(1, msgNo);
+			result = pstmt.executeUpdate();
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			JDBCTemplate.close(pstmt);
+		}		
+		return result;
+	}
+
+	public ArrayList<MessageName> selectUserList(Connection conn, String keyword) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		String query = "SELECT MEMBER_ID, MEMBER_NICKNAME FROM MEMBER_TBL WHERE (MEMBER_ID LIKE '%'||?||'%') OR (MEMBER_NICKNAME LIKE '%'||?||'%')";
+		ArrayList<MessageName> list = new ArrayList<MessageName>();
+		
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, keyword);
+			pstmt.setString(2, keyword);
+			
+			rset = pstmt.executeQuery();
+			
+			while(rset.next()) {
+				MessageName name = new MessageName();
+				name.setMemberId(rset.getString("MEMBER_ID"));
+				name.setMemberName(rset.getString("MEMBER_NICKNAME"));				
+				list.add(name);
+			}
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			JDBCTemplate.close(pstmt);
+			JDBCTemplate.close(rset);
+		}
+		return list;
+	}
+
+	public int countUnreadMsg(Connection conn, String memberId) {
+		PreparedStatement pstmt = null;
+		ResultSet rset= null;
+		String query = "SELECT COUNT(*) AS CNT FROM MSG_VIEW WHERE (MSG_RECEIVER=?) AND (MSG_READ=0)";
+	
+		int result = 0;
+		
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, memberId);
+			rset = pstmt.executeQuery();
+			
+			if(rset.next()) {
+				result = rset.getInt("CNT");
+			}
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			JDBCTemplate.close(pstmt);
+			JDBCTemplate.close(rset);
+		}		
+		return result;
 	}
 
 

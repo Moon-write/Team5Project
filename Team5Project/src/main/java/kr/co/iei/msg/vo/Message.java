@@ -60,6 +60,9 @@ public class Message {
 	public String getMsgContent() {
 		return msgContent;
 	}
+	public String getMsgContentBr() {
+		return msgContent.replaceAll("\r\n", "<br>");
+	}
 	public void setMsgContent(String msgContent) {
 		this.msgContent = msgContent;
 	}

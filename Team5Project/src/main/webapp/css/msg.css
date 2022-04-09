@@ -1,0 +1,138 @@
+/*- - - - - - - - - - - - 전체 영역*/
+body{
+    width:100%; height: 485px;
+    padding: 0px; margin: 0px;
+}
+/*- - - - - - - - - - - - 제목 영역 (title)*/
+
+.title-wrap{
+    padding-top: 5px;
+    padding-bottom: 15px;
+}
+.title-wrap>span{
+    font-size: 30px;
+    font-weight: 900;
+}
+
+/*- - - - - - - - - - - - 제목 영역 (btn-wrap)*/
+.btn-wrap>.btn-primary{
+    float: left;
+}
+.btn-wrap{
+    padding-bottom: 10px;
+}
+
+/*- - - - - - - - - - - - 본문 영역 (리스트 배치 - 기본)*/
+ul.table, ul.msg-content, ul.table>li>ul, ul.pagination, li{
+    margin: 0px;
+    padding: 0px;
+    list-style-type: none;
+}
+
+.table{
+    border-top: 1px solid #a393ac;
+    border-bottom: 1px solid #a393ac;
+}
+
+/*- - - - - - - - - - - - 본문 영역 (리스트 상단 - 제목)*/
+.table>li:first-child>ul{
+    height: 40px;
+    font-size: 1em;
+    line-height: 24px;
+    font-weight: 900;
+}
+
+/*- - - - - - - - - - - - 본문 영역 (리스트 하단 - 내용)*/
+.table>li>ul{ /*제목 공통적용*/
+    display: flex;
+    height: 56px;
+    line-height: 20px;
+    font-size: 0.8em;
+    text-align: center;		
+}
+
+.msg-content>li:nth-of-type(1){ /*체크칸 전용*/
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.msg-content>li:nth-of-type(1)>input{ /*체크칸 전용*/
+    display: block;
+    width: 18px; height: 18px;
+    margin: 0 auto;				
+}
+
+.msg-content>li:nth-of-type(2){ /*이름칸*/
+    position: relative;
+}
+
+.msg-content>li:nth-of-type(3){ /*내용칸 전용*/
+    height: 100%;
+    display: block;
+    word-break: break-all;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    line-height: 40px;
+}
+.msg-content>li span{
+    display: block;
+}
+
+/*- - - - - - - - - - - - 본문 영역 (리스트 배치 - 하단)*/
+.page-wrap{
+    margin-top: 10px;
+}
+
+.pagination{
+	justify-content: center;
+}
+
+/*- - - - - - - - - - - - 본문 영역 (메세지 상단 - 보내는/받는이)*/
+#receiver-wrap{
+    position: relative;
+    margin: 0px auto;
+}
+#receiver-wrap>button{
+    position: absolute;
+    top: 4px;
+}
+
+/*- - - - - - - - - - - - 본문 영역 (메세지 하단 - 내용)*/
+#msgContent{
+    margin-top:10px;
+    height: 280px;    
+}
+#replyBtn{
+    margin-top: 10px;
+    width: 100%;
+    height: 50px;
+    font-size: 17px;
+    line-height: 32px;
+}
+
+#senderName{
+    font-weight:900; 
+    font-size : 15px;
+}
+
+#senderId{
+    font-size: 12px;
+    color: #828e95;
+}
+/*- - - - - - - - - - - - 기타*/
+
+.writePopup{
+    display: none;
+    background-color: #fff;
+    width: 80px; height: 20px;
+    border: 1px solid #a393ac;
+    position: absolute;
+}
+.writePopup:hover{
+    background-color: #D4C3DE;
+    color: #fff;
+    border: 1px solid #828e95;
+    cursor: pointer;
+}
