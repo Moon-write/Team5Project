@@ -37,10 +37,11 @@ public class FileDownServlet extends HttpServlet {
 		request.setCharacterEncoding("utf-8");
 		//2.값추출
 		int noticeNo = Integer.parseInt(request.getParameter("noticeNo"));
+		String memberId = request.getParameter("memberId");
 		//3.비즈니스로직
 		NoticeService service = new NoticeService();
 		//selectNotice는 조회수도 올라가니까 새로 만들어서 사용하는 것
-		Notice  n = service.getNotice(noticeNo);
+		Notice  n = service.getNotice(noticeNo,memberId);
 		//4.결과처리(이걸 외울수 없어서 필요하면 보고치면 되지만 흐름은 알고 있어야 함)
 		//파일과 현재 서블릿을 연결
 		String root = getServletContext().getRealPath("/");		//webapp

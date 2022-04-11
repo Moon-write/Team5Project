@@ -70,7 +70,7 @@ span{
 
 @media screen and (min-width: 1000px) {
     .header-wrap, .div-content, .footer-wrap{
-        width: 60%;
+        width: 90%;
     }
     .logo-box{
         margin: 20px 0px;

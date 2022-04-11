@@ -114,14 +114,15 @@ public class NoticeDao {
 		return result;
 	}
 
-	public Notice selectOneNotice(Connection conn, int noticeNo) {
+	public Notice selectOneNotice(Connection conn, int noticeNo, String memberId) {
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
 		Notice n = null;
-		String query = "select n.*, (select count(*) from noticelike where like_no=n.notice_no)as likenumber, (select count(*) from noticelike where like_no=n.notice_no and like_id=?)as clicklike from(select * from notice where notice_no=?)n;";
+		String query = "select n.*, (select count(*) from noticelike where like_no=n.notice_no)as likenumber, (select count(*) from noticelike where like_no=n.notice_no and like_id=?)as clicklike from(select * from notice where notice_no=?)n";
 		try {
 			pstmt = conn.prepareStatement(query);
-			pstmt.setInt(1, noticeNo);
+			pstmt.setString(1, memberId);
+			pstmt.setInt(2, noticeNo);
 			rset = pstmt.executeQuery();
 			if(rset.next()) {
 				n = new Notice();
@@ -298,6 +299,24 @@ public class NoticeDao {
 		return result;
 	}
 
+	public int clicklike(Connection conn, int noticeNo, String memberId) {
+		PreparedStatement pstmt = null;
+		int result = 0;
+		String query = "update notice set noticelike = noticelike+1 where notice_no=?";
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, memberId);
+			pstmt.setInt(2, noticeNo);
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			JDBCTemplate.close(pstmt);
+		}
+		return result;
+	}
+	
 
 
 

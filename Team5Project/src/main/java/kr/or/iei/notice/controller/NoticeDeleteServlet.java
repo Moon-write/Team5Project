@@ -37,9 +37,10 @@ public class NoticeDeleteServlet extends HttpServlet {
 		request.setCharacterEncoding("utf-8");
 		//2.값추출
 		int noticeNo = Integer.parseInt(request.getParameter("noticeNo"));
+		String memberId = request.getParameter("memberId");
 		//3.비즈니스로직
 		NoticeService service = new NoticeService();
-		Notice n = service.getNotice(noticeNo);
+		Notice n = service.getNotice(noticeNo,memberId);
 		int result = service.noticeDelete(noticeNo);
 		//4.결과처리
 		RequestDispatcher view = request.getRequestDispatcher("/WEB-INF/views/common/msg.jsp");

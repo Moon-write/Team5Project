@@ -154,7 +154,16 @@
 				<th class="table-light">조회수</th>
 				<td><%=n.getReadCount() %></td>
 				<th class="table-light">추천</th>
-				<td><%=n.getLikeNumber() %></td>
+				<td>
+					<%if(m != null) {%>
+						<%if(n.getClickLike() == 1) {%>
+							<a class="material-icons" href="/clicklike.do?noticeNo=<%=n.getNoticeNo() %>">thumb_up</a>
+						<%}else{ %>
+							<span class="material-icons">thumb_up_off_alt</span>
+						<%} %>
+					<%} %>
+						<%=n.getLikeNumber() %>
+				</td>
 			</tr>
 			<tr class="table-success">
 				<th class="table-light">첨부파일</th>
@@ -328,6 +337,11 @@
 			function deleteComment(obj,ncNo,noticeNo){
 				if(confirm("댓글을 삭제하시겠습니까?")){
 					location.href="/deleteComment.do?ncNo="+ncNo+"&noticeNo="+noticeNo;
+				}
+			}
+			function clicklike(noticeNo){
+				if(confirm("이 글을 추천하시겠습니까?")){
+					location.href="/clicklike.do?noticeNo="+noticeNo;
 				}
 			}
 		</script>

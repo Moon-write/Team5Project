@@ -90,7 +90,7 @@ public class NoticeService {
 		return result;
 	}
 
-	public Notice selectOneNotice(int noticeNo) {
+	public Notice selectOneNotice(int noticeNo,String memberId) {
 		Connection conn = JDBCTemplate.getConnection();
 		NoticeDao dao = new NoticeDao();
 		int result = dao.updateReadCount(conn,noticeNo);
@@ -101,15 +101,15 @@ public class NoticeService {
 			JDBCTemplate.close(conn);
 			return null;
 		}
-		Notice n = dao.selectOneNotice(conn,noticeNo);
+		Notice n = dao.selectOneNotice(conn,noticeNo,memberId);
 		JDBCTemplate.close(conn);
 		return n;
 	}
 
-	public Notice getNotice(int noticeNo) {
+	public Notice getNotice(int noticeNo, String memberId) {
 		Connection conn = JDBCTemplate.getConnection();
 		NoticeDao dao = new NoticeDao();
-		Notice n = dao.selectOneNotice(conn, noticeNo);
+		Notice n = dao.selectOneNotice(conn, noticeNo, memberId);
 		JDBCTemplate.close(conn);
 		return n;
 	}
@@ -153,11 +153,11 @@ public class NoticeService {
 		return result;
 	}
 
-	public NoticeViewData selectNoticeView(int noticeNo) {
+	public NoticeViewData selectNoticeView(int noticeNo,String memberId) {
 		Connection conn = JDBCTemplate.getConnection();
 		NoticeDao dao = new NoticeDao();
 		//어떤 공지사항인지
-		Notice n = dao.selectOneNotice(conn, noticeNo);
+		Notice n = dao.selectOneNotice(conn, noticeNo,memberId);
 		//그 공지사앟에 있는 댓글
 		ArrayList<NoticeComment> commentList = dao.selectNoticeComment(conn, noticeNo);
 		//대댓글 조회
@@ -193,5 +193,20 @@ public class NoticeService {
 		return result;
 	}
 
+	public Notice clicklike(int noticeNo, String memberId) {
+		Connection conn = JDBCTemplate.getConnection();
+		NoticeDao dao = new NoticeDao();
+		int result = dao.clicklike(conn,noticeNo,memberId);
+		if(result>0) {
+			JDBCTemplate.commit(conn);
+		}else {
+			JDBCTemplate.rollback(conn);
+			JDBCTemplate.close(conn);
+			return null;
+		}
+		Notice n = dao.selectOneNotice(conn,noticeNo,memberId);
+		JDBCTemplate.close(conn);
+		return n;
+	}
 
 }

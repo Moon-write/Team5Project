@@ -36,12 +36,13 @@ public class ThumbsUpServlet extends HttpServlet {
 		request.setCharacterEncoding("utf-8");
 		//2.값추출
 		int noticeNo = Integer.parseInt(request.getParameter("noticeNo"));
+		String memberId = request.getParameter("memberId");
 		//3.비즈니스로직
 		NoticeService service = new NoticeService();
 		Notice n =  null;
 		
 		
-		NoticeViewData nvd = service.selectNoticeView(noticeNo);
+		NoticeViewData nvd = service.selectNoticeView(noticeNo,memberId);
 		//4. 결과처리
 		RequestDispatcher view = request.getRequestDispatcher("/WEB-INF/views/notice/noticeView.jsp");
 		request.setAttribute("n",nvd.getN());
