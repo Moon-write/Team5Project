@@ -27,9 +27,10 @@
 	}
 	.notice-tbl tr>th:first-child{
 		width: 10%;
+		min-width: 45px;
 	}
 	.notice-tbl tr>th:nth-child(2){
-		width: 35%;
+		width: 30%;
 	}
 	.notice-tbl tr>td:nth-child(2){
 		text-align: left;
@@ -41,10 +42,12 @@
 		width: 20%;
 	}
 	.notice-tbl tr>th:nth-child(5){
-		width: 10%;
+		width: 15%;
+		min-width: 73px;
 	}
 	.notice-tbl tr>th:last-child{
 		width: 10%;
+		min-width: 46px;
 	}
 	.writebox{
 		text-align: right;
@@ -80,7 +83,14 @@
 					<td><%=n.getNoticeWriter() %></td>
 					<td><%=n.getRegDate() %></td>
 					<td><%=n.getReadCount() %></td>
-					<td><%=n.getThumbsUp() %></td>
+					<td>
+						<%if(n.getClickLike() == 1) {%>
+						<span class="material-icons">thumb_up</span>
+						<%}else{ %>
+						<span class="material-icons">thumb_up_off_alt</span>
+						<%} %>
+						<%=n.getLikeNumber() %>
+					</td>
 				</tr>
 			<%} %>
 		</table>

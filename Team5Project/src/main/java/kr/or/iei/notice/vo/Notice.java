@@ -9,13 +9,15 @@ public class Notice {
 	private String regDate;
 	private String filename;
 	private String filepath;
-	private int thumbsUp;
+	private int topFixed;
+	private int likeNumber;
+	private int clickLike;
 	public Notice() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 	public Notice(int noticeNo, String noticeTitle, String noticeWriter, String noticeContent, int readCount,
-			String regDate, String filename, String filepath, int thumbsUp) {
+			String regDate, String filename, String filepath, int topFixed, int likeNumber, int clickLike) {
 		super();
 		this.noticeNo = noticeNo;
 		this.noticeTitle = noticeTitle;
@@ -25,7 +27,9 @@ public class Notice {
 		this.regDate = regDate;
 		this.filename = filename;
 		this.filepath = filepath;
-		this.thumbsUp = thumbsUp;
+		this.topFixed = topFixed;
+		this.likeNumber = likeNumber;
+		this.clickLike = clickLike;
 	}
 	public int getNoticeNo() {
 		return noticeNo;
@@ -75,10 +79,22 @@ public class Notice {
 	public void setFilepath(String filepath) {
 		this.filepath = filepath;
 	}
-	public int getThumbsUp() {
-		return thumbsUp;
+	public int getTopFixed() {
+		return topFixed;
 	}
-	public void setThumbsUp(int thumbsUp) {
-		this.thumbsUp = thumbsUp;
+	public void setTopFixed(int topFixed) {
+		this.topFixed = topFixed;
+	}
+	public int getLikeNumber() {
+		return likeNumber;
+	}
+	public void setLikeNumber(int likeNumber) {
+		this.likeNumber = likeNumber;
+	}
+	public int getClickLike() {
+		return clickLike;
+	}
+	public void setClickLike(int clickLike) {
+		this.clickLike = clickLike;
 	}
 }

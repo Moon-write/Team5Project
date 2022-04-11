@@ -9,20 +9,26 @@ import java.util.ArrayList;
 import common.JDBCTemplate;
 import kr.or.iei.notice.vo.Notice;
 import kr.or.iei.notice.vo.NoticeComment;
-import oracle.net.aso.n;
 
 public class NoticeDao {
 
-	public ArrayList<Notice> selectNoticeList(Connection conn, int start, int end) {
+	public ArrayList<Notice> selectNoticeList(Connection conn, int start, int end,String memberId) {
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
 		ArrayList<Notice> list = new ArrayList<Notice>();
-		String query = "select * from (select rownum as rnum,n.* from (select * from notice order by notice_no desc)n) where rnum between ? and ?";
+		String query = "select * from \r\n"
+				+ "    (select rownum as rnum,\r\n"
+				+ "            n.*,\r\n"
+				+ "            (select count(*) from noticelike where like_no=n.notice_no)as likenumber,\r\n"
+				+ "            (select count(*) from noticelike where like_no=n.notice_no and like_id=?)as clicklike\r\n"
+				+ "     from (select * from notice order by notice_no desc)n) \r\n"
+				+ "where rnum between ? and ?";
 		try {
 			pstmt = conn.prepareStatement(query);
 			//start, end변수를 넣어줬으니까 setting해주기
-			pstmt.setInt(1, start);
-			pstmt.setInt(2, end);
+			pstmt.setString(1, memberId);
+			pstmt.setInt(2, start);
+			pstmt.setInt(3, end);
 			rset = pstmt.executeQuery();
 			while(rset.next()) {
 				Notice n = new Notice();
@@ -34,7 +40,9 @@ public class NoticeDao {
 				n.setRegDate(rset.getString("reg_date"));
 				n.setFilename(rset.getString("filename"));
 				n.setFilepath(rset.getString("filepath"));
-				n.setThumbsUp(rset.getInt("thumbs_up"));
+				n.setTopFixed(rset.getInt("top_fixed"));
+				n.setLikeNumber(rset.getInt("likenumber"));
+				n.setClickLike(rset.getInt("clicklike"));
 				list.add(n);
 			}
 		} catch (SQLException e) {
@@ -110,7 +118,7 @@ public class NoticeDao {
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
 		Notice n = null;
-		String query = "select * from notice where notice_no=?";
+		String query = "select n.*, (select count(*) from noticelike where like_no=n.notice_no)as likenumber, (select count(*) from noticelike where like_no=n.notice_no and like_id=?)as clicklike from(select * from notice where notice_no=?)n;";
 		try {
 			pstmt = conn.prepareStatement(query);
 			pstmt.setInt(1, noticeNo);
@@ -125,7 +133,9 @@ public class NoticeDao {
 				n.setRegDate(rset.getString("reg_date"));
 				n.setFilename(rset.getString("filename"));
 				n.setFilepath(rset.getString("filepath"));
-				n.setThumbsUp(rset.getInt("thumbs_up"));
+				n.setTopFixed(rset.getInt("top_fixed"));
+				n.setLikeNumber(rset.getInt("likenumber"));
+				n.setClickLike(rset.getInt("clicklike"));
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -287,5 +297,8 @@ public class NoticeDao {
 		}
 		return result;
 	}
+
+
+
 
 }

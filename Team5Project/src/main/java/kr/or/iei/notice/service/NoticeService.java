@@ -1,6 +1,5 @@
 package kr.or.iei.notice.service;
 
-import java.lang.reflect.Array;
 import java.sql.Connection;
 import java.util.ArrayList;
 
@@ -13,7 +12,7 @@ import kr.or.iei.notice.vo.NoticeViewData;
 
 public class NoticeService {
 
-	public NoticePageData selectNoticeService(int reqPage) {
+	public NoticePageData selectNoticeService(int reqPage,String memberId) {
 		Connection conn = JDBCTemplate.getConnection();
 		NoticeDao dao = new NoticeDao();
 		//페이징처리
@@ -23,7 +22,7 @@ public class NoticeService {
 		int end = reqPage * numPerPage;
 		int start = end - numPerPage + 1;
 		
-		ArrayList<Notice> list = dao.selectNoticeList(conn,start,end);
+		ArrayList<Notice> list = dao.selectNoticeList(conn,start,end,memberId);
 		//전체 페이지 계산 전 게시물 수 세기
 		int totalCount = dao.totalNoticeCount(conn);
 		//전체 페이지 수(나머지 있으면 하나 추가)
@@ -193,5 +192,6 @@ public class NoticeService {
 		JDBCTemplate.close(conn);
 		return result;
 	}
+
 
 }

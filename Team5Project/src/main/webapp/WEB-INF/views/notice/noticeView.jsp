@@ -154,7 +154,7 @@
 				<th class="table-light">조회수</th>
 				<td><%=n.getReadCount() %></td>
 				<th class="table-light">추천</th>
-				<td><%=n.getThumbsUp() %></td>
+				<td><%=n.getLikeNumber() %></td>
 			</tr>
 			<tr class="table-success">
 				<th class="table-light">첨부파일</th>
