@@ -1,3 +1,4 @@
+<%@page import="kr.co.iei.free.vo.FreeMain"%>
 <%@page import="kr.co.iei.free.vo.FreeboardTable"%>
 <%@page import="java.util.ArrayList"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
@@ -6,6 +7,7 @@
     	ArrayList<FreeboardTable> list = (ArrayList<FreeboardTable>)request.getAttribute("list");
     	int reqPage = Integer.parseInt(request.getParameter("reqPage"));
     	String pageNavi = (String)request.getAttribute("pageNavi");
+    	FreeMain main = (FreeMain)request.getAttribute("main");
     %>
 <!DOCTYPE html>
 <html>

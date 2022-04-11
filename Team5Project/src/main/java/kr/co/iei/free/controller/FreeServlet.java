@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import kr.co.iei.free.service.FreeService;
+import kr.co.iei.free.vo.FreeMain;
 import kr.co.iei.free.vo.FreeboardTable;
 
 /**
@@ -51,11 +52,13 @@ public class FreeServlet extends HttpServlet {
 		}else {
 			freeboard = service.selectFreeList(reqPage, numPage, keyword);			
 		}
+		FreeMain main = new FreeMain(sort,numPage,keyword);
 		String pageNavi = service.totalPage(reqPage, numPage);
 		//4.결과처리
 		RequestDispatcher view = request.getRequestDispatcher("WEB-INF/views/free/freeBoard.jsp");
 		request.setAttribute("list", freeboard);
 		request.setAttribute("pageNavi", pageNavi);
+		request.setAttribute("main", main);
 		view.forward(request, response);
 	}
 
