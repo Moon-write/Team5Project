@@ -39,7 +39,7 @@
                 <span class="member-content">쪽지</span></a>          	
               </div>
               <div class="member-title">
-                <a href="#"><span class="material-icons">info</span>
+                <a href="/mypage1.do"><span class="material-icons">info</span>
                 <span class="member-content">회원정보</span></a>
               </div>
             <%} %>  

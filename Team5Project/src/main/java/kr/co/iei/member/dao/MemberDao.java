@@ -26,6 +26,7 @@ public class MemberDao {
 				m.setMemberNo(rset.getInt("member_no"));
 				m.setMemberId(rset.getString("member_id"));
 				m.setMemberPw(rset.getString("member_pw"));
+				m.setMemberName(rset.getString("member_name"));
 				m.setMemberNickname(rset.getString("member_nickname"));
 				m.setMemberLevel(rset.getInt("member_level"));
 				m.setPhone(rset.getString("phone"));
@@ -97,5 +98,27 @@ public class MemberDao {
 			JDBCTemplate.close(pstmt);
 		}
 		return m;
+	}
+
+	public int updateMember(Connection conn, Member member) {
+		PreparedStatement pstmt = null;
+		int result = 0;
+		String query = "update member_tbl set member_pw=?, member_nickname=?, phone=?, address=?, email=? where member_id=?";
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, member.getMemberPw());
+			pstmt.setString(2, member.getMemberNickname());
+			pstmt.setString(3, member.getPhone());
+			pstmt.setString(4, member.getAddress());
+			pstmt.setString(5, member.getEmail());
+			pstmt.setString(6, member.getMemberId());
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			JDBCTemplate.close(pstmt);
+		}
+		return result;
 	}
 }
