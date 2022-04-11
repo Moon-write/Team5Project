@@ -48,7 +48,7 @@
 </head>
 <body>
 	<div class="title-wrap">
-		<span>보낸쪽지함</span>
+		<span class="noneSelect">보낸쪽지함</span>
 	</div>
 	<div class="btn-wrap" style="text-align: right;">
 		<a href="/gotoReceiveMsg.do?msgBoardTitle=receiveMsg&pageNo=1&memberId=<%=memberId %>" class="btn btn-sm btn-primary">받은쪽지함으로 이동</a>
@@ -59,16 +59,16 @@
 		<li class="table-light">
 			<ul>
 				<li id="checkboxCol"><span class="material-icons" style="color:#a393ac;">check_box</span></li>
-				<li id="nameCol">받는이</li>
-				<li id="contentCol">내용</li>
-				<li id="dateCol">날짜</li>
-				<li id="readCol">수신확인</li>
+				<li class="noneSelect">받는이</li>
+				<li class="noneSelect">내용</li>
+				<li class="noneSelect">날짜</li>
+				<li class="noneSelect">수신확인</li>
 			</ul>
 		</li>
 		<% if(list==null||list.size()==0){ %>
 		<li class="table-default"  style="border-top: 1px solid #ccc;">
 			<ul class="msg-content">
-				<li style="width:100%">보낸 쪽지가 없습니다!</li>
+				<li style="width:100%" class="noneSelect">보낸 쪽지가 없습니다!</li>
 			</ul>
 		</li>
 		<% } else { %>
@@ -88,10 +88,10 @@
 				</li>
 				<li><a href="/readSendMsg.do?msgNo=<%=list.get(i).getMsgNo()%>" style="color:#383d40;"><%=list.get(i).getMsgContent() %></a></li>
 				<li>
-					<span><%=list.get(i).getMsgDate().substring(0, 10) %></span>
-					<span><%=list.get(i).getMsgDate().substring(11) %></span>
+					<span class="noneSelect"><%=list.get(i).getMsgDate().substring(0, 10) %></span>
+					<span class="noneSelect"><%=list.get(i).getMsgDate().substring(11) %></span>
 				</li>
-				<li>
+				<li class="noneSelect">
 					<% if(list.get(i).getMsgRead()==0) { %>
 					읽지않음
 					<% } else {%>
@@ -108,13 +108,13 @@
 		<ul class="pagination">
 		<% if(totalPage==0) { %>
 		<% } else { %>
-			<% if(pageNo>3){ %>
+			<% if(pageNo>=3){ %>
 			<li class="page-item"><a href="gotoReceiveMsg.do?msgBoardTitle=sendMsg&pageNo=<%=pageNo-2%>&memberId=<%=memberId %>" class="page-link"><<</a></li>
 			<% } %>
 			<% if(pageNo>=2) { %>
 			<li class="page-item"><a href="gotoReceiveMsg.do?msgBoardTitle=sendMsg&pageNo=<%=pageNo-1%>&memberId=<%=memberId %>" class="page-link"><%=pageNo-1 %></a></li>
 			<% } %>
-			<li class="page-item"><a href="#" class="page-link active" onclick="javascript:void(0)"><%=pageNo %></a></li>
+			<li class="page-item active"><a href="#" class="page-link" onclick="javascript:void(0)"><%=pageNo %></a></li>
 			<% if(pageNo<totalPage) { %>
 			<li class="page-item"><a href="gotoReceiveMsg.do?msgBoardTitle=sendMsg&pageNo=<%=pageNo+1%>&memberId=<%=memberId %>" class="page-link"><%=pageNo+1 %></a></li>
 			<% } %>

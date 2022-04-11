@@ -80,6 +80,11 @@ ul.table, ul.msg-content, ul.table>li>ul, ul.pagination, li{
     display: block;
 }
 
+.noneSelect{
+    cursor:default !important;
+}
+
+
 /*- - - - - - - - - - - - 본문 영역 (리스트 배치 - 하단)*/
 .page-wrap{
     margin-top: 10px;

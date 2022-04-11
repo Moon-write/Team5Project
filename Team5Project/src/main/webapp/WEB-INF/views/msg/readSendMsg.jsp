@@ -26,7 +26,7 @@
 </head>
 <body>
 	<div class="title-wrap">
-		<span>보낸쪽지</span>
+		<span class="noneSelect">보낸쪽지</span>
 	</div>
 	<div class="btn-wrap" style="text-align: right;">
 		<button href="#" class="btn btn-sm btn-primary" onclick="gotoBack()">이전 페이지로</button>
@@ -36,8 +36,8 @@
 
 	<div id="receiver-wrap" style="width:100%"> <!-- 받는사람정보 -->
 		<div class="form-control form-control-lg" style="width:100%; padding-left:100px;">
-		<span id="senderName"><%=msg.getReceiverName() %></span>
-		<span id="senderId">(<%=msg.getMsgReceiver() %>)</span>
+		<span id="senderName" class="noneSelect"><%=msg.getReceiverName() %></span>
+		<span id="senderId" class="noneSelect">(<%=msg.getMsgReceiver() %>)</span>
 		</div>
 		<button class="btn btn-lg btn-secondary" disabled>받는이</button>
 	</div>

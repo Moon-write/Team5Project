@@ -35,7 +35,7 @@ public class MessageDao {
 	public int newMsg(Connection conn, Message msg) {
 		PreparedStatement pstmt = null;
 		int result = 0;
-		String query = "INSERT INTO MESSAGE_TBL VALUES(MSG_SEQ.NEXTVAL, ?, ?, ?, TO_CHAR(SYSDATE, 'YYYY-MM-DD HH24:MM'), 0, 0, 0)";
+		String query = "INSERT INTO MESSAGE_TBL VALUES(MSG_SEQ.NEXTVAL, ?, ?, ?, TO_CHAR(SYSDATE, 'YYYY-MM-DD HH24:MI'), 0, 0, 0)";
 		
 		try {
 			pstmt = conn.prepareStatement(query);

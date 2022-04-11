@@ -114,6 +114,31 @@
 	.pagination{
 		margin-bottom: 50px;
 	}
+	.noneSelect{
+    cursor:default !important;
+	}
+	.markerDiv{
+		padding: 10px;
+	}
+	.markerDiv>span{
+		display: block;
+		margin-top: 5px;
+	}
+	.markerDiv>span:first-child{
+		
+		font-size: 12px;
+		background-color: #a393ac;
+		font-weight: 900;
+		color: #fff;
+	}
+	.markerDiv>span:nth-child(2){
+		font-size: 11px;
+		color: #828e95;
+	}
+	.markerDiv>span:last-child{
+		font-size: 11px;
+		color: #a393ac;
+	}
 </style>
 <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=zuy6mbvpe0&submodules=geocoder"></script>
 </head>
@@ -163,28 +188,28 @@
 		</div>
 		<div class="result-list">
 			<div class="pcRat">
-				<span>
-					<span class="material-icons" style="color:#29abe0;">verified</span>
+				<span class="noneSelect">
+					<span class="material-icons noneSelect" style="color:#29abe0;">verified</span>
 					신속항원검사
 				</span>
-				<span>
-					<span class="material-icons" style="color:#d9534f;">local_parking</span>
+				<span class="noneSelect">
+					<span class="material-icons noneSelect" style="color:#d9534f;">local_parking</span>
 					PCR검사
 				</span>
 			</div>
 			<table class="table" id="clinicList">
 				<tr class="table-success">
-					<th>구분</th>
-					<th>이름</th>
-					<th>주소</th>
-					<th>전화번호</th>
-					<th>검사종류</th>
-					<th>위치</th>
+					<th class="noneSelect">구분</th>
+					<th class="noneSelect">이름</th>
+					<th class="noneSelect">주소</th>
+					<th class="noneSelect">전화번호</th>
+					<th class="noneSelect">검사종류</th>
+					<th class="noneSelect">위치</th>
 				</tr>
 				<% if(result==null) { %>
 					<tr class="table-default">
-						<td colspan="6">
-							조회하시는 내용이 없습니땨!
+						<td colspan="6" class="noneSelect">
+							조회하시는 내용이 없습니다!
 						</td>
 					</tr>
 				<% } else { %>
@@ -204,10 +229,10 @@
 							<td><%= result.get(i).getTelNo() %></td>
 							<td>
 								<% if(result.get(i).getRatAble().equals("Y")){ %>
-									<span class="material-icons" style="color:#29abe0;">verified</span>
+									<span class="material-icons noneSelect" style="color:#29abe0;">verified</span>
 								<% } %>
 								<% if(result.get(i).getPcrAble().equals("Y")){ %>
-									<span class="material-icons" style="color:#d9534f;">local_parking</span>
+									<span class="material-icons noneSelect" style="color:#d9534f;">local_parking</span>
 								<% } %>
 							</td>
 							<td>
@@ -316,7 +341,15 @@
 			const xPos = $(item).next().val();
 			const yPos = $(item).next().next().val();
 
-			marking(yPos, xPos, map);
+			const marker = marking(yPos, xPos, map);
+
+			naver.maps.Event.addListener(marker,"click",function(e){ // 마커에 클릭이벤트를 걸거고 그때 함수가 동작한다
+				const clinicName = $(item).parent().prev().prev().prev().prev().text();
+				const clinicAddr = $(item).parent().prev().prev().prev().text();
+				const clinicTel = $(item).parent().prev().prev().text();
+			
+				makingInfoWindow(clinicName, clinicAddr, clinicTel, map, marker);
+			})
 		})
 
 
@@ -330,7 +363,14 @@
 				zoomControl : true,
 			})
 
-			marking(PickyPos, PickxPos, map2);
+			const marker = marking(PickyPos, PickxPos, map2);
+
+			const clinicName = $(this).parent().prev().prev().prev().prev().text();
+			const clinicAddr = $(this).parent().prev().prev().prev().text();
+			const clinicTel = $(this).parent().prev().prev().text();
+			
+			makingInfoWindow(clinicName, clinicAddr, clinicTel, map2, marker);
+			
 		})
 		
 		function marking(lat, lng, mapName){
@@ -338,8 +378,30 @@
 				position : new naver.maps.LatLng(lat, lng),
 				map : mapName,
 			})
+
+			return marker;
 		}
-		
+
+		function makingInfoWindow(clinicName, clinicAddr, clinicTel, mapName, marker){
+			// 인포윈도 만들기
+			// 1. 객체 생성
+			let infoWindow = new naver.maps.InfoWindow();
+						
+			if(infoWindow.getMap()){ // 마커 옮길때 정보창이 지도에 존재하면
+				infoWindow.close(); // 종료
+			}
+			infoWindow = new naver.maps.InfoWindow({
+				content : "<div class='markerDiv'><span>"+clinicName+"</span><span>"+clinicAddr+"</span><span>"+clinicTel+"</span></div>",
+
+				// 정보창 디자인을 할거면 여기서해라
+				maxWidth : 250,
+				borderColor : "#d4c3de",
+				borderWidth: 2,
+				anchorSize : new naver.maps.Size(10,10),
+			});
+			// 생성된 infoWindow를 map의 marker위치에 생성
+			infoWindow.open(mapName, marker); // 매개변수 map과 marker는 다 위에서 만든거	
+		}
 	});
 	
 	

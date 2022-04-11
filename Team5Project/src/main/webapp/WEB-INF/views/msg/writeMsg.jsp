@@ -45,12 +45,12 @@
 </head>
 <body>
 	<div class="title-wrap">
-		<span>쪽지 작성</span>
+		<span class="noneSelect">쪽지 작성</span>
 	</div>
 	<div class="btn-wrap" style="text-align: right;">
 		<button href="#" class="btn btn-sm btn-primary" onclick="gotoBack()">이전 페이지로</button>
 	</div>
-	<form action="/newMsg.do" method="post" onsubmit="return lastCheck()">
+	<form action="/newMsg.do" method="post">
 		<input type="hidden" value="<%=memberId%>" name="msgSender">
 		<div id="receiver-wrap">
 			<% if(msgReceiver==null) { %>
@@ -64,15 +64,38 @@
 			</div>
 		</div>
 		<textarea name="msgContent" class="form-control"></textarea>
-		<input id="replyBtn" type="submit" class="btn btn-lg btn-primary" value="전송">
+		<input id="replyBtn" type="button" class="btn btn-lg btn-primary" value="전송" onclick="check(this);">
 	</form>
 	<script>
-		function lastCheck(){
-			const check = confirm("정말 보내시겠어요?");
-			if(check==false){
-				return false;
-			}			
-		};
+		function check(){			
+			const memberId = $("#receiver-wrap>input");
+			let result = 0;
+			$.ajax({
+				url : "/ajaxCheckId.do",
+				type : "get",
+				data : { "memberId" : memberId.val() },
+				success : function(data){
+					if(data!=1){
+						alert("존재하지 않는 아이디입니다. 아이디를 다시 확인해주세요!");
+						result = -1;
+					}else{
+						const check = confirm("정말 보내시겠어요?");
+						if(check==false){
+							result = -5;
+						} else {
+							result = 1;
+						}
+					}
+				}, // success끝
+				complete: function(){
+					if(result==1){
+						$("form").submit();
+					}else{
+						event.preventDefault();
+					}
+				}
+			});
+		}
 		$("#searchId").on("click",function(){
 			if($("#suggestList").css("display")=="none"){
 				const keyword = $(this).prev().val();
@@ -88,13 +111,13 @@
 							line.val(data[i].memberId);
 							$("#suggestList").append(line);
 							$("#suggestList").slideDown();
-							$(this).text("접기");
+							$("#searchId").text("접기");
 						}
 						
 						$("button.list-group-item").on("click",function(){
 							$(this).parent().prev().prev().val($(this).val());
 							$("#suggestList").slideUp();
-							$(this).text("ID 검색");
+							$("#searchId").text("ID 검색");
 						})
 					},
 					error:function(){
