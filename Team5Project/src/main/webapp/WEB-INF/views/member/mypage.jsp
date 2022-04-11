@@ -85,7 +85,7 @@
 				<%if(m.getMemberLevel() == 0) {%>
 					<a class="btn btn-primary" id="signupButton">회원관리</a>
 				<%}else{ %>
-					<a class="btn btn-primary" id="signupButton">회원탈퇴</a>
+					<a class="btn btn-primary" id="signupButton" href="/deleteMember.do?memberNo=<%=m.getMemberNo()%>">회원탈퇴</a>
 				<%} %>
 			</div>
 		</form> 

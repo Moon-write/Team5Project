@@ -55,7 +55,7 @@ public class MemberDao {
 			pstmt.setString(2, m.getMemberPw());
 			pstmt.setString(3, m.getMemberName());
 			pstmt.setString(4, m.getMemberNickname());
-			pstmt.setString(5, m.getMemberPw());
+			pstmt.setString(5, m.getPhone());
 			pstmt.setString(6, m.getAddress());
 			pstmt.setString(7, m.getMemberGender());
 			pstmt.setString(8, m.getEmail());
@@ -112,6 +112,23 @@ public class MemberDao {
 			pstmt.setString(4, member.getAddress());
 			pstmt.setString(5, member.getEmail());
 			pstmt.setString(6, member.getMemberId());
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			JDBCTemplate.close(pstmt);
+		}
+		return result;
+	}
+
+	public int deleteMember(Connection conn, int memberNo) {
+		PreparedStatement pstmt = null;
+		int result = 0;
+		String query = "delete from member_tbl where member_no=?";
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setInt(1, memberNo);
 			result = pstmt.executeUpdate();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block

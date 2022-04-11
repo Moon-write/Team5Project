@@ -48,4 +48,17 @@ public class MemberService {
 		JDBCTemplate.close(conn);
 		return result;
 	}
+
+	public int deleteMember(int memberNo) {
+		Connection conn = JDBCTemplate.getConnection();
+		MemberDao dao = new MemberDao();
+		int result = dao.deleteMember(conn, memberNo);
+		if(result>0) {
+			JDBCTemplate.commit(conn);
+		}else {
+			JDBCTemplate.rollback(conn);
+		}
+		JDBCTemplate.close(conn);
+		return result;
+	}
 }
