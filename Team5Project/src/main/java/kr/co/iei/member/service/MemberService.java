@@ -1,6 +1,7 @@
 package kr.co.iei.member.service;
 
 import java.sql.Connection;
+import java.util.ArrayList;
 
 import common.JDBCTemplate;
 import kr.co.iei.member.dao.MemberDao;
@@ -53,6 +54,27 @@ public class MemberService {
 		Connection conn = JDBCTemplate.getConnection();
 		MemberDao dao = new MemberDao();
 		int result = dao.deleteMember(conn, memberNo);
+		if(result>0) {
+			JDBCTemplate.commit(conn);
+		}else {
+			JDBCTemplate.rollback(conn);
+		}
+		JDBCTemplate.close(conn);
+		return result;
+	}
+
+	public ArrayList<Member> selectAllmember() {
+		Connection conn = JDBCTemplate.getConnection();
+		MemberDao dao = new MemberDao();
+		ArrayList<Member> list = dao.selectAllMember(conn);
+		JDBCTemplate.close(conn);
+		return list;
+	}
+
+	public int changeLevel(int memberNo, int memberLevel) {
+		Connection conn = JDBCTemplate.getConnection();
+		MemberDao dao = new MemberDao();
+		int result = dao.changeLevel(conn, memberNo, memberLevel);
 		if(result>0) {
 			JDBCTemplate.commit(conn);
 		}else {

@@ -1,6 +1,7 @@
 package kr.co.iei.member.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -8,21 +9,21 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import kr.co.iei.member.service.MemberService;
+import kr.co.iei.member.vo.Member;
 
 /**
- * Servlet implementation class DeleteMemberServlet
+ * Servlet implementation class AdminPageServlet
  */
-@WebServlet(name = "DeleteMember", urlPatterns = { "/deleteMember.do" })
-public class DeleteMemberServlet extends HttpServlet {
+@WebServlet(asyncSupported = true, name = "AdminPage", urlPatterns = { "/adminPage.do" })
+public class AdminPageServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public DeleteMemberServlet() {
+    public AdminPageServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -34,24 +35,13 @@ public class DeleteMemberServlet extends HttpServlet {
 		//1. 인코딩
 		request.setCharacterEncoding("utf-8");
 		//2. 값추출
-		int memberNo = Integer.parseInt(request.getParameter("memberNo")); 
 		//3. 비즈니스 로직
 		MemberService service = new MemberService();
-		int result = service.deleteMember(memberNo);
+		ArrayList<Member> list = service.selectAllmember();
 		//4. 결과처리
-		RequestDispatcher view = request.getRequestDispatcher("/WEB-INF/views/common/msg.jsp");
-		if(result>0) {
-			request.setAttribute("title", "회원탈퇴 완료");
-			request.setAttribute("msg", "bye");
-			request.setAttribute("icon", "success");
-			request.setAttribute("loc", "/logout.do");
-		}else {
-			request.setAttribute("title", "회원탈퇴 실패");
-			request.setAttribute("msg", "처리중 오류가 발생하였습니다. 관리자에게 문의하세요");
-			request.setAttribute("icon", "error");
-			request.setAttribute("loc", "/");
-		}
-		view.forward(request, response);
+		RequestDispatcher view = request.getRequestDispatcher("/WEB-INF/views/member/adminPage.jsp");
+		request.setAttribute("list", list);//리스트 보내줌
+		view.forward(request, response);//페이지 전송
 	}
 
 	/**

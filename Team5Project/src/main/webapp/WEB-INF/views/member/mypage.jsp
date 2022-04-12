@@ -83,7 +83,7 @@
 			<div class="input-wrap1">
 				<button type="submit" class="btn btn-primary" id="signupButton">정보수정</button>
 				<%if(m.getMemberLevel() == 0) {%>
-					<a class="btn btn-primary" id="signupButton">회원관리</a>
+					<a class="btn btn-primary" id="signupButton" href="/adminPage.do">회원관리</a>
 				<%}else{ %>
 					<a class="btn btn-primary" id="signupButton" href="/deleteMember.do?memberNo=<%=m.getMemberNo()%>">회원탈퇴</a>
 				<%} %>
