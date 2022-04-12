@@ -35,8 +35,8 @@ public class CoronaLiveDataServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// ajax로 데이터 주고받을거임
-		request.setCharacterEncoding("utf-8");
-		
+		request.setCharacterEncoding("utf-8");		
+				
 		ApiExplorer api = new ApiExplorer();
 		ArrayList<LiveData> list = api.getData();
 		

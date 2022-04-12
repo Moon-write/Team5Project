@@ -26,11 +26,11 @@ public class ApiExplorer {
 		
 		// 일주일전 날짜
 		Date prevDay = new Date();
-		prevDay = new Date(prevDay.getTime()+(1000*60*60*24*-7));
+		prevDay = new Date(prevDay.getTime()+(1000*60*60*24*-6));
 		String sdfPrevDay = sdf.format(prevDay);
 		
 		ArrayList<LiveData> list = parsingData(sdfToday, sdfPrevDay);
-
+		
 		return list;		
 	}
 	
@@ -67,7 +67,8 @@ public class ApiExplorer {
 					
 					LiveData data= new LiveData();
 					data.setCheckCount(getTagValue("decideCnt", eElement));
-					data.setCheckDate(getTagValue("stateDt", eElement));
+					String date = getTagValue("stateDt", eElement);
+					data.setCheckDate(date.substring(4));
 					data.setCheckDeath(getTagValue("deathCnt", eElement));
 					
 					list.add(data);
@@ -91,5 +92,5 @@ public class ApiExplorer {
 		        return null;
 		    return nValue.getNodeValue();
 		}
-	}    
+	}
 }
