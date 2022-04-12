@@ -1,7 +1,6 @@
 package kr.co.iei.question.controller;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -10,21 +9,17 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import kr.co.iei.question.service.QuestionService;
-import kr.co.iei.question.vo.Question;
-import kr.co.iei.question.vo.QuestionPageData;
-
 /**
- * Servlet implementation class QuestionServlet
+ * Servlet implementation class QuestionWriteFrmServlet
  */
-@WebServlet(name = "QuestionList", urlPatterns = { "/questionList.do" })
-public class QuestionListServlet extends HttpServlet {
+@WebServlet(name = "QuestionWriteFrm", urlPatterns = { "/questionWriteFrm.do" })
+public class QuestionWriteFrmServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public QuestionListServlet() {
+    public QuestionWriteFrmServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -36,16 +31,10 @@ public class QuestionListServlet extends HttpServlet {
 		//1. 인코딩
 		request.setCharacterEncoding("utf-8");
 		//2. 값추출
-		int reqPage = Integer.parseInt(request.getParameter("reqPage"));
-		//3. 비즈니스 로직
-		QuestionService service = new QuestionService();
-		QuestionPageData qpd = service.selectQuestionList(reqPage);
-		//4. 결과처리.
+		//3. 비즈니스로직
+		//4. 화면처리
 		RequestDispatcher view
-		= request.getRequestDispatcher("/WEB-INF/views/question/questionList.jsp");
-		request.setAttribute("list", qpd.getList());
-		request.setAttribute("pageNavi", qpd.getPageNavi());
-		view.forward(request, response);
+		=request.getRequestDispatcher("/WEB-INF/views/question/questionWriteFrm.jsp");
 	}
 
 	/**
