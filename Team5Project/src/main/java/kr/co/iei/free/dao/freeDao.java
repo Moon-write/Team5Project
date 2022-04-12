@@ -34,7 +34,7 @@ public class freeDao {
 		return result;
 	}
 
-	public ArrayList<FreeboardTable> selectFreeBoardTable(Connection conn, int start, int end, String keyword) {
+	public ArrayList<FreeboardTable> selectFreeList3(Connection conn, int start, int end, String keyword) {
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
 		ArrayList<FreeboardTable> list = new ArrayList<FreeboardTable>();
@@ -45,8 +45,6 @@ public class freeDao {
 				+ "where (t2.member_nickname LIKE ('%'||?||'%') or t1.free_title LIKE ('%'||?||'%')) \r\n"
 				+ "order by free_no desc)n) \r\n"
 				+ "where rnum between ? and ?";
-
-				
 		try {
 			pstmt = conn.prepareStatement(query);
 			pstmt.setString(1,  keyword);
@@ -73,6 +71,89 @@ public class freeDao {
 		}
 		return list;
 	}
+	public ArrayList<FreeboardTable> selectFreeList2(Connection conn, int start, int end, String keyword) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		ArrayList<FreeboardTable> list = new ArrayList<FreeboardTable>();
+		String query = "";
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1,  keyword);
+			pstmt.setString(2,  keyword);
+			pstmt.setInt(3,  start);
+			pstmt.setInt(4,  end);
+			rset = pstmt.executeQuery();
+			while(rset.next()) {
+				FreeboardTable fbt = new FreeboardTable();
+				fbt.setNo(rset.getInt("free_no"));
+				fbt.setWriter(rset.getString("member_nickname"));
+				fbt.setTitle(rset.getString("free_title"));
+				fbt.setLikeCount(rset.getInt("free_count"));
+				fbt.setDate(rset.getDate("free_date"));
+				fbt.setLikeCount(rset.getInt("likes"));
+				list.add(fbt);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			JDBCTemplate.close(rset);
+			JDBCTemplate.close(pstmt);
+		}
+		return null;
+	}
+
+	public ArrayList<FreeboardTable> selectFreeList1(Connection conn, int start, int end, String keyword) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		ArrayList<FreeboardTable> list = new ArrayList<FreeboardTable>();
+		String query = "";
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1,  keyword);
+			pstmt.setString(2,  keyword);
+			pstmt.setInt(3,  start);
+			pstmt.setInt(4,  end);
+			rset = pstmt.executeQuery();
+			while(rset.next()) {
+				FreeboardTable fbt = new FreeboardTable();
+				fbt.setNo(rset.getInt("free_no"));
+				fbt.setWriter(rset.getString("member_nickname"));
+				fbt.setTitle(rset.getString("free_title"));
+				fbt.setLikeCount(rset.getInt("free_count"));
+				fbt.setDate(rset.getDate("free_date"));
+				fbt.setLikeCount(rset.getInt("likes"));
+				list.add(fbt);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			JDBCTemplate.close(rset);
+			JDBCTemplate.close(pstmt);
+		}
+		return null;
+	}
+	public int insertFree(Connection conn, Free f) {
+		PreparedStatement pstmt = null;
+		String query = "insert into FreeBoard_tbl values(FreeBoard_seq.nextval,?,?,sysdate,0,?)";
+		int result = 0;
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, f.getFree_Id());
+			pstmt.setString(2, f.getFree_Title());
+			pstmt.setString(3, f.getFree_Content());
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			JDBCTemplate.close(pstmt);
+		}
+		return result;
+	}
+
+	
 
 	
 }

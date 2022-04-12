@@ -1,25 +1,47 @@
 package kr.co.iei.free.service;
 
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 import common.JDBCTemplate;
 import kr.co.iei.free.dao.freeDao;
+import kr.co.iei.free.vo.Free;
 import kr.co.iei.free.vo.FreeboardTable;
 
 public class FreeService {
 
-	public ArrayList<FreeboardTable> selectFreeList(int reqPage, int numPage, String keyword) {
+	public ArrayList<FreeboardTable> selectFreeList3(int reqPage, int numPage, String keyword) {
 		Connection conn = JDBCTemplate.getConnection();
 		freeDao dao = new freeDao();
 		//게시물 rownum범위 계산
 		int End = numPage * reqPage;
 		int Start = End - numPage +1;
-		ArrayList<FreeboardTable> list = dao.selectFreeBoardTable(conn,Start,End, keyword);
+		ArrayList<FreeboardTable> list = dao.selectFreeList3(conn,Start,End, keyword);
+		JDBCTemplate.close(conn);
+		return list;
+	}
+	public ArrayList<FreeboardTable> selectFreeList2(int reqPage, int numPage, String keyword) {
+		Connection conn = JDBCTemplate.getConnection();
+		freeDao dao = new freeDao();
+		//게시물 rownum범위 계산
+		int End = numPage * reqPage;
+		int Start = End - numPage +1;
+		ArrayList<FreeboardTable> list = dao.selectFreeList2(conn,Start,End, keyword);
 		JDBCTemplate.close(conn);
 		return list;
 	}
 
+	public ArrayList<FreeboardTable> selectFreeList1(int reqPage, int numPage, String keyword) {
+		Connection conn = JDBCTemplate.getConnection();
+		freeDao dao = new freeDao();
+		//게시물 rownum범위 계산
+		int End = numPage * reqPage;
+		int Start = End - numPage +1;
+		ArrayList<FreeboardTable> list = dao.selectFreeList1(conn,Start,End, keyword);
+		JDBCTemplate.close(conn);
+		return list;
+	}
 	public String totalPage(int reqPage, int numPage) {
 		Connection conn = JDBCTemplate.getConnection();
 		freeDao dao = new freeDao();
@@ -57,4 +79,25 @@ public class FreeService {
 		}
 		return pageNavi;
 	}
+
+	public int insertFree(Free f) {
+		Connection conn = JDBCTemplate.getConnection();
+		freeDao dao = new freeDao();
+		int result = dao.insertFree(conn, f);
+		try {
+			if(result > 0) {
+				conn.commit();
+			}else {
+				conn.rollback();
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			JDBCTemplate.close(conn);
+		}
+		return result;
+	}
+
+	
 }

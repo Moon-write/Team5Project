@@ -1,3 +1,4 @@
+<%@page import="java.time.LocalDate"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -7,8 +8,25 @@
 <title>자유게시판 글 작성</title>
 </head>
 <style>
-	#noticeWrite td, #noticeWrite th{
+	.div-content td, .div-content th{
 		border :1px solid #ccc;
+	}
+	.table-success{
+		text-align: center;
+		justify-content: center;
+	}
+	.tr td, .tr th{
+		text-align: center;
+		justify-content: center;
+	}
+	.tr-2 *{
+		width:25%;
+	}
+	.tr .btn-primary{
+		width:100%;
+		height:80px;
+		font-size:30px;
+		color:black;
 	}
 </style>
 <body>
@@ -18,34 +36,34 @@
 	<link rel="stylesheet" href="/summernote/summernote-lite.css">
 	<div class="div-content">
         <div class="content-title">자유게시판 글 작성</div>
-		<form action="/freeBoardWrite.do" method="post" enctype="multipart/form-data">
-			<table class="tbl" id="freeBoardWrite">
-				<tr class="tr-1">
-					<th class="td-3">제목</th>
+		<form action="/freeInsert.do" method="post">
+			<table class="table" id="freeInsert">
+				<tr class="tr">
+					<th class="table-success">제목</th>
 					<td colspan="3">
-						<input type="text" name="noticeTitle" class="input-form">
+						<input type="text" name="Title" class="form-control">
 					</td>
 				</tr>
-				<tr class="tr-1">
-					<th class="td-3">작성자</th>
+				<tr class="tr tr-2">
+					<th class="table-success">작성자</th>
 					<td>
-						<input type="hidden" name="noticeWriter" value="<%=m.getMemberId() %>">
-						<%=m.getMemberId() %>
+						<input type="hidden" name="Id" value="<%=m.getMemberId() %>">
+						<%=m.getMemberNickname() %>
 					</td>
-					<th class="td-3">첨부파일</th>
-					<td><input type="file" name="file"></td>
+					<th class="table-success">작성 일자</th>
+					<td><%=LocalDate.now() %></td>
 				</tr>
-				<tr class="tr-1">
-					<td colspan="4" style="text-align:left;"><textarea id="noticeContent" name="noticeContent" class="input-form"></textarea></td>
+				<tr class="tr">
+					<td colspan="4" style="text-align:left;"><textarea id="Content" name="Content" class="input-form"></textarea></td>
 				</tr>
-				<tr>
-					<td colspan="4"><button type="submit" class="btn bc1 bs4">공지사항 등록</button></td>
+				<tr class="tr">
+					<td colspan="4"><button type="submit" class="btn btn-primary">글 등록</button></td>
 				</tr>
 			</table>
 		</form>
 	</div>
 	<script>
-		$("#noticeContent").summernote({
+		$("#Content").summernote({
 			height:400,
 			lang:"ko-KR",
 			callbacks:{
@@ -55,12 +73,10 @@
 			}
 		});
 		function uploadImage(file,editor){
-			//ajax통해 서버에 이미지를 업로드하고 경로를 받아옴
-			//form태그와 동일한 효ㅗ과를 내는 formdata객체사용
 			const form = new FormData();
 			form.append("file",file);
 			$.ajax({
-				url:"/uploadImage.do",
+				url:"/freeImageUpload.do",
 				type:"post",
 				data:form,
 				processData:false,
@@ -68,14 +84,7 @@
 				success:function(data){
 					$(editor).summernote("insertImage",data);
 				}
-				
 			});
-			//processData:기본값 true{key1:value1,key2:value2,key3:value3}
-			//		=>파일전송시 String이 아니라 파일형태로 전송하기 위해서 기본값을 제거
-			//contentType: 기본값 "application/x-www-form-urlencoded;charset=UTF-8"
-			//		=>form태그 전송시 enctype의 기본값임
-			//		=>enctyle="multipart/form-data로 설정하기 위해 기본값을 제거"
-			
 		}
 	</script>
 	<%@ include file="/WEB-INF/views/common/footer.jsp" %>

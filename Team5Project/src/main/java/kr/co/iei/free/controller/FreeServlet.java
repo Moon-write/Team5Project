@@ -46,11 +46,11 @@ public class FreeServlet extends HttpServlet {
 		ArrayList<FreeboardTable> freeboard = new ArrayList<FreeboardTable>();	
 		
 		if(sort==1) {
-			
+			freeboard = service.selectFreeList1(reqPage, numPage, keyword);
 		}else if(sort==2) {
-			
+			freeboard = service.selectFreeList2(reqPage, numPage, keyword);
 		}else {
-			freeboard = service.selectFreeList(reqPage, numPage, keyword);			
+			freeboard = service.selectFreeList3(reqPage, numPage, keyword);			
 		}
 		FreeMain main = new FreeMain(sort,numPage,keyword);
 		String pageNavi = service.totalPage(reqPage, numPage);
