@@ -1,4 +1,4 @@
-package kr.co.iei.dataApi.service;
+package kr.co.iei.main.service;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -13,12 +13,12 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-import kr.co.iei.dataApi.vo.LiveData;
+import kr.co.iei.main.vo.LiveData;
 
 import java.io.IOException;
 
 public class ApiExplorer {
-	public ArrayList<LiveData> getData() {
+	public ArrayList<LiveData> getData(int num) {
 		// 오늘날짜와 일주일전 날짜 구하기
 		Date today = new Date();
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
@@ -29,12 +29,12 @@ public class ApiExplorer {
 		prevDay = new Date(prevDay.getTime()+(1000*60*60*24*-6));
 		String sdfPrevDay = sdf.format(prevDay);
 		
-		ArrayList<LiveData> list = parsingData(sdfToday, sdfPrevDay);
+		ArrayList<LiveData> list = parsingData(sdfToday, sdfPrevDay, num);
 		
 		return list;		
 	}
 	
-	private ArrayList<LiveData> parsingData(String today, String prevday){
+	private ArrayList<LiveData> parsingData(String today, String prevday, int num){
 		// 리턴용 리스트 생성
 		ArrayList<LiveData> list = new ArrayList<LiveData>();
 		
@@ -66,10 +66,15 @@ public class ApiExplorer {
 					Element eElement = (Element) nNode;
 					
 					LiveData data= new LiveData();
-					data.setCheckCount(getTagValue("decideCnt", eElement));
+					if(num==0) {
+						// 분류값이 0이면 확진자수 리턴
+						data.setCheckCount(getTagValue("decideCnt", eElement));						
+					}else {
+						// 분류값이 1이면 사망자수 리턴
+						data.setCheckCount(getTagValue("deathCnt", eElement));						
+					}
 					String date = getTagValue("stateDt", eElement);
 					data.setCheckDate(date.substring(4));
-					data.setCheckDeath(getTagValue("deathCnt", eElement));
 					
 					list.add(data);
 				}

@@ -15,6 +15,9 @@
 <meta charset="UTF-8">
 <title>위드코로나 :: 주변 진료소 찾기</title>
 <style>
+	span{
+		cursor: pointer;
+	}
 	.district-box{
 		display:flex;
 		justify-content: center;

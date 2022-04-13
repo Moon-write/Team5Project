@@ -25,10 +25,6 @@ footer{
     color: #fff;
 }
 
-span{
-    cursor: pointer;
-}
-
 @media screen and (max-width: 768px) {
     .header-wrap, .div-content, .footer-wrap{
         width: 100%;
@@ -56,7 +52,7 @@ span{
     }
 }
 
-@media screen and (min-width: 768px) and (max-width: 1000px) {
+@media screen and (min-width: 768px) and (max-width: 992px) {
     .header-wrap, .div-content, .footer-wrap{
         width: 80%;
     }
@@ -68,7 +64,7 @@ span{
     }
 }
 
-@media screen and (min-width: 1000px) {
+@media screen and (min-width: 992px) {
     .header-wrap, .div-content, .footer-wrap{
         width: 90%;
     }
