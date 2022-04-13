@@ -42,7 +42,6 @@
 		#pageNavi{
 			margin: 30px;
 		}
-		
 	</style>
 </head>
 <body>
