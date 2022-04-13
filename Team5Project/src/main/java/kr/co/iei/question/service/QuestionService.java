@@ -27,7 +27,7 @@ public class QuestionService {
 		int totalCount = dao.totalQuestionCount(conn);
 		//전체페이지 수
 		int totalPage = 0;
-		if(totalPage%numPerPage == 0) {
+		if(totalCount%numPerPage == 0) {
 			totalPage = totalCount/numPerPage;
 		}else {
 			totalPage = totalCount/numPerPage + 1;
@@ -70,7 +70,7 @@ public class QuestionService {
 			pageNavi += "<span class='material-icons'>chevron_right</span>";
 			pageNavi +=	"</a></li>";
 		}
-		pageNavi = "</ul>";
+		pageNavi += "</ul>";
 		System.out.println(pageNavi);
 		QuestionPageData qpd = new QuestionPageData(list, pageNavi);
 						

@@ -18,7 +18,7 @@
 		.notice-tbl a:hover{
 			text-decoration: underline;
 		}
-		.noitce-tbl tr{
+		.notice-tbl tr{
 			border-bottom: 1px solid #ccc;
 		}
 		.notice-tbl tr>th:frist-child{
