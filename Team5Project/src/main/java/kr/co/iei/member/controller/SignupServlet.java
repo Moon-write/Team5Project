@@ -43,6 +43,8 @@ public class SignupServlet extends HttpServlet {
 		m.setAddress(request.getParameter("address"));
 		m.setMemberGender(request.getParameter("memberGender"));
 		m.setEmail(request.getParameter("email"));
+		m.setEmailAuth(request.getParameter("emailAuth"));
+		System.out.println(m);
 		//3. 비즈니스 로직
 		MemberService service = new MemberService();
 		int result = service.insertMember(m);

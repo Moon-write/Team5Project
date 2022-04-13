@@ -9,23 +9,21 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.oreilly.servlet.MultipartRequest;
-import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
-
 import kr.co.iei.free.service.FreeService;
 import kr.co.iei.free.vo.Free;
+import kr.co.iei.free.vo.FreeView;
 
 /**
- * Servlet implementation class FreeInsertServlet
+ * Servlet implementation class FreeBoardUpdateServlet
  */
-@WebServlet(name = "FreeInsert", urlPatterns = { "/freeInsert.do" })
-public class FreeInsertServlet extends HttpServlet {
+@WebServlet(name = "FreeBoardUpdate", urlPatterns = { "/freeBoardUpdate.do" })
+public class FreeBoardUpdateServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public FreeInsertServlet() {
+    public FreeBoardUpdateServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -35,32 +33,22 @@ public class FreeInsertServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		//1.인코딩
 		request.setCharacterEncoding("utf-8");
-		//2.값추출
+		
+		int No = Integer.parseInt(request.getParameter("No"));
 		String Title = request.getParameter("Title");
-		String Id = request.getParameter("Id");
 		String Content = request.getParameter("Content");
+		
 		Free f = new Free();
-		f.setFree_Title(Title);
-		f.setFree_Id(Id);
+		f.setFree_No(No);
 		f.setFree_Content(Content);
-		System.out.println(Content);
-		//3.비지니스로직
+		f.setFree_Title(Title);
 		FreeService service = new FreeService();
-		int result = service.insertFree(f);
-		//4.결과처리
-		RequestDispatcher view = request.getRequestDispatcher("/WEB-INF/views/common/msg.jsp");
-		if(result>0) {
-			request.setAttribute("title", "성공");
-			request.setAttribute("msg", "글 등록 성공");
-			request.setAttribute("icon", "success");
-		}else {
-			request.setAttribute("title", "실패");
-			request.setAttribute("msg", "글 등록 실패");
-			request.setAttribute("icon", "error");
-		}
-		request.setAttribute("loc", "/free.do?reqPage=1&numPage=20&Sort=3&keyword=");
+		int result = service.freeBoardUpdate(f);
+		FreeView FV = service.FreeView(No);
+		
+		RequestDispatcher view = request.getRequestDispatcher("WEB-INF/views/free/freeView.jsp");
+		request.setAttribute("FV", FV);
 		view.forward(request, response);
 	}
 

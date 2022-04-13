@@ -1,0 +1,295 @@
+/* 전국 확진자 현황 API */
+.dataApi-wrap, .result-wrap{
+    width: 100%;
+    border: 1px solid #a393ac;
+    border-radius: 10px;
+    margin-left: 0px !important;
+    margin-top: 50px !important;
+    align-items: center;
+    padding: 30px;
+}
+.dataApi-title{
+    align-self: center;    
+    position: relative;
+}
+
+.dataApi-title>div, .result-title>div{
+    text-align: center;
+    font-size: 1.5em;
+    font-weight: 900;
+    padding-bottom: 30px;
+}
+
+.dataApi-today{
+    width: 20%;
+    text-align: center;
+    font-size: 1em;
+    font-weight: 700;
+    justify-content: center;        
+}
+.dataApi-today>div>div {
+    width: 100%; background-color: #D4C3DE;
+    border-radius: 10px;
+    font-size: 1.5em;
+    padding: 5% 0px;
+    margin: 20px auto;
+    margin-top: 10px;
+}
+.dataApi-chart{
+    width: 100%;
+}
+
+.dataApi-chart>ul{
+    clear: both;
+    list-style-type: none;
+    padding: 0px;
+    margin: 15px auto;
+    display: flex;
+    justify-content: center;
+}
+
+.dataApi-chart li{
+    margin: 0px 10px;
+    height: 200px;
+    display: flex;
+    width: 10%;
+    flex-wrap: wrap;
+    align-content: flex-end;
+    justify-content: center;
+}
+.dataApi-chart span.chart-col-num{
+    font-size: 0.8em;
+
+}
+
+.dataApi-chart div.chart-col-rate{
+    display: block;
+    width: 80%;
+    background-color: #D4C3DE;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    align-self: flex-end;
+    font-size: 0.6em;
+    height: 0px;
+    transition: height 2s;
+}
+.dataApi-chart div.chart-col-rate:hover{
+    background-color: #a393ac;
+}
+
+
+.dataApi-chart div.chart-col-name{
+    width: 100%;
+    display: block;
+    text-align: center;
+    
+    align-self: flex-end;
+    font-size: 0.8em;
+    margin-top: 10px;
+    font-weight: 700;
+}
+
+/*change버튼*/
+#changeMode{
+    width: 80px;    
+    font-size: 0.6em;
+    margin-left: 20px;
+    font-weight: 900;
+}
+/* 설문조사 부분 */
+.card{
+    margin-top: 30px;
+}
+
+.card-header{
+    position: relative;
+    text-align: center;
+    cursor: pointer;
+}
+.card-header>span{
+    position: absolute;
+    top: 10px; right: 10px;
+}
+.card-body{
+    display: none;
+}
+.card-col{
+    padding: 30px !important;
+}
+.card-text{
+    font-size: 0.9em;;
+}
+
+.card-col table{
+    width: 100%;
+}
+.card-col:first-child td{
+    width: 33%;
+    padding-bottom: 10px;
+}
+.card-col:nth-child(2) td{
+    width: 40%; height: 50px;
+}
+.card-col:nth-child(2) td>span{
+    font-size: 0.95em;
+    margin-right: 10px;
+}
+.card-col:nth-child(3) textarea{
+    width: 100%;
+    height: 100px;
+    resize: none;
+}
+.card-col:nth-child(3) input[type=submit]{
+    margin-top: 10px;
+    width: 100%;    
+}
+
+
+
+
+/* 설문조사 결과부분 */
+.result-wrap{
+    margin-bottom: 50px;
+}
+
+.result-pain-title{
+    width: 100%; height: 50px;
+    line-height: 50px;
+    font-size: 1.1em;
+    text-align: center;
+    font-weight: 700;
+    overflow: hidden;
+}
+.result-pain table{
+    width: 100%;
+}
+
+/*1번탭 증상명*/
+.result-pain table th{
+    font-weight: 700;
+    height: 30px;
+    text-align: center;
+    width: calc( 100% / 3);
+}
+
+/* 1번탭 % */
+.result-pain table div{
+    border: 1px solid #a393ac;
+    border-radius: 50px;
+    color: #a393ac;
+    text-align: center;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+    margin-bottom: 20px;
+}
+
+.result-pain table div.result-rate{
+    width: 50%;
+}
+.result-pain table div.result-rate-last{
+    width: 70%;
+}
+
+@media screen and (max-width: 992px){
+    .card-col:nth-of-type(2), .card-col:last-of-type{
+        border-top: 1px solid #D4C3DE;
+    }
+    .dataApi-today>div>div{
+        width: 60%;
+    }
+
+}
+
+@media screen and (min-width: 992px){
+    .card-col:nth-of-type(2), .card-col:last-of-type{
+        border-left: 1px solid #D4C3DE;
+    }
+}
+
+/* 2번탭 */
+#result-pain-date{
+    border: 1px solid #a393ac;
+    padding: 5%;
+    border-radius: 10px;
+    margin: 10px auto;
+}
+
+#result-pain-date>div{
+    text-align: center;
+}
+#result-pain-date>div>span{
+    font-size: 1.1em;
+    color: #a393ac;
+    font-weight: 900;
+}
+
+ul#vaccineChart{
+    list-style-type: none;
+    display: flex;
+    height: 100px;
+    padding: 0px; margin: 0px;
+
+}
+ul#vaccineChart>li{
+    display: flex;
+    width: 25%;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+ul#vaccineChart>li>div{
+    width: 60%; height: 0px;
+    background-color: #a393ac;
+    text-align: center;
+    color: #fff;
+    font-size: 0.9em;
+    transition: height 2s;
+    border-radius: 3px;
+}
+ul#vaccineChart>li span{
+    display: block;
+    width: 100%;
+    text-align: center;
+}
+
+
+ul#bubbleTap{
+    list-style-type: none;
+    width: 80%;
+    margin: 0 auto;
+    padding: 20px;
+    min-height: 300px;
+}
+ul#bubbleTap>li{
+    transition : transform 2s;
+}
+
+ul#bubbleTap>li:last-of-type{
+    text-align: center;
+}
+
+.bubble{
+    background-color: #D4C3DE;
+    border-radius: 10px;
+    padding: 10px 15px;
+    width: fit-content;
+    margin-bottom: 10px;
+    position: relative;
+    font-size: 0.9em;
+}
+.bubble>span{
+    position: absolute;
+    top: 10px; left: -10px;
+    color: #D4C3DE;
+}
+
+#moreBtn{
+    font-size: 2em;
+    color: #a393ac;
+}
+
+

@@ -2,6 +2,7 @@ package kr.co.iei.free.controller;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -11,7 +12,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import kr.co.iei.free.service.FreeService;
-import kr.co.iei.free.vo.FreeMain;
 import kr.co.iei.free.vo.FreeboardTable;
 
 /**
@@ -46,19 +46,18 @@ public class FreeServlet extends HttpServlet {
 		ArrayList<FreeboardTable> freeboard = new ArrayList<FreeboardTable>();	
 		
 		if(sort==1) {
-			
+			freeboard = service.selectFreeList1(reqPage, numPage, keyword);
 		}else if(sort==2) {
-			
+			freeboard = service.selectFreeList2(reqPage, numPage, keyword);
 		}else {
-			freeboard = service.selectFreeList(reqPage, numPage, keyword);			
+			freeboard = service.selectFreeList3(reqPage, numPage, keyword);			
 		}
-		FreeMain main = new FreeMain(sort,numPage,keyword);
 		String pageNavi = service.totalPage(reqPage, numPage);
+		
 		//4.결과처리
 		RequestDispatcher view = request.getRequestDispatcher("WEB-INF/views/free/freeBoard.jsp");
 		request.setAttribute("list", freeboard);
 		request.setAttribute("pageNavi", pageNavi);
-		request.setAttribute("main", main);
 		view.forward(request, response);
 	}
 

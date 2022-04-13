@@ -1,25 +1,49 @@
 package kr.co.iei.free.service;
 
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import common.JDBCTemplate;
 import kr.co.iei.free.dao.freeDao;
+import kr.co.iei.free.vo.Free;
+import kr.co.iei.free.vo.FreeView;
 import kr.co.iei.free.vo.FreeboardTable;
 
 public class FreeService {
 
-	public ArrayList<FreeboardTable> selectFreeList(int reqPage, int numPage, String keyword) {
+	public ArrayList<FreeboardTable> selectFreeList3(int reqPage, int numPage, String keyword) {
 		Connection conn = JDBCTemplate.getConnection();
 		freeDao dao = new freeDao();
 		//게시물 rownum범위 계산
 		int End = numPage * reqPage;
 		int Start = End - numPage +1;
-		ArrayList<FreeboardTable> list = dao.selectFreeBoardTable(conn,Start,End, keyword);
+		ArrayList<FreeboardTable> list = dao.selectFreeList3(conn,Start,End, keyword);
+		JDBCTemplate.close(conn);
+		return list;
+	}
+	public ArrayList<FreeboardTable> selectFreeList2(int reqPage, int numPage, String keyword) {
+		Connection conn = JDBCTemplate.getConnection();
+		freeDao dao = new freeDao();
+		//게시물 rownum범위 계산
+		int End = numPage * reqPage;
+		int Start = End - numPage +1;
+		ArrayList<FreeboardTable> list = dao.selectFreeList2(conn,Start,End, keyword);
 		JDBCTemplate.close(conn);
 		return list;
 	}
 
+	public ArrayList<FreeboardTable> selectFreeList1(int reqPage, int numPage, String keyword) {
+		Connection conn = JDBCTemplate.getConnection();
+		freeDao dao = new freeDao();
+		//게시물 rownum범위 계산
+		int End = numPage * reqPage;
+		int Start = End - numPage +1;
+		ArrayList<FreeboardTable> list = dao.selectFreeList1(conn,Start,End, keyword);
+		JDBCTemplate.close(conn);
+		return list;
+	}
 	public String totalPage(int reqPage, int numPage) {
 		Connection conn = JDBCTemplate.getConnection();
 		freeDao dao = new freeDao();
@@ -55,6 +79,56 @@ public class FreeService {
 		}else {
 			pageNavi += "<li class='page-item disabled'><button class='page-link'>&raquo</button></li>";			
 		}
+		JDBCTemplate.close(conn);
 		return pageNavi;
 	}
+
+	public int insertFree(Free f) {
+		Connection conn = JDBCTemplate.getConnection();
+		freeDao dao = new freeDao();
+		int result = dao.insertFree(conn, f);
+		if(result>0) {
+			JDBCTemplate.commit(conn);
+		}else {
+			JDBCTemplate.rollback(conn);
+		}
+		JDBCTemplate.close(conn);
+		return result;
+	}
+	public FreeView FreeView(int freeNo) {
+		// TODO Auto-generated method stub
+		Connection conn = JDBCTemplate.getConnection();
+		freeDao dao = new freeDao();
+		int result = dao.viewCountUpdate(conn,freeNo);
+		if(result>0) {
+			JDBCTemplate.commit(conn);
+		}else {
+			JDBCTemplate.rollback(conn);
+		}
+		
+		FreeView view = dao.freeView(conn, freeNo);
+		JDBCTemplate.close(conn);
+		return view;
+	}
+	public Free selectOneFree(int freeNo) {
+		Connection conn = JDBCTemplate.getConnection();
+		freeDao dao = new freeDao();
+		Free f = dao.selectOneFree(conn, freeNo);
+		JDBCTemplate.close(conn);
+		return f;
+	}
+	public int freeBoardUpdate(Free f) {
+		Connection conn = JDBCTemplate.getConnection();
+		freeDao dao = new freeDao();
+		int result = dao.freeBoardUpdate(conn, f);
+		if(result>0) {
+			JDBCTemplate.commit(conn);
+		}else {
+			JDBCTemplate.rollback(conn);
+		}
+		JDBCTemplate.close(conn);
+		return result;
+	}
+
+	
 }

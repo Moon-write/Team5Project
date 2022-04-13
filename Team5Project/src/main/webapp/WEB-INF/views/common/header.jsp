@@ -34,8 +34,8 @@
                   <a href="/logout.do"><span class="material-icons">logout</span>
                   <span class="member-content">로그아웃</span></a>
                 </div>
-              <div class="member-title" id="sendMsg" style="position:relative;">
-                <a href="#"><span class="material-icons">message</span>
+              <div class="member-title" id="sendMsg">
+                <a href="#" id="badgeThis" style="position:relative;"><span class="material-icons" >message</span>
                 <span class="member-content">쪽지</span></a>          	
               </div>
               <div class="member-title">
@@ -76,7 +76,7 @@
               <input type="password" name="memberPw" class="form-control" id="memberPw" placeholder="비밀번호입력">
             </div>
             <div class="input-group">
-              <a href="#">Forgot username/password?</a>
+              <a href="/findId.do">Forgot username/password?</a>
             </div>
           </div>
           <div class="modal-footer">
@@ -127,9 +127,9 @@ $.ajax({
   data: { memberId : $("#memId").val() },
   success: function(data){
     if(data!=0){
-      const badge = $("<span class='badge rounded-pill bg-danger' style='position:absolute; top:20px; right:23px;'></span>");
+      const badge = $("<span class='badge rounded-pill bg-danger' style='position:absolute; top:0px; left:15px;'></span>");
       badge.text(data);				
-      badge.appendTo("#sendMsg");				
+      badge.appendTo("#badgeThis");				
     }
   }
 })

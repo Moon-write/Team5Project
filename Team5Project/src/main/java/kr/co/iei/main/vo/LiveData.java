@@ -1,20 +1,18 @@
-package kr.co.iei.dataApi.vo;
+package kr.co.iei.main.vo;
 
 public class LiveData {
 	private String checkDate; // 날짜
-	private String checkCount; // 확진자수 
-	private String checkDeath; // 사망자수
+	private String checkCount; // 확진자수, 사망자수 어떤걸 담을지는 안정해짐
 	
 	public LiveData() {
 		super();
 		// TODO Auto-generated constructor stub
 	}	
 	
-	public LiveData(String checkDate, String checkCount, String checkDeath) {
+	public LiveData(String checkDate, String checkCount) {
 		super();
 		this.checkDate = checkDate;
 		this.checkCount = checkCount;
-		this.checkDeath = checkDeath;
 	}
 
 	public String getCheckDate() {
@@ -29,10 +27,4 @@ public class LiveData {
 	public void setCheckCount(String checkCount) {
 		this.checkCount = checkCount;
 	}
-	public String getCheckDeath() {
-		return checkDeath;
-	}
-	public void setCheckDeath(String checkDeath) {
-		this.checkDeath = checkDeath;
-	}	
 }

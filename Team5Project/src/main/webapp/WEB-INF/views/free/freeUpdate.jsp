@@ -1,11 +1,14 @@
-<%@page import="java.time.LocalDate"%>
+<%@page import="kr.co.iei.free.vo.Free"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    <%
+    	Free f = (Free)request.getAttribute("free");
+    %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>자유게시판 글 작성</title>
+<title>Insert title here</title>
 </head>
 <style>
 	.div-content td, .div-content th{
@@ -35,13 +38,13 @@
 	<script src="/summernote/lang/summernote-ko-KR.js"></script>
 	<link rel="stylesheet" href="/summernote/summernote-lite.css">
 	<div class="div-content">
-        <div class="content-title">자유게시판 글 작성</div>
-		<form action="/freeInsert.do" method="post">
-			<table class="table" id="freeInsert">
+        <div class="content-title">자유게시판 글 수정</div>
+		<form action="/freeBoardUpdate.do" method="post">
+			<table class="table" id="freeUpdate">
 				<tr class="tr">
 					<th class="table-success">제목</th>
 					<td colspan="3">
-						<input type="text" name="Title" class="form-control">
+						<input type="text" name="Title" class="form-control" value="<%=f.getFree_Title() %>">
 					</td>
 				</tr>
 				<tr class="tr tr-2">
@@ -51,13 +54,14 @@
 						<%=m.getMemberNickname() %>
 					</td>
 					<th class="table-success">작성 일자</th>
-					<td><%=LocalDate.now() %></td>
+					<td><%=f.getFree_Date() %></td>
 				</tr>
 				<tr class="tr">
-					<td colspan="4" style="text-align:left;"><textarea id="Content" name="Content" class="input-form"></textarea></td>
+					<td colspan="4" style="text-align:left;"><textarea id="Content" name="Content" class="input-form"><%=f.getFree_Content() %></textarea></td>
 				</tr>
+				<input type="hidden" name="No" value="<%=f.getFree_No() %>">
 				<tr class="tr">
-					<td colspan="4"><button type="submit" class="btn btn-primary">글 등록</button></td>
+					<td colspan="4"><button type="submit" class="btn btn-primary">수정 완료</button></td>
 				</tr>
 			</table>
 		</form>
