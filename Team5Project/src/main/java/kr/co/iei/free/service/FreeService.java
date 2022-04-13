@@ -3,10 +3,12 @@ package kr.co.iei.free.service;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import common.JDBCTemplate;
 import kr.co.iei.free.dao.freeDao;
 import kr.co.iei.free.vo.Free;
+import kr.co.iei.free.vo.FreeView;
 import kr.co.iei.free.vo.FreeboardTable;
 
 public class FreeService {
@@ -77,6 +79,7 @@ public class FreeService {
 		}else {
 			pageNavi += "<li class='page-item disabled'><button class='page-link'>&raquo</button></li>";			
 		}
+		JDBCTemplate.close(conn);
 		return pageNavi;
 	}
 
@@ -84,18 +87,46 @@ public class FreeService {
 		Connection conn = JDBCTemplate.getConnection();
 		freeDao dao = new freeDao();
 		int result = dao.insertFree(conn, f);
-		try {
-			if(result > 0) {
-				conn.commit();
-			}else {
-				conn.rollback();
-			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}finally {
-			JDBCTemplate.close(conn);
+		if(result>0) {
+			JDBCTemplate.commit(conn);
+		}else {
+			JDBCTemplate.rollback(conn);
 		}
+		JDBCTemplate.close(conn);
+		return result;
+	}
+	public FreeView FreeView(int freeNo) {
+		// TODO Auto-generated method stub
+		Connection conn = JDBCTemplate.getConnection();
+		freeDao dao = new freeDao();
+		int result = dao.viewCountUpdate(conn,freeNo);
+		if(result>0) {
+			JDBCTemplate.commit(conn);
+		}else {
+			JDBCTemplate.rollback(conn);
+		}
+		
+		FreeView view = dao.freeView(conn, freeNo);
+		JDBCTemplate.close(conn);
+		return view;
+	}
+	public Free selectOneFree(int freeNo) {
+		Connection conn = JDBCTemplate.getConnection();
+		freeDao dao = new freeDao();
+		Free f = dao.selectOneFree(conn, freeNo);
+		JDBCTemplate.close(conn);
+		return f;
+	}
+	public int freeBoardUpdate(Free f) {
+		Connection conn = JDBCTemplate.getConnection();
+		freeDao dao = new freeDao();
+		int result = dao.freeBoardUpdate(conn, f);
+		if(result>0) {
+			JDBCTemplate.commit(conn);
+		}else {
+			JDBCTemplate.rollback(conn);
+		}
+		JDBCTemplate.close(conn);
 		return result;
 	}
 

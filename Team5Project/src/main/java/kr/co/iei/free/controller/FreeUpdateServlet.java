@@ -10,19 +10,19 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import kr.co.iei.free.service.FreeService;
-import kr.co.iei.free.vo.FreeView;
+import kr.co.iei.free.vo.Free;
 
 /**
- * Servlet implementation class FreeViewServlet
+ * Servlet implementation class FreeUpdateServlet
  */
-@WebServlet(name = "freeView", urlPatterns = { "/freeView.do" })
-public class FreeViewServlet extends HttpServlet {
+@WebServlet(name = "FreeUpdate", urlPatterns = { "/freeUpdate.do" })
+public class FreeUpdateServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public FreeViewServlet() {
+    public FreeUpdateServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -31,15 +31,15 @@ public class FreeViewServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		request.setCharacterEncoding("utf-8");
 		
-		int FreeNo = Integer.parseInt(request.getParameter("FreeNo"));
-		FreeService service = new FreeService();
-		FreeView FV = service.FreeView(FreeNo);
+		int FreeNo = Integer.parseInt(request.getParameter("freeno"));
 		
-		RequestDispatcher view = request.getRequestDispatcher("WEB-INF/views/free/freeView.jsp");
-		request.setAttribute("FV", FV);
+		FreeService service = new FreeService();
+		Free f = service.selectOneFree(FreeNo);
+		
+		RequestDispatcher view = request.getRequestDispatcher("WEB-INF/views/free/freeUpdate.jsp");
+		request.setAttribute("free", f);
 		view.forward(request, response);
 		
 	}
