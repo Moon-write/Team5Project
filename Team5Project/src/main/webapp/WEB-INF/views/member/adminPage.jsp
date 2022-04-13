@@ -31,7 +31,7 @@
 			</tr>
 			<%for(Member member : list){ %>
 				<tr class="">
-					<td><input type="checkbox" class="chk"></td>
+					<td><input type="checkbox" class="chk form-check-input"></td>
 					<td><%=member.getMemberNo() %></td>
 					<td><%=member.getMemberId() %></td> 
 					<td><%=member.getMemberName() %></td>
@@ -63,6 +63,9 @@
 					</td>
 					<td>
 						<button class="btn btn-primary changeLevel">등급변경</button>
+					</td>
+					<td>
+						<button class="btn btn-danger changeLevel">추방!!</button>
 					</td>
 				</tr>
 			<%} %>

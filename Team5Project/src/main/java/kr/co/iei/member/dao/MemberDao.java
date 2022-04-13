@@ -189,4 +189,26 @@ public class MemberDao {
 		}
 		return result;
 	}
+
+	public String findId(Connection conn, String email) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		String id = null;
+		String query = "select member_id from member_tbl where email=?";
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, email);
+			rset = pstmt.executeQuery();
+			if(rset.next()) {
+				id = rset.getString("member_id");
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			JDBCTemplate.close(pstmt);
+			JDBCTemplate.close(rset);
+		}
+		return id;
+	}
 }

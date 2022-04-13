@@ -76,7 +76,7 @@
               <input type="password" name="memberPw" class="form-control" id="memberPw" placeholder="비밀번호입력">
             </div>
             <div class="input-group">
-              <a href="#">Forgot username/password?</a>
+              <a href="/findId.do">Forgot username/password?</a>
             </div>
           </div>
           <div class="modal-footer">

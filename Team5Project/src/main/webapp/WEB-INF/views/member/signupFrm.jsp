@@ -91,8 +91,19 @@
 					</label><br>
 				</div>
 			</div>
+			
 			<div class="input-wrap">
-				<button type="submit" class="btn btn-primary" id="signupButton">Sign Up</button>
+				<label for="memberName">이메일 인증</label>
+				<input type="text" id="emailAuth" class="form-control form-control-lg">
+				<button type="button" class="btn btn-primary" onclick="sendMail();">인증메일 전송</button>
+				<div id="auth" style="display:none;">
+				<input type="text" id="authCode" placeholder="인증코드입력" class="form-control form-control-lg">
+				<button type="button" class="btn btn-primary" id="authBtn">인증하기</button>
+				<span id="timeZone"></span>
+				<span id="authMsg"></span>
+			</div>
+			<div class="input-wrap">
+				<button type="submit" class="btn btn-primary" id="signupButton" disabled>Sign Up</button>
 			</div>
 		</form>
 	</div>
@@ -137,6 +148,71 @@
 	        }
 	    });
 		
+		//이메일 인증관련 Script
+		function sendMail(){
+			const email = $("#emailAuth").val();
+			console.log(email);
+			$.ajax({
+				url : "/sendMail2.do",
+				data : {email:email},
+				type : "post",
+				success : function(data){
+					mailCode = data;
+					$("#auth").slideDown();
+					authTime();
+				},
+				error : function(){
+					console.log("에러");
+				}
+			});
+		}
+		let intervalId; // intervalId 함수 쓰기위해 만듬
+		function authTime(){
+			$("#timeZone").html("<span id='min'>3</span> : <span id='sec'>00</span>");//3(분):00(초) 넣는 코드
+			intervalId = window.setInterval(function(){
+				timeCount();//timeCount();함수 작동
+			},1000); //setintervalId 라는 함수가 1초마다 작동하게 하는것 
+		}
+		function timeCount(){
+			const min = Number($("#min").text());	//숫자상태로 변환
+			const sec = $("#sec").text();			//문자상태로 변환
+			if(sec == "00"){
+				if(min == 0){		 // 분이 0분이면
+					mailCode = null; // mailCode 파괴
+					clearInterval(intervalId); // 반복함수 종료
+				}else{						//0분이 아니면
+					$("#min").text(min-1);	//숫자로 변환된 분을 1빼주고
+					$("#sec").text(59);		//초를 59로 바꾼다
+				}
+			}else{
+				const newSec = Number(sec)-1;
+				if(newSec<10){
+					$("#sec").text("0"+newSec);
+				}else{
+					$("#sec").text(newSec);
+				}
+			}
+		}
+		$("#authBtn").on("click",function(){
+			const msg = $("#authMsg");
+			if(mailCode == null){
+				msg.text("인증시간이 만료되었습니다");
+				msg.css("color","red");
+			}else{
+				if($("#authCode").val() == mailCode){
+					msg.text("인증성공");
+					msg.css("color","blue");
+					clearInterval(intervalId);
+					$("#timeZone").hide();
+					//인증성공 했을때만 Sign up버튼 활성화
+					$("#signupButton").attr("disabled",false);
+
+				}else{
+					msg.text("인증코드를 확인하세요");
+					msg.css("color","red");
+				}
+			}
+		});
 	</script>
 	<%@include file ="/WEB-INF/views/common/footer.jsp" %>
 </body>
