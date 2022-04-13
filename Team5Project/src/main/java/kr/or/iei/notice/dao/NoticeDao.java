@@ -316,8 +316,65 @@ public class NoticeDao {
 		}
 		return result;
 	}
-	
+	//좋아요를 취소하는 dao메소드
+	public int cancellike(Connection conn, int noticeNo, String memberId) {
+		PreparedStatement pstmt = null;
+		int result = 0;
+		String query = "DELETE FROM noticelike WHERE like_id = ? and like_no = ?";
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, memberId);
+			pstmt.setInt(2, noticeNo);
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			JDBCTemplate.close(pstmt);
+		}
+		return result;
+	}
+	//좋아요를 클릭하는 dao메소드
+	public int pluslike(Connection conn, int noticeNo, String memberId) {
+		PreparedStatement pstmt = null;
+		int result = 0;
+		String query = "INSERT INTO noticelike VALUES(?,?)";
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, memberId);
+			pstmt.setInt(2, noticeNo);
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			JDBCTemplate.close(pstmt);
+		}
+		return result;
+	}
 
+	public int countlike(Connection conn, int noticeNo) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		int result = 0;
+		String query = "select count(*) as cnt from noticelike where like_no = ?";
+		try {
+			pstmt = conn.prepareStatement(query);
+			
+			pstmt.setInt(1, noticeNo);
+			rset = pstmt.executeQuery();
+			if(rset.next()) {
+				result = rset.getInt("cnt");
+			}
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			JDBCTemplate.close(pstmt);
+		}
+		return result;
+	}
 
 
 }

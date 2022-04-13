@@ -56,6 +56,14 @@
 		height: 30px;
 		width: 80px;
 	}
+	#search-div{
+    	margin: 0 auto;
+   		text-align: center;
+    	padding: 0px 0px;
+	}
+	#select:hover{
+		cursor: pointer;
+	}
 }
 </style>
 </head>
@@ -68,6 +76,23 @@
 			<a class="btn btn-dark" href="/noticeWriteFrm.do" style="margin-bottom: 10px; font-size: 18px; line-height: 18px">글쓰기</a>
 		</div>
 		<%} %>
+		<div class="searchthing">
+			<div class="div-content" id="search-div">
+				<form  action="/searchNotice.do?reqPage=1" class="table tabel-hover" name="search" method="post">
+					<table class="table tabel-hover">
+						<tr>
+							<td><select class="form-control" name="select" id="select">
+									<option value="noticeTitle">제목</option>
+									<option value="noticeWriter">작성자</option>
+							</select></td>
+							<td><input type="text" class="form-control"	placeholder="검색어 입력" name="value" maxlength="500px"></td>
+							<td><button type="submit" class="btn btn-primary" id="search">검색</button></td>
+						</tr>
+	
+					</table>
+				</form>
+			</div>
+		</div>
 		<table class="table tabel-hover notice-tbl">
 			<tr class="table-success">
 				<th>번호</th><th>제목</th><th>작성자</th><th>작성일</th><th>조회수</th><th>추천</th>

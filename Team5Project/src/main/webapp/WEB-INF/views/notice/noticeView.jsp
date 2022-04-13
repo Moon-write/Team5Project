@@ -139,6 +139,9 @@
 		background-color: #fff;
 		padding: 2px;
 	}
+	.material-icons{
+		font-size: 15px;
+	}
 </style>
 </head>
 <body>
@@ -154,15 +157,17 @@
 				<th class="table-light">조회수</th>
 				<td><%=n.getReadCount() %></td>
 				<th class="table-light">추천</th>
-				<td>
+				<td class="goodgood">
 					<%if(m != null) {%>
-						<%if(n.getClickLike() == 1) {%>
-							<a class="material-icons" href="/clicklike.do?noticeNo=<%=n.getNoticeNo() %>">thumb_up</a>
+						<input type="hidden" name="ncWriter" id="memberId" value="<%=m.getMemberId() %>">
+						<input type="hidden" name="noticeRef" id="noticeNo"value="<%=n.getNoticeNo() %>">
+						<%if(n.getClickLike() == 1) {%>						
+						<span class="material-icons" id="good">thumb_up</span>
 						<%}else{ %>
-							<span class="material-icons">thumb_up_off_alt</span>
+						<span class="material-icons" id="good">thumb_up_off_alt</span>
 						<%} %>
 					<%} %>
-						<%=n.getLikeNumber() %>
+						<span id="likeCount"><%=n.getLikeNumber() %></span>
 				</td>
 			</tr>
 			<tr class="table-success">
@@ -304,7 +309,7 @@
 				$(obj).attr("onclick","modifyComplete(this,'"+ncNo+"','"+noticeNo+"')");
 				//삭제 -> 수정취소
 				$(obj).next().text("수정취소");
-				$(obj).next().attr("onclik","modifyCancel(this,'"+ncNo+"','"+noticeNo+"')");
+				$(obj).next().attr("onclick","modifyCancel(this,'"+ncNo+"','"+noticeNo+"')");
 				//답글달기버튼 숨김
 				$(obj).next().next().hide();
 			}
@@ -339,11 +344,47 @@
 					location.href="/deleteComment.do?ncNo="+ncNo+"&noticeNo="+noticeNo;
 				}
 			}
-			function clicklike(noticeNo){
-				if(confirm("이 글을 추천하시겠습니까?")){
-					location.href="/clicklike.do?noticeNo="+noticeNo;
+			$("#good").on("click",function(){
+				let status = 1;
+				if($(this).text() == "thumb_up"){
+					//현재 좋아요가 눌러져 있는경우 -> 좋아요를 취소하겠다
+					status = 1;
+				}else{
+					//현재 좋아요가 눌러져있지 않은경우 -> 좋아요를 누르겠다.
+					status = 2;
 				}
-			}
+				$.ajax({
+	                url : "/clicklike.do",
+	                type : "get",
+	                data : {
+	                	noticeNo : $("#noticeNo").val(),
+	                	memberId : $("#memberId").val(),
+	                	status : status
+	                },	                
+	                success : function(data){
+	                	
+	                	if(data == -1){
+	                		
+	                	}else{
+		    				if($("#good").text() == "thumb_up"){
+		    					$("#good").text("thumb_up_off_alt");
+		    				}else{
+		    					$("#good").text("thumb_up");
+		    				}	       
+		    				$("#likeCount").text(data);
+	                	}
+	                	/*
+
+	                	*/
+	                },
+	                error : function(){
+	                    console.log("에러");
+	                },
+	                complete : function(){
+	               
+	                }
+	            });
+			});
 		</script>
 	</div>
 	<%@include file="/WEB-INF/views/common/footer.jsp" %>

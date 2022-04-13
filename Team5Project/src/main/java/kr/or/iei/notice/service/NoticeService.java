@@ -193,20 +193,36 @@ public class NoticeService {
 		return result;
 	}
 
-	public Notice clicklike(int noticeNo, String memberId) {
+	public int clicklike(int noticeNo, String memberId, int status) {
 		Connection conn = JDBCTemplate.getConnection();
 		NoticeDao dao = new NoticeDao();
-		int result = dao.clicklike(conn,noticeNo,memberId);
+		int result = 0;
+		if(status == 1) {
+			//좋아요를 취소하는 dao메소드 호출
+			result = dao.cancellike(conn,noticeNo,memberId);
+		}else if(status==2) {
+			//좋아요를 누르는 dao 메소드 호출
+			result = dao.pluslike(conn,noticeNo,memberId);
+		}
+		
 		if(result>0) {
 			JDBCTemplate.commit(conn);
+			//현재 해당 공지사항의 좋아요 갯수 조회
+			result = dao.countlike(conn,noticeNo);
+		
 		}else {
 			JDBCTemplate.rollback(conn);
-			JDBCTemplate.close(conn);
-			return null;
-		}
-		Notice n = dao.selectOneNotice(conn,noticeNo,memberId);
+			result = -1;
+		}		
 		JDBCTemplate.close(conn);
-		return n;
+		return result;
 	}
+
+	public NoticePageData searchNotice(int reqPage, String select, String value) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
 
 }
