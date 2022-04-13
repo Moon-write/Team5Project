@@ -211,4 +211,59 @@ public class MemberDao {
 		}
 		return id;
 	}
+
+//	public String findPw(Connection conn, String memberName, String memberId, String memberEmail) {
+//		PreparedStatement pstmt = null;
+//		ResultSet rset = null;
+//		String pw = null;
+//		String query = "select member_pw from member_tbl where member_Name=? and member_id=? and email=?";
+//		try {
+//			pstmt = conn.prepareStatement(query);
+//			pstmt.setString(1, memberName);
+//			pstmt.setString(2, memberId);
+//			pstmt.setString(3, memberEmail);
+//			rset = pstmt.executeQuery();
+//			if(rset.next()) {
+//				pw = rset.getString("member_pw");
+//			}
+//		} catch (SQLException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}finally {
+//			JDBCTemplate.close(pstmt);
+//			JDBCTemplate.close(rset);
+//		}
+//		return pw;
+//	}
+
+	public Member findPw(Connection conn, Member member) {
+		//System.out.println("dao에서 받은 member : "+member); 이상없음
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		Member m = null;
+		String query = "select * from member_tbl where member_Name=? and member_id=? and email=?";
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, member.getMemberName());
+			pstmt.setString(2, member.getMemberId());
+			pstmt.setString(3, member.getEmail());
+			rset = pstmt.executeQuery();
+			if(rset.next()) {
+				m = new Member();
+				m.setMemberId(rset.getString("member_id"));
+				m.setMemberPw(rset.getString("member_pw"));
+				m.setMemberName(rset.getString("member_name"));
+				m.setEmail(rset.getString("email"));
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			JDBCTemplate.close(pstmt);
+			JDBCTemplate.close(rset);
+		}
+		//System.out.println("dao에서 보내기 직전의 m : "+m); 문제없음
+		return m;
+	}
+	
 }

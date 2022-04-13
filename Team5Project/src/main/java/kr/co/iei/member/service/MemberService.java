@@ -123,4 +123,34 @@ public class MemberService {
 		JDBCTemplate.close(conn);
 		return memberId;
 	}
+
+//	public String findPw(String memberName, String memberId, String memberEmail) {
+//		Connection conn = JDBCTemplate.getConnection();
+//		MemberDao dao = new MemberDao();
+//		String memberPw = dao.findPw(conn, memberName, memberId, memberEmail);
+//		if(memberPw == null) {
+//			JDBCTemplate.rollback(conn);
+//		}else {
+//			JDBCTemplate.commit(conn);
+//		}
+//		JDBCTemplate.close(conn);
+//		System.out.println(memberPw);
+//		return memberPw;
+//	}
+
+	public Member findPw(Member member) {
+		//System.out.println("서블릿에서보내고 서비스에서 받은 member "+member);
+		Connection conn = JDBCTemplate.getConnection();
+		MemberDao dao = new MemberDao();
+		Member m = dao.findPw(conn, member);
+//		System.out.println("DAO에서 뽑아오고 서비스에서 받은 m "+m);
+		//System.out.println("dao로부터 서비스에서 받은 m : "+m);
+		if(m == null) {
+			JDBCTemplate.rollback(conn);
+		}else {
+			JDBCTemplate.commit(conn);
+		}
+		JDBCTemplate.close(conn);
+		return m;
+	}
 }
