@@ -8,6 +8,7 @@ import java.util.HashMap;
 import common.JDBCTemplate;
 import kr.co.iei.free.dao.freeDao;
 import kr.co.iei.free.vo.Free;
+import kr.co.iei.free.vo.FreeComment;
 import kr.co.iei.free.vo.FreeView;
 import kr.co.iei.free.vo.FreeboardTable;
 
@@ -121,6 +122,51 @@ public class FreeService {
 		Connection conn = JDBCTemplate.getConnection();
 		freeDao dao = new freeDao();
 		int result = dao.freeBoardUpdate(conn, f);
+		if(result>0) {
+			JDBCTemplate.commit(conn);
+		}else {
+			JDBCTemplate.rollback(conn);
+		}
+		JDBCTemplate.close(conn);
+		return result;
+	}
+	public int insertComment(FreeComment fc) {
+		Connection conn = JDBCTemplate.getConnection();
+		freeDao dao = new freeDao();
+		int result = dao.insertComment(conn, fc);
+		if(result>0) {
+			JDBCTemplate.commit(conn);
+		}else {
+			JDBCTemplate.rollback(conn);
+		}
+		JDBCTemplate.close(conn);
+		return result;
+	}
+	public ArrayList<FreeComment> FreeCommentSearch(int freeNo) {
+		Connection conn = JDBCTemplate.getConnection();
+		freeDao dao = new freeDao();
+		ArrayList<FreeComment> cmlist = dao.FreeCommentSearch(conn, freeNo);
+		JDBCTemplate.close(conn);
+		return cmlist;
+	}
+	public ArrayList<FreeComment> FreeRecommentSearch(int freeNo) {
+		Connection conn = JDBCTemplate.getConnection();
+		freeDao dao = new freeDao();
+		ArrayList<FreeComment> recmlist = dao.FreeRecommentSearch(conn, freeNo);
+		JDBCTemplate.close(conn);
+		return recmlist;
+	}
+	public HashMap<Integer, Boolean> addLikecheck(int no) {
+		Connection conn = JDBCTemplate.getConnection();
+		freeDao dao = new freeDao();
+		HashMap<Integer, Boolean> likecheck = dao.addLikecheck(conn, no);
+		JDBCTemplate.close(conn);
+		return likecheck;
+	}
+	public int InsertLike(int num1, int num2) {
+		Connection conn = JDBCTemplate.getConnection();
+		freeDao dao = new freeDao();
+		int result = dao.InsertLike(conn,num1,num2);
 		if(result>0) {
 			JDBCTemplate.commit(conn);
 		}else {

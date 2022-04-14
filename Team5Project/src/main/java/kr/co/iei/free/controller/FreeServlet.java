@@ -10,9 +10,11 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import kr.co.iei.free.service.FreeService;
 import kr.co.iei.free.vo.FreeboardTable;
+import kr.co.iei.member.vo.Member;
 
 /**
  * Servlet implementation class FreeServlet
@@ -40,7 +42,7 @@ public class FreeServlet extends HttpServlet {
 		int numPage = Integer.parseInt(request.getParameter("numPage"));
 		String keyword = request.getParameter("keyword");
 		int sort = Integer.parseInt(request.getParameter("Sort"));
-		//int sort = Integer.parseInt(request.getParameter("Sort"));
+		HttpSession logincheck = request.getSession(false);
 		//3.비지니스로직
 		FreeService service = new FreeService();
 		ArrayList<FreeboardTable> freeboard = new ArrayList<FreeboardTable>();	
@@ -52,12 +54,20 @@ public class FreeServlet extends HttpServlet {
 		}else {
 			freeboard = service.selectFreeList3(reqPage, numPage, keyword);			
 		}
+		HashMap<Integer, Boolean> likecheck = new HashMap<Integer, Boolean>();
 		String pageNavi = service.totalPage(reqPage, numPage);
 		
+		Member m = (Member)logincheck.getAttribute("m");
+		if(m!=null) {
+			int no = m.getMemberNo();
+			likecheck = service.addLikecheck(no);			
+		}
+		//System.out.println(likecheck);
 		//4.결과처리
 		RequestDispatcher view = request.getRequestDispatcher("WEB-INF/views/free/freeBoard.jsp");
 		request.setAttribute("list", freeboard);
 		request.setAttribute("pageNavi", pageNavi);
+		request.setAttribute("likecheck", likecheck);
 		view.forward(request, response);
 	}
 

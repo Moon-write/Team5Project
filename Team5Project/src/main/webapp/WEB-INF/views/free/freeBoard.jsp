@@ -7,6 +7,7 @@
     	ArrayList<FreeboardTable> list = (ArrayList<FreeboardTable>)request.getAttribute("list");
     	int reqPage = Integer.parseInt(request.getParameter("reqPage"));
     	String pageNavi = (String)request.getAttribute("pageNavi");
+    	HashMap<Integer, Boolean> likecheck = (HashMap<Integer, Boolean>)request.getAttribute("likecheck");
     %>
 <!DOCTYPE html>
 <html>
@@ -77,17 +78,17 @@
 	}
 	.icon div{
 		float:left;
-		width:1em;
 		margin:0 auto;
-		padding-left:20px;
 	}
 	.icon div:first-child{
+		width:2em;
 		margin-left: 2em;
-		margin-right:0.5em;
 	}
 	.icon div:first-child>span{
 		padding-top:2px;
-		
+	}
+	.icon div:ntn-child(2){
+		width:1em;
 	}
 </style>
 <body>
@@ -156,8 +157,11 @@
 		      </td>
 		      <td class="icon">
 		      	<div>
-			      	<span class="material-icons" style="display:none;" onclick="unliked()">thumb_up</span>
-			      	<span class="material-icons" onclick="liked()">thumb_up_off_alt</span>      	
+		      		<%if(m!=null&&likecheck.containsKey(fbt.getNo())){ %>
+					    <span class="material-icons" onclick="unliked()">thumb_up</span>
+			      	<%}else { %>
+			      		<span class="material-icons" onclick="liked('<%=m!=null?m.getMemberNo():m%>','<%=fbt.getNo()%>')">thumb_up_off_alt</span>      	
+			      	<%}%>
 		      	</div>
 		      	<div><%=fbt.getLikeCount() %></div>
 		      </td>
@@ -214,9 +218,21 @@
 		function unliked(){
 			
 		}
-		function liked(){
+		function liked(m,f){
+			console.log(m);
 			if(m!=null){
-				
+				console.log("sddd");
+				$.ajax({
+					type:"get",
+					url:"/freeInsertLike.do",
+					data:{num1:m, num2:f},
+					success:function(data){
+						console.log("전송성공");
+					},
+					erorr:function(){
+						console.log("전송실패");
+					}
+				})
 			}else{
 				$("#login-btn").trigger("click");
 			}
