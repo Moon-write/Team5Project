@@ -158,7 +158,12 @@
 	<%@include file="/WEB-INF/views/common/header.jsp" %>
 	<div class="div-content">
 		<div class="content-title" id="content">공지사항 작성</div>
+		
 		<table class="table tabel-hover" id="noticeView">
+			<tr class="table-success">
+				<th class="table-light">제목</th>
+				<td colspan="7"><%=n.getNoticeTitle() %></td>
+			</tr>
 			<tr class="table-success">
 				<th class="table-light">작성자</th>
 				<td><%=n.getNoticeWriter() %></td>

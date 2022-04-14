@@ -59,6 +59,7 @@
 					<td colspan="4" style="text-align: left;"><textarea id="noticeContent" name="noticeContent" class="form-control"></textarea></td>
 				</tr>
 				<tr>
+					<td><input type="hidden" name="topNotice" id="noticeNo" value="<%=n.getNoticeNo() %>"></td>
 					<td id="top_fixed" ><input type="checkbox" class="form-check-input" id="top" name="top" value="top">상단에 고정하기</td>
 					<td colspan="4" id="submitbutton"><button type="submit" class="btn btn-primary">공지사항등록</button></td>
 				</tr>
@@ -91,40 +92,7 @@
 					}
 				});
 			}
-			$('#top').click(function(){
-				var checked = $('#top').is(':checked');
-				if(checked){
-					$('input:checkbox').prop('checked',true);
-				}else{
-					$('input:checkbox').prop('checked',false);
-				}
-				$.ajax({
-	                url : "/topFixed.do",
-	                type : "get",
-	                data : {
-	                	checked : checked
-	                },	                
-	                success : function(data){
-	                	if(data == -1){
-	                		
-	                	}else{
-	                		if(checked){
-	        					$('input:checkbox').prop('checked',true);
-		    					confirm("공지글 옵션이 선택되었습니다.");
-		    				}else{
-		    					$('input:checkbox').prop('checked',false);
-		    					confirm("공지글 옵션이 취소되었습니다.");
-		    				}	       
-	                	}
-	                },
-	                error : function(){
-	                    console.log("에러");
-	                },
-	                complete : function(){
-	                	
-	                }
-	            });
-			});
+
 		</script>
 	<%@include file="/WEB-INF/views/common/footer.jsp" %>
 </body>

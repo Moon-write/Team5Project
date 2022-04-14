@@ -25,8 +25,10 @@ public class NoticeService {
 		int end = reqPage * numPerPage;
 		int start = end - numPerPage + 1;
 		ArrayList<Notice> list = dao.selectNoticeList(conn,memberId,start,end);
-		System.out.println(fixedList.size());
-		System.out.println(list.size());
+		ArrayList<Notice> list1 = new ArrayList<Notice>();
+		//list를 합치는 것
+		list1.addAll(fixedList);
+		list1.addAll(list);
 		//전체 페이지 계산 전 게시물 수 세기
 		int totalCount = dao.totalNoticeCount(conn);
 		//전체 페이지 수(나머지 있으면 하나 추가)
@@ -77,7 +79,8 @@ public class NoticeService {
 			pageNav += "</a></li>";
 		}
 		pageNav += "</ul>";
-		NoticePageData npd = new NoticePageData(list, pageNav);
+		//합쳐진 list를 주기위해서 list1
+		NoticePageData npd = new NoticePageData(list1, pageNav);
 		JDBCTemplate.close(conn);
 		return npd;
 	}

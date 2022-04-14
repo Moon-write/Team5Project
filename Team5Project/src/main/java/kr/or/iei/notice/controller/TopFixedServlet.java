@@ -16,14 +16,14 @@ import kr.or.iei.notice.vo.NoticeViewData;
 /**
  * Servlet implementation class ThumbsUpServlet
  */
-@WebServlet(name = "ThumbsUp", urlPatterns = { "/thumbsUp.do" })
-public class ThumbsUpServlet extends HttpServlet {
+@WebServlet(name = "TopFixed", urlPatterns = { "/topFixed.do" })
+public class TopFixedServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public ThumbsUpServlet() {
+    public TopFixedServlet() {
         super();
         // TODO Auto-generated constructor stub
     }

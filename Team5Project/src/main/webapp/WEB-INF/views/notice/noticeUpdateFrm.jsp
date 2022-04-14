@@ -60,7 +60,7 @@
 				</tr>
 				<tr class="table-success">
 					<th class="table-light">내용</th>
-					<td><textarea class="form-control" name="noticeContent"><%=n.getNoticeContent() %></textarea></td>
+					<td><textarea class="form-control" name="noticeContent" id="noticeContent" style="height: 400px;"><%=n.getNoticeContent() %></textarea></td>
 				</tr>
 				<tr class="table-success">
 					<th class="modifybtn" colspan="2"><button class="btn btn-dark" id="modifybtn">수정 완료</button></th>
@@ -68,6 +68,31 @@
 			</table>
 		</form>
 		<script>
+			$("#noticeContent").summernote({
+				height:400,
+				lang:"ko-KR",
+				callbacks:{
+					onImageUpload : function(files){
+						uploadImage(files[0],this);
+					}
+				}
+			});
+			function uploadImage(file,editor){
+				//FormData객체 생성
+				const form = new FormData();
+				form.append("file",file);
+				$.ajax({
+					url: "/uploadImage.do",
+					type: "post",
+					data: form,
+					processData: false,
+					contentType: false,
+					success: function(data){
+						//결과로 받은 이미지 파일 경로를 에디터에 추가
+						$(editor).summernote("insertImage",data);
+					}
+				});
+			}
 			$("#fileDelBtn").on("click",function(){
 				$(".delFile").hide();
 				$(this).next().show();

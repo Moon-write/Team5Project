@@ -11,7 +11,7 @@ import kr.or.iei.notice.vo.Notice;
 import kr.or.iei.notice.vo.NoticeComment;
 
 public class NoticeDao {
-
+	//겹치지 않는 고정사항
 	public ArrayList<Notice> selectNoticeList(Connection conn,String memberId, int start, int end) {
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
@@ -21,7 +21,7 @@ public class NoticeDao {
 				+ "            n.*,\r\n"
 				+ "            (select count(*) from noticelike where like_no=n.notice_no)as likenumber,\r\n"
 				+ "            (select count(*) from noticelike where like_no=n.notice_no and like_id=?)as clicklike\r\n"
-				+ "     from (select * from notice order by notice_no desc)n) \r\n"
+				+ "     from (select * from notice where top_fixed=0 order by notice_no desc)n) \r\n"
 				+ "where rnum between ? and ?";
 		try {
 			pstmt = conn.prepareStatement(query);
@@ -472,18 +472,17 @@ public class NoticeDao {
 		}
 		return result;
 	}
-
+	//top_fixed가 1인 값을 찾는 dao
 	public ArrayList<Notice> fixedList(Connection conn, String memberId) {
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
 		ArrayList<Notice> list = new ArrayList<Notice>();
 		String query = "select * from \r\n"
-				+ "    (select rownum as rnum,\r\n"
-				+ "            n.*,\r\n"
-				+ "            (select count(*) from noticelike where like_no=n.notice_no)as likenumber,\r\n"
-				+ "            (select count(*) from noticelike where like_no=n.notice_no and like_id=?)as clicklike\r\n"
-				+ "     from (select * from notice order by notice_no desc)n) \r\n"
-				+ "where rnum between ? and ?";
+				+ "            (select rownum as rnum,\r\n"
+				+ "                     n.*,\r\n"
+				+ "                        (select count(*) from noticelike where like_no=n.notice_no)as likenumber,\r\n"
+				+ "                        (select count(*) from noticelike where like_no=n.notice_no and like_id= ? )as clicklike\r\n"
+				+ "                 from (select * from (select * from notice where top_fixed=1) order by notice_no desc)n)";
 		try {
 			pstmt = conn.prepareStatement(query);
 			//start, end변수를 넣어줬으니까 setting해주기
