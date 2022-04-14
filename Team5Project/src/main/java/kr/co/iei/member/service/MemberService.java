@@ -21,14 +21,22 @@ public class MemberService {
 	public int insertMember(Member m) {
 		Connection conn = JDBCTemplate.getConnection();
 		MemberDao dao = new MemberDao();
+		
 		int result = dao.insertMember(conn,m); //insert이므로 결과는 result
+		int result2 = 0;
 		if(result>0) {
-			JDBCTemplate.commit(conn);
+			// 지음 추가! (회원가입 성공시 쪽지발송)
+			result2 = dao.autoWelcomeMsg(conn, m.getMemberId());
+			if(result2>0) {
+				JDBCTemplate.commit(conn);				
+			}else {
+				JDBCTemplate.rollback(conn);
+			}
 		}else {
 			JDBCTemplate.rollback(conn);
 		}
 		JDBCTemplate.close(conn);
-		return result;
+		return result2;
 	}
 
 	public Member selectOneMember(String memberId) {

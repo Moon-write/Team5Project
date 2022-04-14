@@ -12,7 +12,7 @@
     <div class="div-content">
         <div class="dataApi-wrap row">
             <div class="dataApi-title">
-                <div>일일 코로나 현황 집계<button id="changeMode" type="button" class="btn btn-outline-primary">확진자</button></div>
+                <div>일일 코로나 현황 집계<button id="changeMode" type="button" class="btn btn-outline-secondary">확진자</button></div>
             </div>
             
             <hr>
@@ -31,7 +31,7 @@
                 </ul>
             </div>
         </div>
-        <% if(m!=null) {%>
+        <% if(m!=null&&m.getSurveyCheck()==0) {%>
         <form action="/survey.do" method="post">
             <div class="card border-primary mb-3" style="width: 100%">
                 <div class="card-header"><%= m.getMemberNickname() %> 님의 코로나 경험담을 들려주세요!
@@ -136,7 +136,7 @@
                 <div id="result-pain-date">
                     <div class="result-pain-title">평균 발병기간</div>
                     <div>증상이 나타난 이후로<br>
-                        <span>1.16</span>일 째에 확진받았어요!</div>
+                        <span id="dateGap"></span>일 째에 확진받았어요!</div>
                 </div>
                 <div id="result-pain-date">
                     <div class="result-pain-title">백신 접종 현황</div>
@@ -152,7 +152,7 @@
             <div class="result-pain col-lg-4">
                 <div class="result-pain-title">격리생활 어떻게 보냈나요?</div>
                 <ul id="bubbleTap">
-                    <li><span class="material-icons" id="moreBtn" value="1">expand_circle_down</span></li>
+                    <span class="material-icons" id="moreBtn" value="1">expand_circle_down</span>
                 </ul>
                 
             </div>
@@ -197,6 +197,13 @@
             }
         })    
         
+        $("#moreBtn").on("mouseover",function(){
+            $(this).css("color","#d4c3de");
+        });
+        $("#moreBtn").on("mouseleave",function(){
+            $(this).css("color","#828e95");
+        });
+
         $("#moreBtn").on("click",function(){
             readBubble($(this).val());
         });
@@ -272,6 +279,8 @@
                 $("#notaste").text(Math.round((data.spt6Count/data.totalCount )*100)+"%");
                 $("#nothing").text(Math.round((data.spt7Count/data.totalCount )*100)+"%");
 
+                $("#dateGap").text(data.dateGap);
+
                 $("#vaccineChart>li>div").eq(0).text(data.vaccine0);
                 $("#vaccineChart>li>div").eq(0).css("height", data.vaccine0*30+"px");
                 $("#vaccineChart>li>div").eq(1).text(data.vaccine1);
@@ -295,7 +304,7 @@
                     for(let i=0;i<data.length;i++){
                         $("<li class='bubble'><span>◀</span>"+data[i]+"</li>").prependTo($("#bubbleTap"));
                     }
-                    $("#moreBtn").val(input+3);
+                    $("#moreBtn").val(Number(input)+3);
                 },
                 error : function(){
                     console.log("문제있어");

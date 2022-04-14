@@ -13,6 +13,7 @@ public class Member {
 	private String memberGender;
 	private String email;
 	private String emailAuth;
+	private int surveyCheck;
 	
 	public String getEmailAuth() {
 		return emailAuth;
@@ -50,7 +51,7 @@ public class Member {
 				+ ", email=" + email + ", emailAuth=" + emailAuth + "]";
 	}
 	public Member(int memberNo, String memberId, String memberPw, String memberName, String memberNickname,
-			int memberLevel, String phone, String address, String enrollDate, String memberGender, String email) {
+			int memberLevel, String phone, String address, String enrollDate, String memberGender, String email, int surveyCheck) {
 		super();
 		this.memberNo = memberNo;
 		this.memberId = memberId;
@@ -63,6 +64,7 @@ public class Member {
 		this.enrollDate = enrollDate;
 		this.memberGender = memberGender;
 		this.email = email;
+		this.surveyCheck  = surveyCheck;
 	}
 	public int getMemberNo() {
 		return memberNo;
@@ -129,6 +131,12 @@ public class Member {
 	}
 	public void setEmail(String email) {
 		this.email = email;
+	}
+	public int getSurveyCheck() {
+		return surveyCheck;
+	}
+	public void setSurveyCheck(int surveyCheck) {
+		this.surveyCheck = surveyCheck;
 	}
 	
 	

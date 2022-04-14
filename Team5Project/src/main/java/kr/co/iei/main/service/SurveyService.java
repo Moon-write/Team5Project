@@ -37,14 +37,22 @@ public class SurveyService {
 			// 그 번호에 맞는 변수로 등록			
 		}
 		int result = dao.newSurvey(conn, sv);
+		int result2 = 0;
 		
 		if(result>0) {
-			JDBCTemplate.commit(conn);
+			// 서베이 참여여부 업데이트
+			result2 = dao.updateSurvey(conn, sv.getSurveyId());
+			
+			if(result2>0) {
+				JDBCTemplate.commit(conn);				
+			}else {
+				JDBCTemplate.rollback(conn);
+			}			
 		}else {
 			JDBCTemplate.rollback(conn);
 		}
 		JDBCTemplate.close(conn);
-		return result;
+		return result2;
 	}
 
 	public SurveyResult surveyResult() {
