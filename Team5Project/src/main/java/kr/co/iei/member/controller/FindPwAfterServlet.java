@@ -46,8 +46,9 @@ public class FindPwAfterServlet extends HttpServlet {
 		Member m = service.findPw(member);//이름,아이디,이메일 들어있는 객체 전달
 //		System.out.println("서비스에서 가져온 객체"+m);
 		//4. 결과처리
-//		request.setAttribute("memberPw", memberPw);
-		request.setAttribute("m", m);
+		request.setAttribute("memberId", m.getMemberId());
+		request.setAttribute("memberPw", m.getMemberPw());
+		request.setAttribute("memberName", m.getMemberName());
 		RequestDispatcher view = request.getRequestDispatcher("/WEB-INF/views/member/findPwAfter.jsp");
 		view.forward(request, response);
 	}
