@@ -15,14 +15,18 @@ public class NoticeService {
 	public NoticePageData selectNoticeService(int reqPage,String memberId) {
 		Connection conn = JDBCTemplate.getConnection();
 		NoticeDao dao = new NoticeDao();
+		//고정된 거 가져오기
+		ArrayList<Notice> fixedList = dao.fixedList(conn,memberId);
 		//페이징처리
 		//1. 한페이지당 게시물 수 15개
-		int numPerPage = 15;
+		int numPerPage = 15-(fixedList.size());
+		
 		//게시물범위계산
 		int end = reqPage * numPerPage;
 		int start = end - numPerPage + 1;
-		
-		ArrayList<Notice> list = dao.selectNoticeList(conn,start,end,memberId);
+		ArrayList<Notice> list = dao.selectNoticeList(conn,memberId,start,end);
+		System.out.println(fixedList.size());
+		System.out.println(list.size());
 		//전체 페이지 계산 전 게시물 수 세기
 		int totalCount = dao.totalNoticeCount(conn);
 		//전체 페이지 수(나머지 있으면 하나 추가)
@@ -42,6 +46,7 @@ public class NoticeService {
 			pageNav += "<li>";
 			//-1을 해줘야 ! 12345 느낌표 자리에 생기니까
 			pageNav += "<a class='page-item' href='/noticeList.do?reqPage="+(pageNo-1)+"'>";
+			
 			pageNav += "<span class='page-link'>«</span>";
 			pageNav += "</a></li>";
 		}
@@ -218,9 +223,68 @@ public class NoticeService {
 		return result;
 	}
 
-	public NoticePageData searchNotice(int reqPage, String select, String value) {
-		// TODO Auto-generated method stub
-		return null;
+	public NoticePageData searchNotice(int reqPage, String select,String value, String memberId) {
+		Connection conn = JDBCTemplate.getConnection();
+		NoticeDao dao = new NoticeDao();
+		//페이징처리
+		//1. 한페이지당 게시물 수 15개
+		int numPerPage = 15;
+		//게시물범위계산
+		int end = reqPage * numPerPage;
+		int start = end - numPerPage + 1;
+		ArrayList<Notice> list = dao.searchNoticeList(conn,start,end,select,value,memberId);
+		int totalCount = dao.searchTotalNoticeCount(conn,select,value);
+		//전체 페이지 수(나머지 있으면 하나 추가)
+		int totalPage = 0;
+		if(totalCount%numPerPage == 0) {
+			totalPage = totalCount/numPerPage;
+		}else {
+			totalPage = totalCount/numPerPage + 1;
+		}
+		
+		int pageNavSize = 5;
+		//nav시작번호 계산
+		int pageNo = ((reqPage-1)/pageNavSize)*pageNavSize + 1;
+		//nav제작
+		String pageNav = "<ul class='pagination pagination-lg' style='justify-content: center;'>";
+		//이전 버튼
+		if(pageNo != 1) {
+			pageNav += "<li>";
+			//-1을 해줘야 ! 12345 느낌표 자리에 생기니까
+			pageNav += "<a class='page-item' href='/searchNotice.do?reqPage="+(pageNo-1)+"&select="+select+"&value="+value+"'>";
+			pageNav += "<span class='page-link'>«</span>";
+			pageNav += "</a></li>";
+		}
+		//페이지 숫자
+		for(int i=0;i<pageNavSize;i++) {
+			if(pageNo == reqPage) {
+				pageNav += "<li class='badge rounded-pill bg-light'>";
+				pageNav += "<a class='page-link' href='/searchNotice.do?reqPage="+pageNo+"&select="+select+"&value="+value+"'>";
+				pageNav += pageNo;
+				pageNav += "</a></li>";
+			}else {
+				pageNav += "<li>";
+				pageNav += "<a class='page-link' href='/searchNotice.do?reqPage="+pageNo+"&select="+select+"&value="+value+"'>";
+				pageNav += pageNo;
+				pageNav += "</a></li>";	
+			}
+			pageNo++;
+			//데이터의 양보다 페이지가 크면 없애기 위해서
+			if(pageNo > totalPage) {
+				break;
+			}
+		}
+		//다음버튼
+		if(pageNo<=totalPage) {
+			pageNav += "<li>";
+			pageNav += "<a class='page-item' href='/searchNotice.do?reqPage="+pageNo+"&select="+select+"&value="+value+"'>";
+			pageNav += "<span class='page-link'>»</span>";
+			pageNav += "</a></li>";
+		}
+		pageNav += "</ul>";
+		NoticePageData npd = new NoticePageData(list,pageNav);
+		JDBCTemplate.close(conn);
+		return npd;
 	}
 
 

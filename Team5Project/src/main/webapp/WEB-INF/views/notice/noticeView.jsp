@@ -69,7 +69,7 @@
 		display: inline;
 	}
 	.commentBox>ul>li:first-child{
-		width: 10%;
+		width: 7.5%;
 		display: flex;
 	}
 	.form-control{
@@ -142,12 +142,22 @@
 	.material-icons{
 		font-size: 15px;
 	}
+	#good:hover{
+		cursor: pointer;
+	}
+	#content{
+		border-bottom: none;
+		margin-bottom: none;
+	}
+	.goodgood{
+		float: left;	
+	}
 </style>
 </head>
 <body>
 	<%@include file="/WEB-INF/views/common/header.jsp" %>
 	<div class="div-content">
-		<div class="content-title">공지사항 작성</div>
+		<div class="content-title" id="content">공지사항 작성</div>
 		<table class="table tabel-hover" id="noticeView">
 			<tr class="table-success">
 				<th class="table-light">작성자</th>
@@ -157,17 +167,21 @@
 				<th class="table-light">조회수</th>
 				<td><%=n.getReadCount() %></td>
 				<th class="table-light">추천</th>
-				<td class="goodgood">
+				<td>
 					<%if(m != null) {%>
 						<input type="hidden" name="ncWriter" id="memberId" value="<%=m.getMemberId() %>">
 						<input type="hidden" name="noticeRef" id="noticeNo"value="<%=n.getNoticeNo() %>">
-						<%if(n.getClickLike() == 1) {%>						
-						<span class="material-icons" id="good">thumb_up</span>
-						<%}else{ %>
-						<span class="material-icons" id="good">thumb_up_off_alt</span>
+						<div class="goodgood">
+							<%if(n.getClickLike() == 1) {%>						
+							<span class="material-icons" id="good">thumb_up</span>
+							<%}else{ %>
+							<span class="material-icons" id="good">thumb_up_off_alt</span>
+							<%} %>
 						<%} %>
-					<%} %>
+						</div>
+						<div>
 						<span id="likeCount"><%=n.getLikeNumber() %></span>
+						</div>
 				</td>
 			</tr>
 			<tr class="table-success">
@@ -226,37 +240,19 @@
 							<span><%=nc.getNcDate() %></span>
 						</p>
 						<p class="form-control form-control-sm"><%=nc.getNcContent() %></p>
+						<textarea name="ncContent" class="input-form" style="display:none; min-height: 90px;"><%=nc.getNcContent() %></textarea>
 						<p class="btn btn-link" id="commentstyle" style="padding-top: 0px;">
 							<%if(m != null) {%>
 								<%if(m.getMemberId().equals(nc.getNcWriter())) {%>
-									<a href="javascript:void(0)">수정</a><br>
-									<a href="javascript:void(0)">삭제</a><br>
+									<a href="javascript:void(0)" onclick="modifyComment(this,'<%=nc.getNcNo()%>','<%=n.getNoticeNo()%>')">수정</a><br>
+									<a href="javascript:void(0)" onclick="modifyComment(this,'<%=nc.getNcNo()%>','<%=n.getNoticeNo()%>')">삭제</a><br>
 								<%} %>
 								<a href="javascript:void(0)" class="recommentShow">답글달기</a>
 							<%} %>
 						</p>
 					</li>
 				</ul>
-				<%if(m!= null) {%>
-				<div class="inputRecommentBox">
-					<form action="/insertComment.do" method="post">
-						<ul style="padding-top: 12px;">
-							<li>
-								<span class="material-icons">subdirectory_arrow_right</span>
-							</li>
-							<li>
-								<input type="hidden" name="ncWriter" value="<%=m.getMemberId() %>">
-								<input type="hidden" name="noticeRef" value="<%=n.getNoticeNo() %>">
-								<input type="hidden" name="ncRef" value="<%=nc.getNcNo()%>">
-								<textarea class="form-control" name="ncContent"></textarea>
-							</li>
-							<li>
-								<button type="submit" class="btn btn-link"style="padding-left: 0px;padding-right: 0px;margin-top: 12px;">등록</button>
-							</li>
-						</ul>
-					</form>
-				</div>
-				<%} //대댓글 form%>
+				
 				<%for(NoticeComment ncc : reCommentList) {%>
 					<%if(ncc.getNcRef() == nc.getNcNo()) {%>
 						<ul class="form-control" id="replyComment" style="padding-top: 12px;">
@@ -283,6 +279,26 @@
 						</ul>
 					<%} %>
 				<%} //대댓글for문 종료 %>
+				<%if(m!= null) {%>
+				<div class="inputRecommentBox">
+					<form action="/insertComment.do" method="post">
+						<ul style="padding-top: 12px;">
+							<li>
+								<span class="material-icons">subdirectory_arrow_right</span>
+							</li>
+							<li>
+								<input type="hidden" name="ncWriter" value="<%=m.getMemberId() %>">
+								<input type="hidden" name="noticeRef" value="<%=n.getNoticeNo() %>">
+								<input type="hidden" name="ncRef" value="<%=nc.getNcNo()%>">
+								<textarea class="form-control" name="ncContent"></textarea>
+							</li>
+							<li>
+								<button type="submit" class="btn btn-link"style="padding-left: 0px;padding-right: 0px;margin-top: 12px;">등록</button>
+							</li>
+						</ul>
+					</form>
+				</div>
+				<%} //대댓글 form%>
 			<%}	//댓글for문종료 %>
 		</div>
 		<script>
@@ -368,8 +384,10 @@
 	                	}else{
 		    				if($("#good").text() == "thumb_up"){
 		    					$("#good").text("thumb_up_off_alt");
+		    					confirm("해당 글의 추천이 해제되었습니다.");
 		    				}else{
 		    					$("#good").text("thumb_up");
+		    					confirm("해당 글이 추천되었습니다.");
 		    				}	       
 		    				$("#likeCount").text(data);
 	                	}
@@ -381,7 +399,7 @@
 	                    console.log("에러");
 	                },
 	                complete : function(){
-	               
+	                	
 	                }
 	            });
 			});

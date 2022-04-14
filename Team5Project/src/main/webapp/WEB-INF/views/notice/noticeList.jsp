@@ -5,6 +5,14 @@
     <%
     	ArrayList<Notice> list = (ArrayList<Notice>)request.getAttribute("list");
     	String pageNav = (String)request.getAttribute("pageNav");
+    	String select = (String)request.getAttribute("select");
+    	String value = (String)request.getAttribute("value");
+    	if(select == null){
+    		select = "0";
+    	}
+    	if(value == null){
+    		value ="";
+    	}
     %>
 <!DOCTYPE html>
 <html>
@@ -64,13 +72,17 @@
 	#select:hover{
 		cursor: pointer;
 	}
+	#content{
+		border-bottom: none;
+		margin-bottom: 0;
+	}
 }
 </style>
 </head>
 <body>
 	<%@include file="/WEB-INF/views/common/header.jsp" %>
 	<div class="div-content">
-		<div class="content-title" style="margin-bottom: 20px;">공지사항 게시판</div>
+		<div class="content-title" id="content">공지사항 게시판</div>
 		<%if(m != null && m.getMemberLevel() == 0) {%>
 		<div class="writebox">
 			<a class="btn btn-dark" href="/noticeWriteFrm.do" style="margin-bottom: 10px; font-size: 18px; line-height: 18px">글쓰기</a>
@@ -78,14 +90,32 @@
 		<%} %>
 		<div class="searchthing">
 			<div class="div-content" id="search-div">
-				<form  action="/searchNotice.do?reqPage=1" class="table tabel-hover" name="search" method="post">
+				<form  action="/searchNotice.do" class="table tabel-hover" name="search" method="get">
+					<input type="hidden" name="reqPage" value="1">
 					<table class="table tabel-hover">
 						<tr>
-							<td><select class="form-control" name="select" id="select">
+							<td>
+								<%if(select == "0"){%>
+									<select class="form-control" name="select" id="select">
+									<option value="0" selected>선택</option>
 									<option value="noticeTitle">제목</option>
 									<option value="noticeWriter">작성자</option>
-							</select></td>
-							<td><input type="text" class="form-control"	placeholder="검색어 입력" name="value" maxlength="500px"></td>
+									</select>
+								<%}else if(select == "noticeTitle"){%>
+									<select class="form-control" name="select" id="select">
+									<option value="0">선택</option>
+									<option value="noticeTitle" selected>제목</option>
+									<option value="noticeWriter">작성자</option>
+									</select>
+								<%}else if(select == "noticeWriter"){%>
+									<select class="form-control" name="select" id="select">
+									<option value="0">선택</option>
+									<option value="noticeTitle">제목</option>
+									<option value="noticeWriter" selected>작성자</option>
+									</select>
+								<%} %>
+							</td>
+							<td><input type="text" class="form-control"	placeholder="검색어 입력" name="value" maxlength="500px" value="<%=value%>"></td>
 							<td><button type="submit" class="btn btn-primary" id="search">검색</button></td>
 						</tr>
 	
