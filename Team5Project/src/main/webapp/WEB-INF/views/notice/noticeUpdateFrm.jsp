@@ -8,7 +8,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title><%=n.getNoticeNo() %>. 수정</title>
 <style>
 	.file-box{
 		display: flex;
@@ -24,10 +24,19 @@
 	#modifybtn{
 		width: 150px;
 	}
+	.note-editable{
+		background-color: #fff; 
+	}
+	#modifybtn1{
+		background-color: #fff;
+	}
 </style>
 </head>
 <body>
 	<%@include file="/WEB-INF/views/common/header.jsp" %>
+	<script src="/summernote/summernote-lite.js"></script>
+	<script src="/summernote/lang/summernote-ko-KR.js"></script>
+	<link rel="stylesheet" href="/summernote/summernote-lite.css">
 		<div class="div-content">
 			<div class="content-title">공지사항 수정</div>
 		
@@ -35,7 +44,7 @@
 			<input type="hidden" name="noticeNo" value="<%=n.getNoticeNo() %>">
 			<table class="table tabel-hover" id="noticeUpdateFrm">
 				<tr class="table-success">
-					<th class="table-light">제목</th>
+					<th class="table-light" style="min-width: 100px;">제목</th>
 					<td>
 						<input type="text" name="noticeTitle" class="form-control" value="<%=n.getNoticeTitle()%>">
 					</td>
@@ -63,7 +72,7 @@
 					<td><textarea class="form-control" name="noticeContent" id="noticeContent" style="height: 400px;"><%=n.getNoticeContent() %></textarea></td>
 				</tr>
 				<tr class="table-success">
-					<th class="modifybtn" colspan="2"><button class="btn btn-dark" id="modifybtn">수정 완료</button></th>
+					<th class="modifybtn" id="modifybtn1" colspan="2"><button class="btn btn-dark" id="modifybtn">수정 완료</button></th>
 				</tr>
 			</table>
 		</form>

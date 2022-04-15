@@ -30,15 +30,16 @@
 		color: #9d91a4;
 	}
 	.notice-tbl tr{
-		border-bottom: 1px solid #ccc;
 		text-align: center;
+		border: none;
+		border-bottom: 0px solid #d8d2d9d9;
 	}
 	.notice-tbl tr>th:first-child{
 		width: 10%;
 		min-width: 49px;
 	}
 	.notice-tbl tr>th:nth-child(2){
-		width: 35%;
+		width: 45%;
 		min-width: 350px;
 	}
 	.notice-tbl tr>td:nth-child(2){
@@ -46,18 +47,19 @@
 	}
 	.notice-tbl tr>th:nth-child(3){
 		width: 10%;
+		min-width: 65px;
 	}
 	.notice-tbl tr>th:nth-child(4){
 		width: 20%;
 		min-width: 97.5px;
 	}
 	.notice-tbl tr>th:nth-child(5){
-		width: 15%;
-		min-width: 83px;
+		width: 7%;
+		min-width: 73px;
 	}
 	.notice-tbl tr>th:last-child{
 		text-align: center;
-		width: 10%;
+		width: 13%;
 		min-width: 54px;
 	}
 	.writebox{
@@ -141,7 +143,7 @@
 				<th>번호</th><th>제목</th><th>작성자</th><th>작성일</th><th>조회수</th><th>추천</th>
 			</tr>
 			<%for(Notice n : list) {%>
-				<tr class="table-light">
+				<tr class="table-active">
 					<%if(n.getTopFixed()== 1) {%>
 						<td><span class="material-icons" id="pin">push_pin</span></td>
 						<td>

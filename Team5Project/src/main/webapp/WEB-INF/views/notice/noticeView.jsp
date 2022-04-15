@@ -152,6 +152,12 @@
 	.goodgood{
 		float: left;	
 	}
+	.table-success{
+		text-align: center;
+	}
+	#contentleft{
+		text-align: left;
+	}
 </style>
 </head>
 <body>
@@ -161,7 +167,7 @@
 		
 		<table class="table tabel-hover" id="noticeView">
 			<tr class="table-success">
-				<th class="table-light">제목</th>
+				<th class="table-light" style="min-width: 100px; ">제목</th>
 				<td colspan="7"><%=n.getNoticeTitle() %></td>
 			</tr>
 			<tr class="table-success">
@@ -200,7 +206,7 @@
 			</tr>
 			<tr class="table-success">
 				<th class="table-light">내용</th>
-				<td colspan="7">
+				<td colspan="7" id="contentleft">
 					<div id="noticeContent"><%=n.getNoticeContent() %></div>
 				</td>
 			</tr>
