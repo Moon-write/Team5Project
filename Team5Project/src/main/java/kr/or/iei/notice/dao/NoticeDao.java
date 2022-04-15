@@ -79,7 +79,7 @@ public class NoticeDao {
 	public int insertNotice(Connection conn, Notice n) {
 		PreparedStatement pstmt = null;
 		int result = 0;
-		String query = "insert into notice values(notice_seq.nextval,?,?,?,0,to_char(sysdate,'yyyy-mm-dd'),?,?,0)";
+		String query = "insert into notice values(notice_seq.nextval,?,?,?,0,to_char(sysdate,'yyyy-mm-dd'),?,?,?)";
 		try {
 			pstmt = conn.prepareStatement(query);
 			pstmt.setString(1, n.getNoticeTitle());
@@ -87,6 +87,7 @@ public class NoticeDao {
 			pstmt.setString(3, n.getNoticeContent());
 			pstmt.setString(4, n.getFilename());
 			pstmt.setString(5, n.getFilepath());
+			pstmt.setInt(6, n.getTopFixed());
 			result = pstmt.executeUpdate();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block

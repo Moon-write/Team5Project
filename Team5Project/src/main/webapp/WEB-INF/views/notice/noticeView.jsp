@@ -215,6 +215,7 @@
 				<th id="buttons" colspan="8">
 					<a class="btn btn-primary" href="/noticeUpdateFrm.do?noticeNo=<%=n.getNoticeNo() %>">수정</a>
 					<button class="btn btn-secondary" onclick="noticeDelete('<%=n.getNoticeNo() %>');">삭제</button>
+					<button class="btn btn-secondary" onclick="noticeList()">목록으로</button>
 				</th>
 			</tr>
 			<%} %>

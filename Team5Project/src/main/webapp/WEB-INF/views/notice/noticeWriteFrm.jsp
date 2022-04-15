@@ -62,7 +62,7 @@
 					<td colspan="4" style="text-align: left;"><textarea id="noticeContent" name="noticeContent" class="form-control"></textarea></td>
 				</tr>
 				<tr>
-					<td id="top_fixed" ><input type="checkbox" class="form-check-input" id="top" name="top" value="top">상단에 고정하기</td>
+					<td id="top_fixed" ><input type="checkbox" class="form-check-input" id="top" name="top" value="1">상단에 고정하기</td>
 					<td colspan="4" id="submitbutton"><button type="submit" class="btn btn-primary">공지사항등록</button></td>
 				</tr>
 			</table>

@@ -4,13 +4,13 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>코로나 커뮤니티 :: 위드 코로나</title>
 <link rel="stylesheet" href="css/indexContent.css">
 </head>
 <body>
 	<%@ include file="/WEB-INF/views/common/header.jsp" %>
     <div class="div-content">
-        <div class="dataApi-wrap row">
+        <div class="dataApi-wrap row noneDrag">
             <div class="dataApi-title">
                 <div>일일 코로나 현황 집계<button id="changeMode" type="button" class="btn btn-outline-secondary">확진자</button></div>
             </div>
@@ -94,7 +94,7 @@
             </div>
         </form>
         <% } %>
-        <div class="result-wrap row">
+        <div class="result-wrap row noneDrag">
             <div class="result-title">
                 <div>위드코로나 회원들의 코로나 빅데이터</div>
             </div>
