@@ -2,13 +2,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
     <%
-    	Notice n = (Notice)request.getAttribute("n");
+    	//Notice n = (Notice)request.getAttribute("n");
     %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>글 작성</title>
+<title>새 공지사항 작성</title>
 
 <style>
 	.input-form{
@@ -29,6 +29,9 @@
 	}
 	#text{
 		font-size: 10px;
+	}
+	.modifybtn{
+		background-color: #fff;
 	}
 </style>
 </head>
@@ -59,7 +62,6 @@
 					<td colspan="4" style="text-align: left;"><textarea id="noticeContent" name="noticeContent" class="form-control"></textarea></td>
 				</tr>
 				<tr>
-					<td><input type="hidden" name="topNotice" id="noticeNo" value="<%=n.getNoticeNo() %>"></td>
 					<td id="top_fixed" ><input type="checkbox" class="form-check-input" id="top" name="top" value="top">상단에 고정하기</td>
 					<td colspan="4" id="submitbutton"><button type="submit" class="btn btn-primary">공지사항등록</button></td>
 				</tr>
