@@ -305,8 +305,7 @@
 		const detailInfo = $("#detailInfo").val();
 		const pageNum = $("#pageInfo").val();
 		
-		if(sidoInfo!="null"){
-			
+		if(sidoInfo!="null"){			
 			$('#sidoCdNm option[value="'+sidoInfo+'"]').attr("selected", true).trigger("change");
 			setTimeout(function(){
 				if(gugunInfo!="null"){

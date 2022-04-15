@@ -1,10 +1,14 @@
+<%@page import="kr.or.iei.notice.vo.Notice"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    <%
+    	Notice n = (Notice)request.getAttribute("n");
+    %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>글 작성</title>
 
 <style>
 	.input-form{
@@ -55,7 +59,8 @@
 					<td colspan="4" style="text-align: left;"><textarea id="noticeContent" name="noticeContent" class="form-control"></textarea></td>
 				</tr>
 				<tr>
-					<td id="top_fixed" ><input type="checkbox" class="form-check-input" name="공지" value="공지">상단에 고정하기</td>
+					<td><input type="hidden" name="topNotice" id="noticeNo" value="<%=n.getNoticeNo() %>"></td>
+					<td id="top_fixed" ><input type="checkbox" class="form-check-input" id="top" name="top" value="top">상단에 고정하기</td>
 					<td colspan="4" id="submitbutton"><button type="submit" class="btn btn-primary">공지사항등록</button></td>
 				</tr>
 			</table>
@@ -86,8 +91,8 @@
 						$(editor).summernote("insertImage",data);
 					}
 				});
-				
 			}
+
 		</script>
 	<%@include file="/WEB-INF/views/common/footer.jsp" %>
 </body>

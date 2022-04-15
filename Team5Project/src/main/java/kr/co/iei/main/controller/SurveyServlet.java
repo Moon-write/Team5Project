@@ -8,9 +8,11 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import kr.co.iei.main.service.SurveyService;
 import kr.co.iei.main.vo.Survey;
+import kr.co.iei.member.vo.Member;
 
 /**
  * Servlet implementation class ServeyServlet
@@ -43,7 +45,12 @@ public class SurveyServlet extends HttpServlet {
 		Survey sv = new Survey(memberId, painDate, decideDate, vaccinate, story);
 		SurveyService service = new SurveyService();
 		int result = service.newSurvey(sv, symptoms);
-				
+		
+		if(result>0) {
+			HttpSession session = request.getSession();
+			Member m = (Member)session.getAttribute("m");
+			m.setSurveyCheck(1);
+		}
 		response.sendRedirect("/");
 	}
 

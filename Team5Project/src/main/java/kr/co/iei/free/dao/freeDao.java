@@ -9,6 +9,7 @@ import java.util.HashMap;
 
 import common.JDBCTemplate;
 import kr.co.iei.free.vo.Free;
+import kr.co.iei.free.vo.FreeComment;
 import kr.co.iei.free.vo.FreeView;
 import kr.co.iei.free.vo.FreeboardTable;
 
@@ -173,7 +174,7 @@ public class freeDao {
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
 		FreeView view = new FreeView();
-		String query = "select t1.free_no, t1.free_title, t2.member_nickname, t1.free_content, t1.free_date, t1.free_count,(select count(*) from like2_tbl t3 where t3.free_no=t1.free_no)likes \r\n"
+		String query = "select t1.free_no, t1.free_id, t1.free_title, t2.member_nickname, t1.free_content, t1.free_date, t1.free_count,(select count(*) from like2_tbl t3 where t3.free_no=t1.free_no)likes \r\n"
 				+ "from freeboard_tbl t1 inner join member_tbl t2 on t1.free_id = t2.member_id\r\n"
 				+ "where t1.free_no = ?";
 		try {
@@ -181,6 +182,7 @@ public class freeDao {
 			pstmt.setInt(1, freeNo);
 			rset = pstmt.executeQuery();
 			if(rset.next()) {
+				view.setMemberId(rset.getString("free_id"));
 				view.setNo(rset.getInt("free_no"));
 				view.setTitle(rset.getString("free_title"));
 				view.setContents(rset.getString("free_content"));
@@ -263,5 +265,130 @@ public class freeDao {
 		return result;
 	}
 
-	
+	public int insertComment(Connection conn, FreeComment fc) {
+		PreparedStatement pstmt = null;
+		int result = 0;
+		String query = "insert into Notice_Comment_tbl2 values(Comment2_seq.nextval,?,?,?,sysdate,?)";
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setInt(1, fc.getFreeNo());
+			pstmt.setString(2, fc.getMemberId());
+			pstmt.setString(3, fc.getContent());
+			pstmt.setString(4, (fc.getRecomment()==0)?null:String.valueOf(fc.getRecomment()));
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			JDBCTemplate.close(pstmt);
+		}
+		return result;
+	}
+
+	public ArrayList<FreeComment> FreeCommentSearch(Connection conn, int freeNo) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		ArrayList<FreeComment> cmlist = new ArrayList<FreeComment>();
+		String query = "select t1.*, t2.member_nickname from "
+				+ "(select * from Notice_Comment_tbl2 "
+				+ "where comment_reno is null and commentfree_no = ?)t1 "
+				+ "inner join member_tbl t2 on t1.commentmember_Id=t2.member_id";
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setInt(1, freeNo);
+			rset = pstmt.executeQuery();
+			while(rset.next()) {
+				FreeComment cm = new FreeComment();
+				cm.setCommentNo(rset.getInt("Comment_No"));
+				cm.setContent(rset.getString("comment_content"));
+				cm.setDate(rset.getDate("comment_date"));
+				cm.setFreeNo(rset.getInt("commentfree_no"));
+				cm.setMemberId(rset.getString("commentmember_id"));
+				cm.setRecomment(rset.getInt("comment_Reno"));
+				cm.setWriter(rset.getString("member_nickname"));
+				cmlist.add(cm);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			JDBCTemplate.close(pstmt);
+		}
+		return cmlist;
+	}
+
+	public ArrayList<FreeComment> FreeRecommentSearch(Connection conn, int freeNo) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		ArrayList<FreeComment> recmlist = new ArrayList<FreeComment>();
+		String query = "select t1.*, t2.member_nickname from "
+				+ "(select * from Notice_Comment_tbl2 "
+				+ "where comment_reno is not null and commentfree_no = ?)t1 "
+				+ "inner join member_tbl t2 on t1.commentmember_Id=t2.member_id";
+		
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setInt(1, freeNo);
+			rset = pstmt.executeQuery();
+			while(rset.next()) {
+				FreeComment recm = new FreeComment();
+				recm.setCommentNo(rset.getInt("Comment_No"));
+				recm.setContent(rset.getString("comment_content"));
+				recm.setDate(rset.getDate("comment_date"));
+				recm.setFreeNo(rset.getInt("commentfree_no"));
+				recm.setMemberId(rset.getString("commentmember_id"));
+				recm.setRecomment(rset.getInt("comment_Reno"));
+				recm.setWriter(rset.getString("member_nickname"));
+				recmlist.add(recm);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			JDBCTemplate.close(pstmt);
+			JDBCTemplate.close(rset);
+			
+		}
+		return recmlist;
+	}
+
+	public HashMap<Integer, Boolean> addLikecheck(Connection conn, int no) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		HashMap<Integer, Boolean> likecheck = new HashMap<Integer, Boolean>();
+		String query = "select * from like2_tbl where member_no=?";
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setInt(1, no);
+			rset = pstmt.executeQuery();
+			while(rset.next()) {
+				likecheck.put((Integer)rset.getInt("free_no"), true);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			JDBCTemplate.close(pstmt);
+			JDBCTemplate.close(rset);
+		}
+		return likecheck;
+	}
+
+	public int InsertLike(Connection conn, int num1, int num2) {
+		PreparedStatement pstmt = null;
+		int result = 0;
+		String query = "insert into like2_tbl values(?,?)";
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setInt(1, num1);
+			pstmt.setInt(2, num2);
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			JDBCTemplate.close(pstmt);
+		}
+		return result;
+	}
 }

@@ -35,6 +35,7 @@ public class MemberDao {
 				m.setMemberGender(rset.getString("member_gender"));
 				m.setEmail(rset.getString("email"));
 				m.setEnrollDate(rset.getString("enroll_date"));
+				m.setSurveyCheck(rset.getInt("survey_check"));
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -49,7 +50,7 @@ public class MemberDao {
 	public int insertMember(Connection conn, Member m) {
 		PreparedStatement pstmt = null;
 		int result = 0;
-		String query = "insert into member_tbl values(member_seq.nextval,?,?,?,?,2,?,?,?,?,to_char(sysdate,'yyyy-mm-dd'))";
+		String query = "insert into member_tbl values(member_seq.nextval,?,?,?,?,2,?,?,?,?,to_char(sysdate,'yyyy-mm-dd'),0)";
 		try {
 			pstmt = conn.prepareStatement(query);
 			pstmt.setString(1, m.getMemberId());
@@ -211,4 +212,78 @@ public class MemberDao {
 		}
 		return id;
 	}
+
+//	public String findPw(Connection conn, String memberName, String memberId, String memberEmail) {
+//		PreparedStatement pstmt = null;
+//		ResultSet rset = null;
+//		String pw = null;
+//		String query = "select member_pw from member_tbl where member_Name=? and member_id=? and email=?";
+//		try {
+//			pstmt = conn.prepareStatement(query);
+//			pstmt.setString(1, memberName);
+//			pstmt.setString(2, memberId);
+//			pstmt.setString(3, memberEmail);
+//			rset = pstmt.executeQuery();
+//			if(rset.next()) {
+//				pw = rset.getString("member_pw");
+//			}
+//		} catch (SQLException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}finally {
+//			JDBCTemplate.close(pstmt);
+//			JDBCTemplate.close(rset);
+//		}
+//		return pw;
+//	}
+
+	public Member findPw(Connection conn, Member member) {
+		//System.out.println("dao에서 받은 member : "+member); 이상없음
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		Member m = null;
+		String query = "select * from member_tbl where member_Name=? and member_id=? and email=?";
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, member.getMemberName());
+			pstmt.setString(2, member.getMemberId());
+			pstmt.setString(3, member.getEmail());
+			rset = pstmt.executeQuery();
+			if(rset.next()) {
+				m = new Member();
+				m.setMemberId(rset.getString("member_id"));
+				m.setMemberPw(rset.getString("member_pw"));
+				m.setMemberName(rset.getString("member_name"));
+				m.setEmail(rset.getString("email"));
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			JDBCTemplate.close(pstmt);
+			JDBCTemplate.close(rset);
+		}
+		//System.out.println("dao에서 보내기 직전의 m : "+m); 문제없음
+		return m;
+	}
+	
+	// 지음추가! 회원가입 성공시 쪽지발송
+	public int autoWelcomeMsg(Connection conn, String memberId) {
+		PreparedStatement pstmt = null;
+		int result = 0 ;
+		String query = "INSERT INTO MESSAGE_TBL VALUES(MSG_SEQ.NEXTVAL, 'admin', ? , '위드코로나 회원가입을 환영합니다!<br>코로나로 힘든 시기를 함께 이겨나가봐요!', TO_CHAR(SYSDATE, 'YYYY-MM-DD HH24:MM'), 0, 0, 0)";
+		
+		try {
+			pstmt= conn.prepareStatement(query);
+			pstmt.setString(1, memberId);
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			JDBCTemplate.close(pstmt);
+		}		
+		return result;
+	}
+	
 }

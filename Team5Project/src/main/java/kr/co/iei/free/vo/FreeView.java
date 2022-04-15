@@ -5,6 +5,7 @@ import java.sql.Date;
 public class FreeView {
 	private int no;
 	private String title;
+	private String memberId;
 	private String writer;
 	private String contents;
 	private int like;
@@ -14,10 +15,12 @@ public class FreeView {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	public FreeView(int no, String title, String writer, String contents, int like, int view, Date date) {
+	public FreeView(int no, String title, String memberId, String writer, String contents, int like, int view,
+			Date date) {
 		super();
 		this.no = no;
 		this.title = title;
+		this.memberId = memberId;
 		this.writer = writer;
 		this.contents = contents;
 		this.like = like;
@@ -35,6 +38,12 @@ public class FreeView {
 	}
 	public void setTitle(String title) {
 		this.title = title;
+	}
+	public String getMemberId() {
+		return memberId;
+	}
+	public void setMemberId(String memberId) {
+		this.memberId = memberId;
 	}
 	public String getWriter() {
 		return writer;

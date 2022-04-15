@@ -211,8 +211,8 @@
 
 /* 2번탭 */
 #result-pain-date{
-    border: 1px solid #a393ac;
-    padding: 5%;
+    border: 1px solid #D4C3DE;
+    padding: 3% 5%;
     border-radius: 10px;
     margin: 10px auto;
 }
@@ -222,7 +222,7 @@
 }
 #result-pain-date>div>span{
     font-size: 1.1em;
-    color: #a393ac;
+    color: #828e95;
     font-weight: 900;
 }
 
@@ -231,7 +231,6 @@ ul#vaccineChart{
     display: flex;
     height: 100px;
     padding: 0px; margin: 0px;
-
 }
 ul#vaccineChart>li{
     display: flex;
@@ -242,30 +241,33 @@ ul#vaccineChart>li{
 }
 
 ul#vaccineChart>li>div{
-    width: 60%; height: 0px;
-    background-color: #a393ac;
+    width: 40%; height: 0px;
+    background-color: #828e95;
     text-align: center;
     color: #fff;
     font-size: 0.9em;
     transition: height 2s;
-    border-radius: 3px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
 }
 ul#vaccineChart>li span{
     display: block;
     width: 100%;
     text-align: center;
+    margin-top: 5px;
+    font-size: 0.9em;
+    font-weight: 700;
 }
 
 
 ul#bubbleTap{
     list-style-type: none;
-    width: 80%;
+    width: 70%;
     margin: 0 auto;
-    padding: 20px;
-    min-height: 300px;
-}
-ul#bubbleTap>li{
-    transition : transform 2s;
+    padding: 10px;
+    height: 300px;
+    position: relative;
+    overflow: hidden;
 }
 
 ul#bubbleTap>li:last-of-type{
@@ -288,8 +290,15 @@ ul#bubbleTap>li:last-of-type{
 }
 
 #moreBtn{
+    display: block;
+    width: 100%; height: 30px;
+    background-image: linear-gradient(to top, rgba(255,255,255,1), rgba(255,255,255,0.0));
     font-size: 2em;
-    color: #a393ac;
+    color: #828e95;
+    position: absolute;
+    top: 270px; right: 10px;
+    text-align: center;
+    transition: color 0.5s;
 }
 
 

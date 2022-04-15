@@ -86,7 +86,12 @@ public class SurveyDao {
 			rset = pstmt.executeQuery();
 			
 			if(rset.next()) {
-				result = rset.getString("GAPDATE");
+				if(rset.getString("GAPDATE").indexOf('.')==0) {
+					result = "0"+rset.getString("GAPDATE");
+				}else {
+					result = rset.getString("GAPDATE");
+				};
+				
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -121,6 +126,23 @@ public class SurveyDao {
 			JDBCTemplate.close(rset);
 		}	
 		return list;
+	}
+
+	public int updateSurvey(Connection conn, String surveyId) {
+		PreparedStatement pstmt = null;
+		int result = 0;
+		String query = "UPDATE MEMBER_TBL SET SURVEY_CHECK=1 WHERE MEMBER_ID=?";
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, surveyId);
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			JDBCTemplate.close(pstmt);
+		}
+		return result;
 	}
 
 }

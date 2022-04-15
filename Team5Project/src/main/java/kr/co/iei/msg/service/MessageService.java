@@ -77,8 +77,8 @@ public class MessageService {
 					return -3;
 				}
 			}
-			
-		} else if(memberId.equals(msg.getMsgReceiver())) {
+		}	
+		if(memberId.equals(msg.getMsgReceiver())) {
 			// 받는사람이 지우려면
 			result = dao.updateDelMsgReceiver(conn, msgNo);
 			if(msg.getMsgSenderDel()==1) { // 보낸사람도 지웠는지 체크

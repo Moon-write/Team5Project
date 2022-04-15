@@ -11,8 +11,8 @@ import kr.or.iei.notice.vo.Notice;
 import kr.or.iei.notice.vo.NoticeComment;
 
 public class NoticeDao {
-
-	public ArrayList<Notice> selectNoticeList(Connection conn, int start, int end,String memberId) {
+	//겹치지 않는 고정사항
+	public ArrayList<Notice> selectNoticeList(Connection conn,String memberId, int start, int end) {
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
 		ArrayList<Notice> list = new ArrayList<Notice>();
@@ -21,7 +21,7 @@ public class NoticeDao {
 				+ "            n.*,\r\n"
 				+ "            (select count(*) from noticelike where like_no=n.notice_no)as likenumber,\r\n"
 				+ "            (select count(*) from noticelike where like_no=n.notice_no and like_id=?)as clicklike\r\n"
-				+ "     from (select * from notice order by notice_no desc)n) \r\n"
+				+ "     from (select * from notice where top_fixed=0 order by notice_no desc)n) \r\n"
 				+ "where rnum between ? and ?";
 		try {
 			pstmt = conn.prepareStatement(query);
@@ -316,8 +316,202 @@ public class NoticeDao {
 		}
 		return result;
 	}
-	
+	//좋아요를 취소하는 dao메소드
+	public int cancellike(Connection conn, int noticeNo, String memberId) {
+		PreparedStatement pstmt = null;
+		int result = 0;
+		String query = "DELETE FROM noticelike WHERE like_id = ? and like_no = ?";
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, memberId);
+			pstmt.setInt(2, noticeNo);
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			JDBCTemplate.close(pstmt);
+		}
+		return result;
+	}
+	//좋아요를 클릭하는 dao메소드
+	public int pluslike(Connection conn, int noticeNo, String memberId) {
+		PreparedStatement pstmt = null;
+		int result = 0;
+		String query = "INSERT INTO noticelike VALUES(?,?)";
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, memberId);
+			pstmt.setInt(2, noticeNo);
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			JDBCTemplate.close(pstmt);
+		}
+		return result;
+	}
 
+	public int countlike(Connection conn, int noticeNo) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		int result = 0;
+		String query = "select count(*) as cnt from noticelike where like_no = ?";
+		try {
+			pstmt = conn.prepareStatement(query);
+			
+			pstmt.setInt(1, noticeNo);
+			rset = pstmt.executeQuery();
+			if(rset.next()) {
+				result = rset.getInt("cnt");
+			}
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			JDBCTemplate.close(pstmt);
+		}
+		return result;
+	}
+
+	public ArrayList<Notice> searchNoticeList(Connection conn, int start, int end, String select, String value,String memberId) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		ArrayList<Notice> list = new ArrayList<Notice>();
+		
+		String query = null;
+		if(select.equals("noticeTitle")) {
+			query = "select * from \r\n"
+					+ "				     (select rownum as rnum,\r\n"
+					+ "				             n.*,\r\n"
+					+ "				             (select count(*) from noticelike where like_no=n.notice_no)as likenumber,\r\n"
+					+ "				             (select count(*) from noticelike where like_no=n.notice_no and like_id=?)as clicklike\r\n"
+					+ "				      from (select * from notice where notice_title like ? order by notice_no desc)n) \r\n"
+					+ "				 where rnum between ? and ?";
+		}else if(select.equals("noticeWriter")) {
+			query = "select * from \r\n"
+					+ "				     (select rownum as rnum,\r\n"
+					+ "				             n.*,\r\n"
+					+ "				             (select count(*) from noticelike where like_no=n.notice_no)as likenumber,\r\n"
+					+ "				             (select count(*) from noticelike where like_no=n.notice_no and like_id=?)as clicklike\r\n"
+					+ "				      from (select * from notice where notice_writer like ? order by notice_no desc)n) \r\n"
+					+ "				 where rnum between ? and ?";
+		}else if(select.equals("0")) {
+			query = "select * from \r\n"
+					+ "				     (select rownum as rnum,\r\n"
+					+ "				             n.*,\r\n"
+					+ "				             (select count(*) from noticelike where like_no=n.notice_no)as likenumber,\r\n"
+					+ "				             (select count(*) from noticelike where like_no=n.notice_no and like_id=?)as clicklike\r\n"
+					+ "				      from (select * from notice where (notice_title||notice_writer||notice_content) like ? order by notice_no desc)n) \r\n"
+					+ "				 where rnum between ? and ?";
+		}
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, memberId);			
+			pstmt.setString(2, "%"+value+"%");
+			pstmt.setInt(3, start);
+			pstmt.setInt(4, end);
+			rset = pstmt.executeQuery();
+			while(rset.next()) {
+				Notice n = new Notice();
+				n.setNoticeNo(rset.getInt("notice_no"));
+				n.setNoticeTitle(rset.getString("notice_title"));
+				n.setNoticeWriter(rset.getString("notice_writer"));
+				n.setNoticeContent(rset.getString("notice_content"));
+				n.setReadCount(rset.getInt("read_count"));
+				n.setRegDate(rset.getString("reg_date"));
+				n.setFilename(rset.getString("filename"));
+				n.setFilepath(rset.getString("filepath"));
+				n.setTopFixed(rset.getInt("top_fixed"));
+				n.setLikeNumber(rset.getInt("likenumber"));
+				n.setClickLike(rset.getInt("clicklike"));
+				list.add(n);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			JDBCTemplate.close(pstmt);
+			JDBCTemplate.close(rset);
+		}
+		return list;
+	}
+
+	public int searchTotalNoticeCount(Connection conn, String select, String value) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		int result = 0;
+		String query = null;
+		if(select.equals("noticeTitle")) {
+			
+			query = "select count(*) as cnt from(select * from notice where notice_title like ? order by notice_no desc)";
+			
+		}else if(select.equals("noticeWriter")){
+			
+			query = "select count(*) as cnt from(select * from notice where notice_writer like ? order by notice_no desc)";
+			
+		}else if(select.equals("0")){
+			
+			query = "select count(*) as cnt from(select * from notice where (notice_title||notice_writer||notice_content) like ? order by notice_no desc)";
+		}
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, "%"+value+"%");
+			rset = pstmt.executeQuery();
+			if(rset.next()) {
+				result = rset.getInt("cnt");
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			JDBCTemplate.close(rset);
+			JDBCTemplate.close(pstmt);
+		}
+		return result;
+	}
+	//top_fixed가 1인 값을 찾는 dao
+	public ArrayList<Notice> fixedList(Connection conn, String memberId) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		ArrayList<Notice> list = new ArrayList<Notice>();
+		String query = "select * from \r\n"
+				+ "            (select rownum as rnum,\r\n"
+				+ "                     n.*,\r\n"
+				+ "                        (select count(*) from noticelike where like_no=n.notice_no)as likenumber,\r\n"
+				+ "                        (select count(*) from noticelike where like_no=n.notice_no and like_id= ? )as clicklike\r\n"
+				+ "                 from (select * from (select * from notice where top_fixed=1) order by notice_no desc)n)";
+		try {
+			pstmt = conn.prepareStatement(query);
+			//start, end변수를 넣어줬으니까 setting해주기
+			pstmt.setString(1, memberId);
+			rset = pstmt.executeQuery();
+			while(rset.next()) {
+				Notice n = new Notice();
+				n.setNoticeNo(rset.getInt("notice_no"));
+				n.setNoticeTitle(rset.getString("notice_title"));
+				n.setNoticeWriter(rset.getString("notice_writer"));
+				n.setNoticeContent(rset.getString("notice_content"));
+				n.setReadCount(rset.getInt("read_count"));
+				n.setRegDate(rset.getString("reg_date"));
+				n.setFilename(rset.getString("filename"));
+				n.setFilepath(rset.getString("filepath"));
+				n.setTopFixed(rset.getInt("top_fixed"));
+				n.setLikeNumber(rset.getInt("likenumber"));
+				n.setClickLike(rset.getInt("clicklike"));
+				list.add(n);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			JDBCTemplate.close(rset);
+			JDBCTemplate.close(pstmt);
+		}
+		return list;
+	}
 
 
 }

@@ -26,8 +26,11 @@
 					<input class="form-control form-control-lg" type="text" name="email" id="email" placeholder="가입시 입력한 이메일 주소">
 				</div>
 				<div class="input-wrap">
-					<button type="submit" class="btn btn-primary" id="signupButton">아이디 찾기</button>
+					<button type="submit" class="btn btn-primary" id="signupButton" style="margin-bottom:5px">아이디 찾기</button>
 				</div>
+			</form>
+			<form action="/findPw.do" method="post" id="" name="">
+				<button type="submit" class="btn btn-primary" id="signupButton">비밀번호 찾기</button>
 			</form>
 			
 		</div>

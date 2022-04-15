@@ -1,6 +1,7 @@
 package kr.co.iei.free.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -8,9 +9,12 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import kr.co.iei.free.service.FreeService;
+import kr.co.iei.free.vo.FreeComment;
 import kr.co.iei.free.vo.FreeView;
+import kr.co.iei.member.vo.Member;
 
 /**
  * Servlet implementation class FreeViewServlet
@@ -38,8 +42,13 @@ public class FreeViewServlet extends HttpServlet {
 		FreeService service = new FreeService();
 		FreeView FV = service.FreeView(FreeNo);
 		
+		ArrayList<FreeComment> cmlist = service.FreeCommentSearch(FreeNo);
+		ArrayList<FreeComment> recmlist = service.FreeRecommentSearch(FreeNo);
+		
 		RequestDispatcher view = request.getRequestDispatcher("WEB-INF/views/free/freeView.jsp");
 		request.setAttribute("FV", FV);
+		request.setAttribute("cmlist", cmlist);
+		request.setAttribute("recmlist", recmlist);
 		view.forward(request, response);
 		
 	}

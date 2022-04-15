@@ -40,8 +40,9 @@ public class FreeUpdateServlet extends HttpServlet {
 		
 		RequestDispatcher view = request.getRequestDispatcher("WEB-INF/views/free/freeUpdate.jsp");
 		request.setAttribute("free", f);
-		view.forward(request, response);
 		
+		
+		view.forward(request, response);
 	}
 
 	/**
