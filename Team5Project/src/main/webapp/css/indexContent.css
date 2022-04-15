@@ -232,6 +232,13 @@ ul#vaccineChart{
     height: 100px;
     padding: 0px; margin: 0px;
 }
+
+.noneDrag{
+    -webkit-user-select:none; -moz-user-select:none; -ms-user-select:none;
+    user-select: none;
+}
+
+
 ul#vaccineChart>li{
     display: flex;
     width: 25%;
@@ -299,6 +306,7 @@ ul#bubbleTap>li:last-of-type{
     top: 270px; right: 10px;
     text-align: center;
     transition: color 0.5s;
+    cursor: pointer;
 }
 
 
