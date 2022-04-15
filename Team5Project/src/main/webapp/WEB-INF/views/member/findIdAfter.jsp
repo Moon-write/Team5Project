@@ -30,9 +30,9 @@
 		<%}else {%>
 			<div class="content-title">아이디 조회 결과</div>
 			<h1>회원가입 시 사용한 아이디는 <span id="memberId12"><%=member %></span>입니다.</h1>
-			<form action="/" method="post" id="memberId12" name="memberId12">
+			<form action="/findId.do" method="post" id="memberId12" name="memberId12">
 				<div class="input-wrap">
-					<button type="submit" class="btn btn-primary" id="signupButton" style="margin-bottom:5px">메인화면으로 이동</button>
+					<button type="submit" class="btn btn-primary" id="signupButton" style="margin-bottom:5px">이전화면으로 이동</button>
 				</div>
 			</form>
 		<%} %>

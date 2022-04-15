@@ -52,7 +52,7 @@ public class SigninServlet extends HttpServlet {
 				request.setAttribute("icon", "warning");
 			}else {
 				request.setAttribute("title", "로그인 성공");
-				request.setAttribute("msg", "안녕");
+				request.setAttribute("msg", "어서오세요");
 				request.setAttribute("icon", "success");
 				HttpSession session = request.getSession();//session객체 생성 후 가져옴
 				session.setAttribute("m", m);

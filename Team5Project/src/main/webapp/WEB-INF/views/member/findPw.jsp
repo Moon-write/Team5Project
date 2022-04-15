@@ -31,10 +31,16 @@
 				</div>
 				<div class="input-wrap">
 					<button type="submit" class="btn btn-primary" id="signupButton" style="margin-bottom:5px">비밀번호 찾기</button>
+					<button type="button" class="btn btn-primary button12" id="signupButton" style="margin-bottom:5px" onclick="findId()">이전화면으로 이동</button>
 				</div>
 			</form>
 			
 		</div>
+	<script>
+		function findId(){
+			location.href="/findId.do";
+		}
+	</script>
 	<%@include file="/WEB-INF/views/common/footer.jsp" %>
 </body>
 </html>
