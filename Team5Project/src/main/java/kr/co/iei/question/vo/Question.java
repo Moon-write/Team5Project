@@ -44,6 +44,9 @@ public class Question {
 	public String getQuestionContent() {
 		return questionContent;
 	}
+	public String getQuestionContentBr() {
+		return questionContent.replaceAll("\r\n", "<br>");
+	}
 	public void setQuestionContent(String questionContent) {
 		this.questionContent = questionContent;
 	}

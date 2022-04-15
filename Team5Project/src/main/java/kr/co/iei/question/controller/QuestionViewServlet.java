@@ -9,17 +9,21 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import kr.co.iei.question.service.QuestionService;
+import kr.co.iei.question.vo.QuestionViewData;
+
+
 /**
- * Servlet implementation class QuestionWriteFrmServlet
+ * Servlet implementation class QuestionViewServlet
  */
-@WebServlet(name = "QuestionWriteFrm", urlPatterns = { "/questionWriteFrm.do" })
-public class QuestionWriteFrmServlet extends HttpServlet {
+@WebServlet(name = "QuestionView", urlPatterns = { "/questionView.do" })
+public class QuestionViewServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public QuestionWriteFrmServlet() {
+    public QuestionViewServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -31,10 +35,17 @@ public class QuestionWriteFrmServlet extends HttpServlet {
 		//1. 인코딩
 		request.setCharacterEncoding("utf-8");
 		//2. 값추출
+		int questionNo = Integer.parseInt(request.getParameter("questionNo"));
 		//3. 비즈니스로직
-		//4. 화면처리
+		QuestionService service = new QuestionService();
+		QuestionViewData qvd = service.selectQuestionView(questionNo);
+		//Notice n = service.selectOneNotice(noticeNo);
+		//4. 결과처리
 		RequestDispatcher view
-		=request.getRequestDispatcher("/WEB-INF/views/question/questionWriteFrm.jsp");
+		=request.getRequestDispatcher("WEB-INF/views/question/questionView.jsp");
+		request.setAttribute("q", qvd.getQ());
+		request.setAttribute("commentList", qvd.getCommentList());
+		request.setAttribute("reCommentList", qvd.getRecommentList());
 		view.forward(request, response);
 	}
 

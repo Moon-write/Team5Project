@@ -3,7 +3,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
      <%
-    	ArrayList<Question> list = (ArrayList<Question>)request.getAttribute("list");
+     	ArrayList<Question> list = (ArrayList<Question>)request.getAttribute("list");
      	String pageNavi = (String)request.getAttribute("pageNavi");
     %>
 <!DOCTYPE html>
@@ -15,11 +15,15 @@
 		.tr-2>th{
 			text-align: center;
 		}
+		.tr-1{
+		
+		}
 		.notice-tbl a:hover{
 			text-decoration: underline;
 		}
 		.notice-tbl tr{
 			border-bottom: 1px solid #ccc;
+			text-align: center;
 		}
 		.notice-tbl tr>th:frist-child{
 			width:10%;
@@ -40,7 +44,13 @@
 			width:10%;
 		}
 		#pageNavi{
-			margin: 30px;
+			margin-top: 30px;
+		}
+		.pageination{
+			justify-content: center;
+		}
+		.btn-lg{
+		 margin-bottom: 10px; 
 		}
 	</style>
 </head>
@@ -48,8 +58,8 @@
 	<%@include file="/WEB-INF/views/common/header.jsp" %>
 	<div class = "div-content">
 		<div class="content-title">질문게시판</div>
-		<%if(m != null ) {%>
-		<a class="btn bc4 writeBtn" href="/questionWriteFrm.do">글쓰기</a>	
+		<%if(m != null && m.getMemberLevel()==0) {%>
+		<a class="btn btn-lg btn-primary" href="/questionWriteFrm.do">글쓰기</a>	
 		<%} %>
 		<table class="table table-hover notice-tbl">
 			<tr class="table-success tr-2">

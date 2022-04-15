@@ -6,7 +6,9 @@ import java.util.ArrayList;
 import common.JDBCTemplate;
 import kr.co.iei.question.dao.QuestionDao;
 import kr.co.iei.question.vo.Question;
+import kr.co.iei.question.vo.QuestionComment;
 import kr.co.iei.question.vo.QuestionPageData;
+import kr.co.iei.question.vo.QuestionViewData;
 
 public class QuestionService {
 
@@ -37,24 +39,24 @@ public class QuestionService {
 		//페이지 네비게이션 시작번호 계산
 		int pageNo = ((reqPage-1)/pageNaviSize)*pageNaviSize + 1;
 		//페이지 네비게이션 제작 시작
-		String pageNavi = "<ul class='pagination circle-style'>";
+		String pageNavi = "<ul class='pagination pagination-lg' style='justify-content: center'>";
 		//이전버튼
 		if(pageNo !=1) {
-			pageNavi += "<li>";
-			pageNavi += "<a class='page-item' href='/noticeList.do?reqPage="+(pageNo-1)+"'>";
+			pageNavi += "<li class='page-item'>";
+			pageNavi += "<a class='page-link' href='/questionList.do?reqPage="+(pageNo-1)+"'>";
 			pageNavi += "<span class='material-icons'>chevron_left</span>";
 			pageNavi +=	"</a></li>";
 		}
 		//페이지숫자
 		for(int i=0;i<pageNaviSize;i++) {
 			if(pageNo == reqPage) {
-				pageNavi += "<li>";
-				pageNavi += "<a class='page-item active-page' href='/noticeList.do?reqPage="+pageNo+"'>";
+				pageNavi += "<li class='page-item active'>";
+				pageNavi += "<a class='page-link' href='/question.do?reqPage="+pageNo+"'>";
 				pageNavi += pageNo;
 				pageNavi +=	"</a></li>";
 			}else {
-				pageNavi += "<li>";
-				pageNavi += "<a class='page-item' href='/noticeList.do?reqPage="+pageNo+"'>";
+				pageNavi += "<li class='page-item'>";
+				pageNavi += "<a class='page-link' href='/questionList.do?reqPage="+pageNo+"'>";
 				pageNavi += pageNo;
 				pageNavi +=	"</a></li>";
 			}
@@ -66,18 +68,42 @@ public class QuestionService {
 		}
 		//다음버튼
 		if(pageNo<=totalPage) {
-			pageNavi += "<li>";
-			pageNavi += "<a class='page-item' href='/noticeList.do?reqPage="+(pageNo-1)+"'>";
+			pageNavi += "<li class='page-item'>";
+			pageNavi += "<a class='page-link' href='/questionList.do?reqPage="+pageNo+"'>";
 			pageNavi += "<span class='material-icons'>chevron_right</span>";
 			pageNavi +=	"</a></li>";
 		}
 		pageNavi += "</ul>";
-		System.out.println(pageNavi);
 		QuestionPageData qpd = new QuestionPageData(list, pageNavi);
-						
-
 		JDBCTemplate.close(conn);
 		return qpd;
+	}
+
+	public int insertQuestion(Question q) {
+		Connection conn = JDBCTemplate.getConnection();
+		QuestionDao dao = new QuestionDao();
+		int result = dao.insertQuestion(conn, q);
+		if(result>0) {
+			JDBCTemplate.commit(conn);
+		}else {
+			JDBCTemplate.rollback(conn);
+		}
+		JDBCTemplate.close(conn);
+		return result;
+	}
+
+	public QuestionViewData selectQuestionView(int questionNo) {
+		Connection conn = JDBCTemplate.getConnection();
+		QuestionDao dao = new QuestionDao();
+		//공지사항 정보
+		Question q = dao.selectOneQuestion(conn, questionNo);
+		//공지사항에 달려있는 일반댓글 조회
+		ArrayList<QuestionComment> commentList = dao.selectQuestionComment(conn, questionNo);
+		//공지사항에 달려있는 댓글의 댓글을 조회
+		ArrayList<QuestionComment> reCommentList = dao.selectQuestionReComment(conn, questionNo);
+		JDBCTemplate.close(conn);
+		QuestionViewData qvd = new QuestionViewData(q, commentList, reCommentList);
+		return qvd;
 	}
 
 }
