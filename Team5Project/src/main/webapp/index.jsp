@@ -282,13 +282,13 @@
                 $("#dateGap").text(data.dateGap);
 
                 $("#vaccineChart>li>div").eq(0).text(data.vaccine0);
-                $("#vaccineChart>li>div").eq(0).css("height", data.vaccine0*30+"px");
+                $("#vaccineChart>li>div").eq(0).css("height", data.vaccine0*10+"px");
                 $("#vaccineChart>li>div").eq(1).text(data.vaccine1);
-                $("#vaccineChart>li>div").eq(1).css("height", data.vaccine1*30+"px");
+                $("#vaccineChart>li>div").eq(1).css("height", data.vaccine1*10+"px");
                 $("#vaccineChart>li>div").eq(2).text(data.vaccine2);
-                $("#vaccineChart>li>div").eq(2).css("height", data.vaccine2*30+"px");
+                $("#vaccineChart>li>div").eq(2).css("height", data.vaccine2*10+"px");
                 $("#vaccineChart>li>div").eq(3).text(data.vaccine3);
-                $("#vaccineChart>li>div").eq(3).css("height", data.vaccine3*30+"px");
+                $("#vaccineChart>li>div").eq(3).css("height", data.vaccine3*10+"px");
             },
             error : function(){
                 console.log("문제있다");
