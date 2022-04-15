@@ -161,4 +161,18 @@ public class MemberService {
 		JDBCTemplate.close(conn);
 		return m;
 	}
+
+	public int exileMember(int memberNo) {
+		Connection conn = JDBCTemplate.getConnection();
+		MemberDao dao = new MemberDao();
+		int result = dao.exileMember(conn, memberNo);
+//		System.out.println(memberNo);
+		if(result>0) {
+			JDBCTemplate.commit(conn);
+		}else {
+			JDBCTemplate.rollback(conn);
+		}
+		JDBCTemplate.close(conn);
+		return result;
+	}
 }

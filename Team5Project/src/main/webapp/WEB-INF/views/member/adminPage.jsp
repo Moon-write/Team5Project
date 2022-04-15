@@ -65,7 +65,7 @@
 						<button class="btn btn-primary changeLevel">등급변경</button>
 					</td>
 					<td>
-						<button class="btn btn-danger changeLevel">추방!!</button>
+						<button type="button" class="btn btn-danger exileMember">추방!!</button>
 					</td>
 				</tr>
 			<%} %>
@@ -77,6 +77,13 @@
 		</table>
 	</div>
 	<script>
+		$(".exileMember").on("click",function(){
+			const memberNo = $(this).parent().parent().children().eq(1).text();
+			//컨트롤러로 값 주면서 페이지 이동
+			console.log(memberNo);
+			location.href="/exileMember.do?memberNo="+memberNo;
+		});
+		
 		$(".changeLevel").on("click",function(){
 				const memberLevel = $(this).parent().prev().children().val();
 				const memberNo = $(this).parent().parent().children().eq(1).text();
