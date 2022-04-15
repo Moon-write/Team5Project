@@ -22,7 +22,7 @@
 			<%if(memberPw2 == null && memberName == null && memberId == null){ %>
 				<div class="content-title">비밀번호 조회 결과</div>
 				<h1>등록된 해당 회원이 없습니다 다시 확인해 주세요</h1>
-				<form action="/findId.do" method="post" id="memberId12" name="memberId12">
+				<form action="/findPw.do" method="post" id="memberId12" name="memberId12">
 				<div class="input-wrap">
 					<button type="submit" class="btn btn-primary" id="signupButton" style="margin-bottom:5px">이전화면으로 이동</button>
 				</div>

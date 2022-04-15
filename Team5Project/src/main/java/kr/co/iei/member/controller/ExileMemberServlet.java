@@ -10,19 +10,18 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import kr.co.iei.member.service.MemberService;
-import kr.co.iei.member.vo.Member;
 
 /**
- * Servlet implementation class FindPwAfter2Servlet
+ * Servlet implementation class ExileMemberServlet
  */
-@WebServlet(name = "FindPwAfter2", urlPatterns = { "/findPwAfter.do" })
-public class FindPwAfterServlet extends HttpServlet {
+@WebServlet(name = "ExileMember", urlPatterns = { "/exileMember.do" })
+public class ExileMemberServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public FindPwAfterServlet() {
+    public ExileMemberServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -34,29 +33,24 @@ public class FindPwAfterServlet extends HttpServlet {
 		//1. 인코딩
 		request.setCharacterEncoding("utf-8");
 		//2. 값추출
-		String memberName = request.getParameter("memberName");
-		String memberId = request.getParameter("memberId");
-		String memberEmail = request.getParameter("email");
-		Member member = new Member();
-		member.setMemberName(memberName);
-		member.setMemberId(memberId);
-		member.setEmail(memberEmail);
-		//3. 비즈니스로직
+		int memberNo = Integer.parseInt(request.getParameter("memberNo"));
+//		System.out.println(memberNo);
+		//3. 비즈니스 로직
 		MemberService service = new MemberService();
-		Member m = service.findPw(member);//이름,아이디,이메일 들어있는 객체 전달
-//		System.out.println("서비스에서 가져온 객체"+m);
-		//4. 결과처리
-		if(m != null) {
-			request.setAttribute("memberId", m.getMemberId());
-			request.setAttribute("memberPw", m.getMemberPw());
-			request.setAttribute("memberName", m.getMemberName());
-			RequestDispatcher view = request.getRequestDispatcher("/WEB-INF/views/member/findPwAfter.jsp");
-			view.forward(request, response);
+		int result = service.exileMember(memberNo);
+ 		//4. 결과처리
+		RequestDispatcher view = request.getRequestDispatcher("/WEB-INF/views/common/msg.jsp");
+		if(result>0) {
+			request.setAttribute("title", "성공");
+			request.setAttribute("msg", "요청이 처리되었습니다.");
+			request.setAttribute("icon", "success");
 		}else {
-			RequestDispatcher view = request.getRequestDispatcher("/WEB-INF/views/member/findPwAfter.jsp");
-			view.forward(request, response);
+			request.setAttribute("title", "실패");
+			request.setAttribute("msg", "요청 처리 중 에러가 발생했습니다.");
+			request.setAttribute("icon", "error");
 		}
-		
+		request.setAttribute("loc", "/adminPage.do");
+		view.forward(request, response);
 	}
 
 	/**
