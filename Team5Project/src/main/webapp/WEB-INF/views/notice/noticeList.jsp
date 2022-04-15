@@ -35,12 +35,12 @@
 		border-bottom: 0px solid #d8d2d9d9;
 	}
 	.notice-tbl tr>th:first-child{
-		width: 10%;
-		min-width: 49px;
+		width: 15%;
+		min-width: 90px;
 	}
 	.notice-tbl tr>th:nth-child(2){
-		width: 45%;
-		min-width: 350px;
+		width: 40%;
+		min-width: 340px;
 	}
 	.notice-tbl tr>td:nth-child(2){
 		text-align: left;
@@ -92,6 +92,14 @@
 		display: inline-flex;
 		align-content: center;
 	}
+	.top{
+		font-size: 15px;
+		font-weight: bold;
+	}
+	.top-top{
+    	display: inline-flex;
+    	align-content: center;
+	}
 </style>
 </head>
 <body>
@@ -100,7 +108,7 @@
 		<div class="content-title" id="content">공지사항 게시판</div>
 		<%if(m != null && m.getMemberLevel() == 0) {%>
 		<div class="writebox">
-			<a class="btn btn-dark" href="/noticeWriteFrm.do" style="margin-bottom: 10px; font-size: 18px; line-height: 18px">글쓰기</a>
+			<a class="btn btn-dark" href="/noticeWriteFrm.do" style="margin-bottom: 10px; font-size: 15px; line-height: 18px">글쓰기</a>
 		</div>
 		<%} %>
 		<div class="searchthing">
@@ -145,11 +153,12 @@
 			<%for(Notice n : list) {%>
 				<tr class="table-active">
 					<%if(n.getTopFixed()== 1) {%>
-						<td><span class="material-icons" id="pin">push_pin</span></td>
-						<td>
-						<a href="/noticeView.do?noticeNo=<%=n.getNoticeNo() %>">
-						<%=n.getNoticeTitle() %>
-						</a>
+						<td class="top">
+							<div class="top-top">
+								<img src="img/logos.png" height="20px">공지
+							</div>
+						</td>
+						<td><a href="/noticeView.do?noticeNo=<%=n.getNoticeNo() %>"><%=n.getNoticeTitle() %></a>
 						</td>
 						<td><%=n.getNoticeWriter() %></td>
 						<td><%=n.getRegDate() %></td>

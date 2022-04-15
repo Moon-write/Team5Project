@@ -52,6 +52,9 @@ public class NoticeWriteServlet extends HttpServlet {
 		String noticeContent = mRequest.getParameter("noticeContent");
 		String filename = mRequest.getOriginalFileName("file"); //화면에서 업로드하는 실제 파일이름
 		String filepath = mRequest.getFilesystemName("file");	//서버에 저장되는 파일이름
+		String[] top = mRequest.getParameterValues("top");
+		int topFixed = Integer.parseInt(top[0]);
+
 		//변수들 notice에 묶어두기()
 		Notice n = new Notice();
 		n.setNoticeTitle(noticeTitle);
@@ -59,6 +62,7 @@ public class NoticeWriteServlet extends HttpServlet {
 		n.setNoticeContent(noticeContent);
 		n.setFilename(filename);
 		n.setFilepath(filepath);//데이터 처리완료 인서트 시작
+		n.setTopFixed(topFixed);
 		//3. 비즈니스로직
 		NoticeService service = new NoticeService();
 		int result = service.insertNotice(n);
