@@ -12,16 +12,16 @@ import javax.servlet.http.HttpServletResponse;
 import kr.co.iei.free.service.FreeService;
 
 /**
- * Servlet implementation class FreeInsertLikeServlet
+ * Servlet implementation class FreeDeleteLikeServlet
  */
-@WebServlet(name = "freeInsertLike", urlPatterns = { "/freeInsertLike.do" })
-public class FreeInsertLikeServlet extends HttpServlet {
+@WebServlet(name = "FreeDeleteLike", urlPatterns = { "/freeDeleteLike.do" })
+public class FreeDeleteLikeServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public FreeInsertLikeServlet() {
+    public FreeDeleteLikeServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -31,13 +31,13 @@ public class FreeInsertLikeServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		request.setCharacterEncoding("utf-8");
+request.setCharacterEncoding("utf-8");
 		
 		int num1 = Integer.parseInt(request.getParameter("num1"));
 		int num2 = Integer.parseInt(request.getParameter("num2"));
 		
 		FreeService service = new FreeService();
-		int result = service.InsertLike(num1,num2);
+		int result = service.DeleteLike(num1,num2);
 		
 		response.setCharacterEncoding("utf-8");
 		PrintWriter out = response.getWriter();
@@ -46,7 +46,6 @@ public class FreeInsertLikeServlet extends HttpServlet {
 		}else {
 			out.print("실패");
 		}
-		
 	}
 
 	/**

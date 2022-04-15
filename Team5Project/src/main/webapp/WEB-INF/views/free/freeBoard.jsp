@@ -27,21 +27,26 @@
 	}
 	.tr1 th:first-child{
 		width:10%;
+		min-width: 49px;
 	}
 	.tr1 th:nth-child(2){
 		width:35%;
+		min-width: 300px;
 	}
 	.tr1 th:nth-child(3){
 		width:10%;
 	}
 	.tr1 th:nth-child(4){
 		width:15%;
+		min-width: 65px;
 	}
 	.tr1 th:nth-child(5){
 		width:10%;
+		min-width: 97.5px;
 	}
 	.tr1 th:last-child{
 		width:10%;
+		min-width: 73px;
 	}
 	.menu1{
 		display:flex;
@@ -82,12 +87,13 @@
 	}
 	.icon div:first-child{
 		width:2em;
-		margin-left: 2em;
+		margin-left:10%;
 	}
 	.icon div:first-child>span{
 		padding-top:2px;
 	}
-	.icon div:ntn-child(2){
+	.icon div:last-child{
+		margin:0 auto;
 		width:1em;
 	}
 </style>
@@ -158,9 +164,9 @@
 		      <td class="icon">
 		      	<div>
 		      		<%if(m!=null&&likecheck.containsKey(fbt.getNo())){ %>
-					    <span class="material-icons" onclick="unliked()">thumb_up</span>
+					    <span type="button" class="material-icons" onclick="unliked(this,'<%=m.getMemberNo()%>','<%=fbt.getNo()%>')">thumb_up</span>
 			      	<%}else { %>
-			      		<span class="material-icons" onclick="liked('<%=m!=null?m.getMemberNo():m%>','<%=fbt.getNo()%>')">thumb_up_off_alt</span>      	
+			      		<span type="button" class="material-icons" onclick="liked(this,'<%=m!=null?m.getMemberNo():m%>','<%=fbt.getNo()%>')">thumb_up_off_alt</span>      	
 			      	<%}%>
 		      	</div>
 		      	<div><%=fbt.getLikeCount() %></div>
@@ -212,24 +218,49 @@
 		});
 		keyword.attr("value",urlParams.get("keyword"));
 		
+		//추천기능
  		function loginCheck(){
 			$("#login-btn").trigger("click");
 		}
-		function unliked(){
-			
+		function unliked(obj,m,f){
+			$.ajax({
+				type:"post",
+				url:"/freeDeleteLike.do",
+				data:{num1:m, num2:f},
+				success:function(data){
+					if(data=="성공"){
+						$(obj).text("thumb_up_off_alt");
+						$(obj).attr("onclick","liked(this,'"+m+"','"+f+"')");
+						const count = $(obj).parent().next();
+						count.text(Number.parseInt(count.text())-1);
+						alert("추천취소!");
+					}else{
+						console.log(data);
+					}
+				},
+				error:function(){
+					console.log("전송실패");
+				}
+			})
 		}
-		function liked(m,f){
-			console.log(m);
-			if(m!=null){
-				console.log("sddd");
+		function liked(obj,m,f){
+			if(m!="null"){
 				$.ajax({
-					type:"get",
+					type:"post",
 					url:"/freeInsertLike.do",
 					data:{num1:m, num2:f},
 					success:function(data){
-						console.log("전송성공");
+						if(data=="성공"){
+							$(obj).text("thumb_up");
+							$(obj).attr("onclick","unliked(this,'"+m+"','"+f+"')");
+							const count = $(obj).parent().next();
+							count.text(Number.parseInt(count.text())+1);
+							alert("추천!");
+						}else{
+							console.log(data);
+						}
 					},
-					erorr:function(){
+					error:function(){
 						console.log("전송실패");
 					}
 				})

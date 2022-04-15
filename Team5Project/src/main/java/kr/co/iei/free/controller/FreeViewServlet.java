@@ -41,14 +41,22 @@ public class FreeViewServlet extends HttpServlet {
 		int FreeNo = Integer.parseInt(request.getParameter("FreeNo"));
 		FreeService service = new FreeService();
 		FreeView FV = service.FreeView(FreeNo);
+		HttpSession logincheck = request.getSession(false);
 		
+		Member m = (Member)logincheck.getAttribute("m");
 		ArrayList<FreeComment> cmlist = service.FreeCommentSearch(FreeNo);
 		ArrayList<FreeComment> recmlist = service.FreeRecommentSearch(FreeNo);
-		
+		boolean likecheck = false;
+		if(m!=null) {
+			int no = m.getMemberNo();
+			likecheck = service.likeCheck(FreeNo, m.getMemberNo());
+		}
 		RequestDispatcher view = request.getRequestDispatcher("WEB-INF/views/free/freeView.jsp");
+		
 		request.setAttribute("FV", FV);
 		request.setAttribute("cmlist", cmlist);
 		request.setAttribute("recmlist", recmlist);
+		request.setAttribute("likecheck", likecheck);
 		view.forward(request, response);
 		
 	}

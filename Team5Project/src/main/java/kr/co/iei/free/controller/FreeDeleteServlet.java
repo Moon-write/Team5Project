@@ -1,8 +1,8 @@
 package kr.co.iei.free.controller;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -10,18 +10,20 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import kr.co.iei.free.service.FreeService;
+import kr.co.iei.free.vo.Free;
+import kr.co.iei.free.vo.FreeView;
 
 /**
- * Servlet implementation class FreeInsertLikeServlet
+ * Servlet implementation class FreeDeleteServlet
  */
-@WebServlet(name = "freeInsertLike", urlPatterns = { "/freeInsertLike.do" })
-public class FreeInsertLikeServlet extends HttpServlet {
+@WebServlet(name = "FreeDelete", urlPatterns = { "/freeDelete.do" })
+public class FreeDeleteServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public FreeInsertLikeServlet() {
+    public FreeDeleteServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -33,20 +35,23 @@ public class FreeInsertLikeServlet extends HttpServlet {
 		// TODO Auto-generated method stub
 		request.setCharacterEncoding("utf-8");
 		
-		int num1 = Integer.parseInt(request.getParameter("num1"));
-		int num2 = Integer.parseInt(request.getParameter("num2"));
-		
+		int FreeNo = Integer.parseInt(request.getParameter("freeno"));
+				
 		FreeService service = new FreeService();
-		int result = service.InsertLike(num1,num2);
+		int result = service.FreeDelete(FreeNo);
 		
-		response.setCharacterEncoding("utf-8");
-		PrintWriter out = response.getWriter();
+		RequestDispatcher view = request.getRequestDispatcher("/WEB-INF/views/common/msg.jsp");
 		if(result>0) {
-			out.print("성공");
+			request.setAttribute("title", "성공");
+			request.setAttribute("msg", "글 삭제 성공");
+			request.setAttribute("icon", "success");
 		}else {
-			out.print("실패");
+			request.setAttribute("title", "실패");
+			request.setAttribute("msg", "글 삭제 실패");
+			request.setAttribute("icon", "error");
 		}
-		
+		request.setAttribute("loc", "/free.do?reqPage=1&numPage=10&Sort=3&keyword=");
+		view.forward(request, response);
 	}
 
 	/**

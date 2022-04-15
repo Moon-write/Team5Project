@@ -175,6 +175,50 @@ public class FreeService {
 		JDBCTemplate.close(conn);
 		return result;
 	}
+	public int DeleteLike(int num1, int num2) {
+		Connection conn = JDBCTemplate.getConnection();
+		freeDao dao = new freeDao();
+		int result = dao.DeleteLike(conn,num1,num2);
+		if(result>0) {
+			JDBCTemplate.commit(conn);
+		}else {
+			JDBCTemplate.rollback(conn);
+		}
+		JDBCTemplate.close(conn);
+		return result;
+	}
+	public int FreeDelete(int freeNo) {
+		Connection conn = JDBCTemplate.getConnection();
+		freeDao dao = new freeDao();
+		int result = dao.FreeDelete(conn,freeNo);
+		if(result>0) {
+			JDBCTemplate.commit(conn);
+		}else {
+			JDBCTemplate.rollback(conn);
+		}
+		JDBCTemplate.close(conn);
+		return result;
+	}
+	public boolean likeCheck(int freeNo, int memberNo) {
+		Connection conn = JDBCTemplate.getConnection();
+		freeDao dao = new freeDao();
+		boolean likecheck = dao.Likecheck(conn, freeNo, memberNo);
+		JDBCTemplate.close(conn);
+		return likecheck;
+	}
+	public int freeUpdateComment(int commentNo, String comment) {
+		Connection conn = JDBCTemplate.getConnection();
+		freeDao dao = new freeDao();
+		
+		int result = dao.freeUpdateComment(conn, commentNo, comment);
+		if(result>0) {
+			JDBCTemplate.commit(conn);
+		}else {
+			JDBCTemplate.rollback(conn);
+		}
+		JDBCTemplate.close(conn);
+		return result;
+	}
 
 	
 }

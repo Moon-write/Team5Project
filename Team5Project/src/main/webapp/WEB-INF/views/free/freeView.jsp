@@ -8,6 +8,8 @@
 		FreeView view = (FreeView)request.getAttribute("FV");
 	    ArrayList<FreeComment> cmlist = (ArrayList<FreeComment>)request.getAttribute("cmlist");
 	    ArrayList<FreeComment> recmlist = (ArrayList<FreeComment>)request.getAttribute("recmlist"); 
+	    boolean likecheck =  (boolean)request.getAttribute("likecheck");
+	   
     %>
 <!DOCTYPE html>
 <html>
@@ -35,12 +37,14 @@
 	}
 	.tr th:nth-child(3){
 		width:12%;
+		min-width: 82px;
 	}
 	.tr td:nth-child(4){
 		width:12%;
 	}
 	.tr th:nth-child(5){
 		width:12%;
+/* 		min-width: 82px; */
 	}
 	.tr td:last-child{
 		width:12%;
@@ -54,9 +58,6 @@
 	}
 	.contents{
 		height:600px;
-	}
-	tr .update{
-		line-height:2.2em;
 	}
 	.freeFreeinsertComment>form>ul{
 		list-style-type:none;
@@ -102,11 +103,47 @@
 	.comment:last-child{
 		margin-bottom:2em;
 	}
+	
+	.func{
+		font-size:2em;
+		margin-bottom:0;
+	}
+	.like{
+		float:right;
+		margin-bottom:0.2em;
+	}
+	.like>span{
+		padding-top:0.2em;
+	}
+	#freeInsert{
+		border: 1.5px solid #907bb6;
+		
+	}
+	#insert{
+		min-width: 110px;
+	}
+	.comment small, .recomment small{
+		min-width: 70.63px;
+	}
 </style>
 <body>
 	<%@include file="/WEB-INF/views/common/header.jsp" %>
 	<div class="div-content">
         <div class="content-title">자유게시판 <%=view.getNo()%>번 글 상세보기</div>
+        <%if(m!=null){ %>
+        	<div class="func">
+        		<%if(m.getMemberId().equals(view.getMemberId())){ %>
+				<a href="/freeUpdate.do?freeno=<%=view.getNo()%>" type="button" class="btn btn-warning update">글 수정</a>
+				<%} if(m.getMemberId().equals(view.getMemberId())||m.getMemberLevel()==0){%>
+				<button onclick="deleteCheck('<%=view.getNo()%>')" type="button" class="btn btn-dark delete">글 삭제</button>   	   	
+				<%} %>
+			<%if(!likecheck){ %>
+				<button onclick="insertLike(this,'<%=m.getMemberNo()%>','<%=view.getNo()%>')" class="btn btn-info like"><span type="button" class="material-icons">thumb_up_off_alt</span> </button>
+			<%}else{ %>
+				<button onclick="deleteLike(this,'<%=m.getMemberNo()%>','<%=view.getNo()%>')" class="btn btn-info like"><span type="button" class="material-icons">thumb_up</span> </button>
+			<%} %>		
+        	</div>
+		<%} %>
 		<table class="table" id="freeInsert">
 			<tr class="tr">
 				<th class="table-success" colspan="1">제목</th>
@@ -114,23 +151,17 @@
 				<th class="table-success">조회수</th>
 				<td><%=view.getView()%></td>
 				<th class="table-success">좋아요</th>
-				<td><%=view.getLike()%></td>
-				
+				<td id="likecount"><%=view.getLike()%></td>
 			</tr>
 			<tr class="tr tr-2">
 				<th class="table-success" colspan="1">작성자</th>
 				<td colspan="1"><%=view.getWriter() %></td>
-				<th class="table-success" colspan="1">작성 일자</th>
+				<th class="table-success" colspan="1" id="date">작성일자</th>
 				<td colspan="3"><%=view.getDate()%></td>
 			</tr>
 			<tr class="tr contents">
 				<td colspan="10" style="text-align:left;"><%=view.getContents() %></td>
 			</tr>
-			<%if(m!=null&&m.getMemberId().equals(view.getMemberId())){ %>
-			<tr class="tr">
-				<td colspan="10"><a href="/freeUpdate.do?freeno=<%=view.getNo()%>" type="button" class="btn btn-primary update">글 수정</a></td>
-			</tr>
-			<%} %>
 		</table>
 		<%if(m!=null){ %>
 		<div class="freeFreeinsertComment">
@@ -146,7 +177,7 @@
 					<textarea class="input-form" name="content"></textarea>
 				</li>
 				<li>
-					<button type="submit" class="btn btn-primary">등록</button>
+					<button type="submit" class="btn btn-primary" id="insert">등록</button>
 				</li>
 			</ul>
 			</form>
@@ -157,16 +188,17 @@
 				<div class="list-group-item flex-column align-items-start">
 					<div class="d-flex">
 						<span class="material-icons">account_box</span>
-						<h5 class="mb-1 cmwriter"><%=cm.getWriter() %></h5>
+						<h5 class="mb-2 cmwriter"><%=cm.getWriter() %></h5>
 					    <small style="text-align:right;"><%=cm.getDate() %></small>
 				    </div>
-				    <p class="mb-1"><%=cm.getContent() %></p>
+				    <p class="mb-3"><%=cm.getContent() %></p>
+					<textarea name="ncContent" class="input-form" style="display:none;"><%=cm.getContent() %></textarea>
 				    <%if(m!=null){ %>
 						<%if(m.getMemberId().equals(cm.getMemberId())){ %>
-							<a href="javascript:void(0)" onclick="updateComment('<%=cm.getCommentNo()%>')">수정</a>
-							<a href="javascript:void(0)" onclick="deleteComment('<%=cm.getCommentNo()%>')">삭제</a>
+							<button class ="btn-warning" onclick="updateComment(this,'<%=cm.getCommentNo()%>')">수정</button>
+							<button class ="btn-dark" onclick="deleteComment(this,'<%=cm.getCommentNo()%>')">삭제</button>
 						<%} %>
-						<a href="javascript:void(0)" class="recShow">답글달기</a>
+						<button class="recShow btn-info">답글달기</button>
 					<%} %>
 				</div>
 			</div>
@@ -178,23 +210,114 @@
 						<div class="list-group-item flex-column align-items-start">
 							<div class="d-flex">
 								<span class="material-icons">account_box</span>
-								<h5 class="mb-1 cmwriter"><%=recm.getWriter() %></h5>
+								<h5 class="mb-2 cmwriter"><%=recm.getWriter() %></h5>
 							    <small style="text-align:right;"><%=recm.getDate() %></small>
 						    </div>
-						    <p class="mb-1"><%=cm.getContent() %></p>
+						    <p class="mb-3"><%=recm.getContent() %></p>
+						    <textarea name="ncContent" class="input-form" style="display:none;"><%=recm.getContent() %></textarea> 
 						    <%if(m!=null&&m.getMemberId().equals(recm.getMemberId())){ %>
-								<a href="javascript:void(0)" onclick="updateComment('<%=cm.getCommentNo()%>')">수정</a>
-								<a href="javascript:void(0)" onclick="deleteComment('<%=cm.getCommentNo()%>')">삭제</a>
+								<button class="btn-warning" onclick="updateComment(this,'<%=recm.getCommentNo()%>')">수정</button>
+								<button class="btn-dark" onclick="deleteComment(this,'<%=recm.getCommentNo()%>')">삭제</button>
 							<%} %>
 						</div>
 					</div>
 				</div>
-				<%} %>
-			<%} %>
+				<%}%>
+			<%}%>
 		<%}%>
 	</div>
 	<script>
-		
+	function deleteCheck(no){
+		if(confirm("삭제하시겠습니까?")){
+			location.href="/freeDelete.do?freeno="+no;
+		}
+	}
+	function deleteComment(obj,cm){
+		if(confirm("삭제하시겠습니까?")){
+			location.href="/freeCommentDelete.do?no="+no;
+		}
+	}
+	function updateComment(obj,cm){
+		$(obj).prev().attr("style","display:block;width:100%;");
+		$(obj).prev().prev().attr("style","display:none");
+		$(obj).text("수정완료");
+		$(obj).attr("onclick","updateComplete(this,'"+cm+"')");
+		$(obj).next().text("수정취소");
+		$(obj).next().attr("onclick","updateCancel(this,'"+cm+"')");
+		$(obj).next().next().hide();
+	}
+	function updateCancel(obj,cm){
+		$(obj).prev().prev().attr("style","display:none");
+		$(obj).prev().prev().prev().attr("style","display:block");
+		$(obj).prev().text("수정");
+		$(obj).prev().attr("onclick","updateComment(this,'"+cm+"')");
+		$(obj).text("삭제");
+		$(obj).next().attr("onclick","deleteComment(this,'"+cm+"')");
+		$(obj).next().show();
+	}
+	function updateComplete(obj,cm){
+		$(obj).prev().attr("style","display:none;");
+		$(obj).prev().prev().attr("style","display:block");
+		const message = $(obj).prev().val();
+		console.log(cm)
+		$.ajax({
+			type:"post",
+			url:"/updateComment.do",
+			data:{num:cm,comment:message},
+			success:function(data){
+				if(data=="성공"){
+					$(obj).prev().prev().text(message);
+				}
+			}
+		})
+		$(obj).text("수정");
+		$(obj).attr("onclick","updateComment(this,'"+cm+"')");
+		$(obj).next().text("삭제");
+		$(obj).next().attr("onclick","deleteComment(this,'"+cm+"')");
+		$(obj).next().next().show();
+	}
+	function insertLike(obj,m,f){
+		$.ajax({
+			type:"post",
+			url:"/freeInsertLike.do",
+			data:{num1:m, num2:f},
+			success:function(data){
+				if(data=="성공"){
+					$(obj).children().text("thumb_up");
+					$(obj).attr("onclick","deleteLike(this,'"+m+"','"+f+"')");
+					const count = $("#likecount");
+					count.text(Number.parseInt(count.text())+1);
+					alert("추천!");
+				}else{
+					console.log(data);
+				}
+			},
+			error:function(){
+				console.log("전송실패");
+			}
+		})
+	}
+	function deleteLike(obj,m,f){
+		$.ajax({
+			type:"post",
+			url:"/freeDeleteLike.do",
+			data:{num1:m, num2:f},
+			success:function(data){
+				if(data=="성공"){
+					$(obj).children().text("thumb_up_off_alt");
+					$(obj).attr("onclick","insertLike(this,'"+m+"','"+f+"')");
+					const count = $("#likecount");
+					count.text(Number.parseInt(count.text())-1);
+					alert("추천취소!");
+				}else{
+					console.log(data);
+				}
+			},
+			error:function(){
+				console.log("전송실패");
+			}
+		})
+	}
 	</script>
 	<%@include file="/WEB-INF/views/common/footer.jsp" %>
 </body>

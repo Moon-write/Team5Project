@@ -391,4 +391,81 @@ public class freeDao {
 		}
 		return result;
 	}
+
+	public int DeleteLike(Connection conn, int num1, int num2) {
+		PreparedStatement pstmt = null;
+		int result = 0;
+		String query = "delete from like2_tbl where member_no=? and free_no=?";
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setInt(1, num1);
+			pstmt.setInt(2, num2);
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			JDBCTemplate.close(pstmt);
+		}
+		return result;
+	}
+
+	public int FreeDelete(Connection conn, int freeNo) {
+		PreparedStatement pstmt = null;
+		int result = 0;
+		String query = "delete from FreeBoard_tbl where free_no=?";
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setInt(1, freeNo);
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			JDBCTemplate.close(pstmt);
+		}
+		return result;
+	}
+
+	public boolean Likecheck(Connection conn, int freeNo, int memberNo) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		boolean likecheck = false;
+		String query = "select * from like2_tbl where member_no=? and free_no=?";
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setInt(1, memberNo);
+			pstmt.setInt(2, freeNo);
+			rset = pstmt.executeQuery();
+			if(rset.next()) {
+				likecheck=true;
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			JDBCTemplate.close(pstmt);
+			JDBCTemplate.close(rset);
+		}
+		return likecheck;
+	}
+
+	public int freeUpdateComment(Connection conn, int commentNo, String comment) {
+		PreparedStatement pstmt = null;
+		int result = 0;
+		String query = "update Notice_Comment_tbl2 set comment_content=? where comment_no=?";
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, comment);
+			pstmt.setInt(2, commentNo);
+			result = pstmt.executeUpdate();
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			JDBCTemplate.close(pstmt);
+		}
+		return result;
+	}
 }
