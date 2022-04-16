@@ -30,6 +30,10 @@
 	#buttons{
 		text-align: center;
 	}
+	.noticeListbtn{
+		text-align: center;
+		padding-bottom: 5px;
+	}
 	.inputCommentBox{
 		margin: 20px;
 	}
@@ -215,11 +219,13 @@
 				<th id="buttons" colspan="8">
 					<a class="btn btn-primary" href="/noticeUpdateFrm.do?noticeNo=<%=n.getNoticeNo() %>">수정</a>
 					<button class="btn btn-secondary" onclick="noticeDelete('<%=n.getNoticeNo() %>');">삭제</button>
-					<button class="btn btn-secondary" onclick="noticeList()">목록으로</button>
 				</th>
 			</tr>
 			<%} %>
 		</table>
+		<div class="noticeListbtn">
+			<button class="btn btn-light" id="noticeListbtn" onclick="noticeList()">목록으로</button>
+		</div>
 		<%if(m!=null) {%>
 		<div class="inputCommentBox">
 			<form action="/insertComment.do" method="post">
@@ -244,7 +250,7 @@
 			<%for(NoticeComment nc : commentList) {%>
 				<ul class="form-control" style="padding-top: 12px;">
 					<li>
-						<span class="material-icons" style="padding-left: 13px;">account_box</span>
+						<span class="material-icons">account_box</span>
 					</li>
 					<li>
 						<p class="comment-info">
@@ -252,12 +258,12 @@
 							<span><%=nc.getNcDate() %></span>
 						</p>
 						<p class="form-control form-control-sm"><%=nc.getNcContent() %></p>
-						<textarea name="ncContent" class="input-form" style="display:none; min-height: 90px;"><%=nc.getNcContent() %></textarea>
+						<textarea name="ncContent" class="input-form" style="display:none; min-height: 44px; min-width: 650px"><%=nc.getNcContent() %></textarea>
 						<p class="btn btn-link" id="commentstyle" style="padding-top: 0px;">
 							<%if(m != null) {%>
 								<%if(m.getMemberId().equals(nc.getNcWriter())) {%>
 									<a href="javascript:void(0)" onclick="modifyComment(this,'<%=nc.getNcNo()%>','<%=n.getNoticeNo()%>')">수정</a><br>
-									<a href="javascript:void(0)" onclick="modifyComment(this,'<%=nc.getNcNo()%>','<%=n.getNoticeNo()%>')">삭제</a><br>
+									<a href="javascript:void(0)" onclick="deleteComment(this,'<%=nc.getNcNo()%>','<%=n.getNoticeNo()%>')">삭제</a><br>
 								<%} %>
 								<a href="javascript:void(0)" class="recommentShow">답글달기</a>
 							<%} %>
@@ -415,6 +421,9 @@
 	                }
 	            });
 			});
+			function noticeList(){
+				location.href="/noticeList.do?reqPage=1";
+			}
 		</script>
 	</div>
 	<%@include file="/WEB-INF/views/common/footer.jsp" %>
