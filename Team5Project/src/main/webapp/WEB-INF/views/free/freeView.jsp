@@ -299,11 +299,13 @@
 	}
 	function commentvisible(obj){
 		const insertreComment = $(obj).parent().next();
+		$(obj).hide();
 		insertreComment.removeClass('disnone');
 	}
 	function recommentCencel(obj){
 		const insertreComment = $(obj).parent().parent();
 		insertreComment.addClass('disnone');
+		$(obj).parent().parent().prev().last().children().last().show();
 	}
 	function insertLike(obj,m,f){
 		$.ajax({
