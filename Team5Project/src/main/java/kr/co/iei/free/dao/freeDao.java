@@ -15,13 +15,15 @@ import kr.co.iei.free.vo.FreeboardTable;
 
 public class freeDao {
 
-	public int totalFreeBoardCount(Connection conn) {
+	public int totalFreeBoardCount(Connection conn, String keyword) {
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
 		int result = 0;
-		String query = "select count(*) as cnt from FreeBoard_tbl";
+		String query = "select count(*) as cnt from FreeBoard_tbl t1 inner join member_tbl t2 on t1.free_id = t2.member_id  where t2.member_nickname LIKE ('%'||?||'%') or t1.free_title LIKE ('%'||?||'%')";
 		try {
 			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1,  keyword);
+			pstmt.setString(2,  keyword);
 			rset = pstmt.executeQuery();
 			if(rset.next()) {
 				result = rset.getInt("cnt");
@@ -289,10 +291,11 @@ public class freeDao {
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
 		ArrayList<FreeComment> cmlist = new ArrayList<FreeComment>();
-		String query = "select t1.*, t2.member_nickname from "
-				+ "(select * from Notice_Comment_tbl2 "
-				+ "where comment_reno is null and commentfree_no = ?)t1 "
-				+ "inner join member_tbl t2 on t1.commentmember_Id=t2.member_id";
+		String query = "select t1.*, t2.member_nickname from \r\n"
+				+ "(select * from Notice_Comment_tbl2 \r\n"
+				+ "where comment_reno is null and commentfree_no = ?)t1 \r\n"
+				+ "inner join member_tbl t2 on t1.commentmember_Id=t2.member_id\r\n"
+				+ "order by t1.comment_no desc";
 		try {
 			pstmt = conn.prepareStatement(query);
 			pstmt.setInt(1, freeNo);
@@ -467,5 +470,45 @@ public class freeDao {
 			JDBCTemplate.close(pstmt);
 		}
 		return result;
+	}
+
+	public int freeDeleteComment(Connection conn, int commentNo) {
+		PreparedStatement pstmt = null;
+		int result = 0;
+		String query="delete from Notice_Comment_tbl2 where comment_no=?";
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setInt(1, commentNo);
+			result = pstmt.executeUpdate();
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			JDBCTemplate.close(pstmt);
+		}
+		return result;
+	}
+
+	public int findFreeNo(Connection conn, int commentNo) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		int freeNo = 0;
+		String query = "select * from Notice_Comment_tbl2 where comment_no=?";
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setInt(1, commentNo);
+			rset = pstmt.executeQuery();
+			if(rset.next()) {
+				freeNo=rset.getInt("commentfree_No");
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			JDBCTemplate.close(pstmt);
+			JDBCTemplate.close(rset);
+		}
+		return freeNo;
 	}
 }

@@ -51,11 +51,11 @@ public class FreeInsertCommentServlet extends HttpServlet {
 		
 		if(result>0) {
 			request.setAttribute("title", "성공");
-			request.setAttribute("msg", "글 수정 성공");
+			request.setAttribute("msg", "댓글 작성 성공");
 			request.setAttribute("icon", "success");
 		}else {
 			request.setAttribute("title", "실패");
-			request.setAttribute("msg", "글 수정 실패");
+			request.setAttribute("msg", "댓글 작성 성공");
 			request.setAttribute("icon", "error");
 		}
 		request.setAttribute("loc", "/freeView.do?FreeNo="+freeNo);

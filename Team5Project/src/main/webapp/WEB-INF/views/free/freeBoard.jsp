@@ -26,19 +26,20 @@
 		text-align: center;
 	}
 	.tr1 th:first-child{
-		width:10%;
+		width:5%;
 		min-width: 49px;
 	}
 	.tr1 th:nth-child(2){
-		width:35%;
+		width:40%;
 		min-width: 300px;
 	}
 	.tr1 th:nth-child(3){
 		width:10%;
+		min-width: 70px;
 	}
 	.tr1 th:nth-child(4){
 		width:15%;
-		min-width: 65px;
+		min-width: 140px; 
 	}
 	.tr1 th:nth-child(5){
 		width:10%;
@@ -48,11 +49,12 @@
 		width:10%;
 		min-width: 73px;
 	}
-	.menu1{
+ 	.menu1{ 
 		display:flex;
 	}
 	.menu1>.write{
 		width:20%;
+		min-width: 170px;
 	}
 	.menu1>.write>.btn-outline-primary{
  		width: 80%;
@@ -80,21 +82,30 @@
 	.btn-group label{
 		justify-content: center;
 		padding-top:11px;
+		
+	}
+	.btn-group{
+		min-width: 230px;
+	}
+	.icon{
+ 		min-width: 140px;  
 	}
 	.icon div{
 		float:left;
 		margin:0 auto;
+		width:50%;
 	}
 	.icon div:first-child{
-		width:2em;
-		margin-left:10%;
-	}
-	.icon div:first-child>span{
-		padding-top:2px;
+		padding-top:0.1em;
+		padding-left:1.5em;
+		min-width: 60px; 
 	}
 	.icon div:last-child{
-		margin:0 auto;
-		width:1em;
+		padding-right:1.5em;
+		min-width: 60px; 
+	}
+	.keyword{
+		min-width: 200px;
 	}
 </style>
 <body>

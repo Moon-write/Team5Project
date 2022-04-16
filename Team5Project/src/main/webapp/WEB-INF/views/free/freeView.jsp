@@ -31,9 +31,11 @@
 	}
 	.tr th:first-child{
 		width:20%;
+ 		min-width: 90px;  
 	}
 	.tr td:nth-child(2){
 		width:32%;
+		min-width: 200px;  
 	}
 	.tr th:nth-child(3){
 		width:12%;
@@ -44,7 +46,7 @@
 	}
 	.tr th:nth-child(5){
 		width:12%;
-/* 		min-width: 82px; */
+ 		min-width: 82px; 
 	}
 	.tr td:last-child{
 		width:12%;
@@ -125,6 +127,9 @@
 	.comment small, .recomment small{
 		min-width: 70.63px;
 	}
+	.comment .disnone{
+		display:none;
+	}
 </style>
 <body>
 	<%@include file="/WEB-INF/views/common/header.jsp" %>
@@ -198,9 +203,25 @@
 							<button class ="btn-warning" onclick="updateComment(this,'<%=cm.getCommentNo()%>')">수정</button>
 							<button class ="btn-dark" onclick="deleteComment(this,'<%=cm.getCommentNo()%>')">삭제</button>
 						<%} %>
-						<button class="recShow btn-info">답글달기</button>
+						<button class="btn-info" onclick="commentvisible(this)">답글달기</button>
 					<%} %>
 				</div>
+				<%if(m!=null){ %>
+				<div class="list-group-item disnone">
+					<div class="d-flex">
+						<span class="material-icons">account_box</span>
+						<h5 class="mb-2 cmwriter"><%=cm.getWriter() %></h5>
+					</div>
+					<form class="d-flex" action="/freeInsertComment.do" method="post">
+						<input type="hidden" name="memberId" value="<%=m.getMemberId() %>">
+						<input type="hidden" name="freeNo" value="<%=view.getNo() %>">
+						<input type="hidden" name="recomment" value="<%=cm.getCommentNo()%>">
+						<textarea class="input-form" style="width:80%;" name="content"></textarea>
+						<button type="submit" class="btn btn-danger">등록</button>		
+						<button type="button" class="btn btn-dark" onclick="recommentCencel(this)">취소</button>		
+					</form>
+				</div>
+				<%} %>
 			</div>
 			<%for(FreeComment recm : recmlist){ %>
 				<%if(recm.getRecomment()==cm.getCommentNo()){ %>
@@ -234,7 +255,7 @@
 	}
 	function deleteComment(obj,cm){
 		if(confirm("삭제하시겠습니까?")){
-			location.href="/freeCommentDelete.do?no="+no;
+			location.href="/freeCommentDelete.do?num="+cm;
 		}
 	}
 	function updateComment(obj,cm){
@@ -252,7 +273,7 @@
 		$(obj).prev().text("수정");
 		$(obj).prev().attr("onclick","updateComment(this,'"+cm+"')");
 		$(obj).text("삭제");
-		$(obj).next().attr("onclick","deleteComment(this,'"+cm+"')");
+		$(obj).attr("onclick","deleteComment(this,'"+cm+"')");
 		$(obj).next().show();
 	}
 	function updateComplete(obj,cm){
@@ -275,6 +296,14 @@
 		$(obj).next().text("삭제");
 		$(obj).next().attr("onclick","deleteComment(this,'"+cm+"')");
 		$(obj).next().next().show();
+	}
+	function commentvisible(obj){
+		const insertreComment = $(obj).parent().next();
+		insertreComment.removeClass('disnone');
+	}
+	function recommentCencel(obj){
+		const insertreComment = $(obj).parent().parent();
+		insertreComment.addClass('disnone');
 	}
 	function insertLike(obj,m,f){
 		$.ajax({

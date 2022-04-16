@@ -55,7 +55,7 @@ public class FreeServlet extends HttpServlet {
 			freeboard = service.selectFreeList3(reqPage, numPage, keyword);			
 		}
 		HashMap<Integer, Boolean> likecheck = new HashMap<Integer, Boolean>();
-		String pageNavi = service.totalPage(reqPage, numPage);
+		String pageNavi = service.totalPage(reqPage, numPage, keyword);
 		
 		Member m = (Member)logincheck.getAttribute("m");
 		if(m!=null) {

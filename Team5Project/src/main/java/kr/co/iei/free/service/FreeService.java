@@ -45,10 +45,10 @@ public class FreeService {
 		JDBCTemplate.close(conn);
 		return list;
 	}
-	public String totalPage(int reqPage, int numPage) {
+	public String totalPage(int reqPage, int numPage, String keyword) {
 		Connection conn = JDBCTemplate.getConnection();
 		freeDao dao = new freeDao();
-		int totalCount = dao.totalFreeBoardCount(conn);
+		int totalCount = dao.totalFreeBoardCount(conn, keyword);
 		int totalPage = 0;
 		if(totalCount%numPage==0) {
 			totalPage=totalCount/numPage;
@@ -218,6 +218,25 @@ public class FreeService {
 		}
 		JDBCTemplate.close(conn);
 		return result;
+	}
+	public int freeDeleteComment(int commentNo) {
+		Connection conn = JDBCTemplate.getConnection();
+		freeDao dao = new freeDao();
+		int result = dao.freeDeleteComment(conn, commentNo);
+		if(result>0) {
+			JDBCTemplate.commit(conn);
+		}else {
+			JDBCTemplate.rollback(conn);
+		}
+		JDBCTemplate.close(conn);
+		return result;
+	}
+	public int findFreeNo(int commentNo) {
+		Connection conn = JDBCTemplate.getConnection();
+		freeDao dao = new freeDao();
+		int freeNo = dao.findFreeNo(conn, commentNo);
+		JDBCTemplate.close(conn);
+		return freeNo;
 	}
 
 	
