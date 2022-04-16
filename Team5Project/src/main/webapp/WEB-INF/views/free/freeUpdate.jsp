@@ -25,7 +25,7 @@
 	.tr-2 *{
 		width:25%;
 	}
-	.tr .btn-primary{
+	#updatebtn{
 		width:100%;
 		height:80px;
 		font-size:30px;
@@ -61,7 +61,7 @@
 				</tr>
 				<input type="hidden" name="No" value="<%=f.getFree_No() %>">
 				<tr class="tr">
-					<td colspan="4"><button type="submit" class="btn btn-primary">수정 완료</button></td>
+					<td colspan="4"><button type="submit" class="btn btn-primary" id="updatebtn">수정 완료</button></td>
 				</tr>
 			</table>
 		</form>
