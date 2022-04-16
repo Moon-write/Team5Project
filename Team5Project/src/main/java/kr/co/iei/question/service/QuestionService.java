@@ -6,13 +6,16 @@ import java.util.ArrayList;
 import common.JDBCTemplate;
 import kr.co.iei.question.dao.QuestionDao;
 import kr.co.iei.question.vo.Question;
+import kr.co.iei.question.vo.QuestionAnswerData;
 import kr.co.iei.question.vo.QuestionComment;
 import kr.co.iei.question.vo.QuestionPageData;
 import kr.co.iei.question.vo.QuestionViewData;
 
+
+
 public class QuestionService {
 
-	public QuestionPageData selectQuestionList(int reqPage) {
+	public QuestionAnswerData selectQuestionList(int reqPage) {
 		//연결
 		Connection conn = JDBCTemplate.getConnection();
 		QuestionDao dao = new QuestionDao();
@@ -21,10 +24,13 @@ public class QuestionService {
 		 * 페이징 처리
 		 */
 		//1. 결정사항 : 한 페이지당 게시물 수
-		int numPerPage = 10;		
+		int numPerPage = 15;		
 		int end = reqPage*numPerPage;
 		int start = end - numPerPage + 1;
 		ArrayList<Question> list = dao.selectQuestionList(conn,start,end);
+		ArrayList<Question> questionList = dao.selectQuestion(conn);
+		ArrayList<Question> requestionList = dao.selectreQuestion(conn);
+		
 		
 		int totalCount = dao.totalQuestionCount(conn);
 		//전체페이지 수
@@ -74,9 +80,9 @@ public class QuestionService {
 			pageNavi +=	"</a></li>";
 		}
 		pageNavi += "</ul>";
-		QuestionPageData qpd = new QuestionPageData(list, pageNavi);
+		QuestionAnswerData qad = new QuestionAnswerData(questionList,questionList,list, pageNavi);
 		JDBCTemplate.close(conn);
-		return qpd;
+		return qad;
 	}
 
 	public int insertQuestion(Question q) {
@@ -104,6 +110,100 @@ public class QuestionService {
 		JDBCTemplate.close(conn);
 		QuestionViewData qvd = new QuestionViewData(q, commentList, reCommentList);
 		return qvd;
+	}
+
+	public Question getQuestion(int questionNo) {
+		Connection conn = JDBCTemplate.getConnection();
+		QuestionDao dao = new QuestionDao();
+		Question q = dao.selectOneQuestion(conn, questionNo);
+		JDBCTemplate.close(conn);
+		return q;
+	}
+
+	public int insertQuestionComment(QuestionComment qc) {
+		Connection conn = JDBCTemplate.getConnection();
+		QuestionDao dao = new QuestionDao();
+		int result = dao.insertQuestionComment(conn,qc);
+		if(result>0) {
+			JDBCTemplate.commit(conn);
+		}else {
+			JDBCTemplate.rollback(conn);
+		}
+		JDBCTemplate.close(conn);
+		return result;
+	}
+
+	public int questionDelete(int questionNo) {
+		Connection conn = JDBCTemplate.getConnection();
+		QuestionDao dao = new QuestionDao();
+		int result = dao.questionDelete(conn,questionNo);
+		if(result>0) {
+			JDBCTemplate.commit(conn);
+		}else {
+			JDBCTemplate.rollback(conn);
+		}
+		JDBCTemplate.close(conn);
+		return result;
+	}
+
+	public int updateQuestionComment(QuestionComment qc) {
+		Connection conn = JDBCTemplate.getConnection();
+		QuestionDao dao = new QuestionDao();
+		int result = dao.updateQuestionComment(conn, qc);
+		if(result>0) {
+			JDBCTemplate.commit(conn);
+		}else {
+			JDBCTemplate.close(conn);
+		}
+		JDBCTemplate.close(conn);
+		return result;
+	}
+
+	public int deleteComment(int qcNo) {
+		Connection conn = JDBCTemplate.getConnection();
+		QuestionDao dao = new QuestionDao();
+		int result = dao.deleteComment(conn, qcNo);
+		if(result>0) {
+			JDBCTemplate.commit(conn);
+		}else {
+			JDBCTemplate.close(conn);
+		}
+		JDBCTemplate.close(conn);
+		return result;
+	}
+
+	public int insertAnswer(Question q) {
+		Connection conn = JDBCTemplate.getConnection();
+		QuestionDao dao = new QuestionDao();
+		int result = dao.insertAnswer(conn, q);
+		if(result>0) {
+			JDBCTemplate.commit(conn);
+		}else {
+			JDBCTemplate.rollback(conn);
+		}
+		JDBCTemplate.close(conn);
+		return result;
+	}
+
+	public Question oneQuestionSelect(int questionNo) {
+		Connection conn = JDBCTemplate.getConnection();
+		QuestionDao dao = new QuestionDao();
+		Question que = dao.OneQuestionSelect(conn, questionNo);
+		JDBCTemplate.close(conn);
+		return que;
+	}
+
+	public int questionUpdate(Question q) {
+		Connection conn = JDBCTemplate.getConnection();
+		QuestionDao dao = new QuestionDao();
+		int result = dao.questionUpdate(conn,q);
+		if(result>0) {
+			JDBCTemplate.commit(conn);
+		}else {
+			JDBCTemplate.rollback(conn);
+		}
+		JDBCTemplate.close(conn);
+		return result;
 	}
 
 }

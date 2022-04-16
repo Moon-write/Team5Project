@@ -4,6 +4,12 @@
     pageEncoding="UTF-8"%>
      <%
      	ArrayList<Question> list = (ArrayList<Question>)request.getAttribute("list");
+     	
+    	ArrayList<Question> questionList 
+    	= (ArrayList<Question>)request.getAttribute("questionList");
+     	ArrayList<Question> requestionList 
+     	= (ArrayList<Question>)request.getAttribute("requestionList");
+     	
      	String pageNavi = (String)request.getAttribute("pageNavi");
     %>
 <!DOCTYPE html>
@@ -52,6 +58,7 @@
 		.btn-lg{
 		 margin-bottom: 10px; 
 		}
+		
 	</style>
 </head>
 <body>
@@ -66,17 +73,17 @@
 				<th>번호</th><th>제목</th><th>작성자</th><th>작성일</th><th>조회수</th>
 			</tr>
 			<%for(Question q : list) {%>
-			<tr class="table-light tr-1">
-				<td><%=q.getQuestionNo() %></td>
-				<td>
-					<a href="/questionView.do?questionNo=<%=q.getQuestionNo() %>">
-						<%=q.getQuestionTitle() %>
-					</a>
-				</td>	
-				<td><%=q.getQuestionWriter() %></td>
-				<td><%=q.getQuestionDate() %></td>
-				<td><%=q.getQuestionCount() %></td>
-			</tr>
+				<tr class="table-light tr-1">
+					<td><%=q.getQuestionNo() %></td>
+					<td>
+						<a href="/questionView.do?questionNo=<%=q.getQuestionNo() %>" style="color: #000;">
+							<%=q.getQuestionTitle() %>
+						</a>
+					</td>	
+					<td><%=q.getQuestionWriter() %></td>
+					<td><%=q.getQuestionDate() %></td>
+					<td><%=q.getQuestionCount() %></td>
+				</tr>				
 			<%} %>
 		</table>
 		<div id="pageNavi"><%=pageNavi %></div>

@@ -1,5 +1,9 @@
+<%@page import="kr.co.iei.question.vo.Question"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    <%
+    	Question q = (Question)request.getAttribute("q");
+    %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -35,13 +39,14 @@
 	<script src="/summernote/lang/summernote-ko-KR.js"></script>
 	<link rel="stylesheet" href="/summernote/summernote-lite.css">
 	<div class="div-content">
-		<div class="content-title">질문 작성</div>
-		<form action="/questionWrite.do" method="post">
+		<div class="content-title">답변 작성</div>
+		<form action="/answerWrite2.do" method="post">
 				<table class="table" id="questionWrite">
 				<tr >
 					<th class="table-success tt1">제목</th>
 					<td colspan="4">
-						<input type="text" name="questionTitle" class="form-control" placeHolder="제목을 입력해주세요">
+						<input type="hidden" name="questionTitle" class="form-control" value="<%=q.getQuestionTitle()%>" placeholder="<%=q.getQuestionTitle()%>" readonly><%=q.getQuestionTitle()%>
+						<input type="hidden" name="queRef" value="<%=q.getQuestionNo() %>">
 					</td>
 				</tr>
 				<tr>
@@ -55,7 +60,8 @@
 					<td colspan="4" style="text-align: left;"><textarea id="questionContent" style="width: 100%;height: 500px"  name="questionContent" class="form-cotrol" ></textarea></td>
 				</tr>
 				<tr>
-					<td colspan="4"><button type="submit" class="btn btn-lg btn-primary" id="btnclick">질문 등록</button></td>
+					
+					<td colspan="4"><button type="submit" class="btn btn-lg btn-primary" id="btnclick">답변 등록</button></td>
 				</tr>
 			</table>
 		</form>

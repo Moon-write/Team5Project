@@ -1,11 +1,14 @@
+<%@page import="kr.co.iei.question.vo.Question"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    <%
+    	Question q = (Question)request.getAttribute("q");
+    %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-
 <style>
 	#questionWrite td, #questionWrite th{
 		border : 1px solid #98978b;
@@ -14,7 +17,7 @@
 		padding-top: 0px;
 	}
 	.tt1{
-		width: 20%;
+		width: 15%;
 		align-content: center;
 		justify-content: center;
 		margin: 0 auto;
@@ -35,32 +38,32 @@
 	<script src="/summernote/lang/summernote-ko-KR.js"></script>
 	<link rel="stylesheet" href="/summernote/summernote-lite.css">
 	<div class="div-content">
-		<div class="content-title">질문 작성</div>
-		<form action="/questionWrite.do" method="post">
-				<table class="table" id="questionWrite">
-				<tr >
+		<div class="content-title">질문사항 수정</div>
+		<form action="/questionUpdate.do" method="post" enctype="multipart/form-data">
+			<input type="hidden" name="questionNo" value="<%=q.getQuestionNo() %>">
+			<table class="table questionUpdateFrm">
+				<tr class="tr-1">
 					<th class="table-success tt1">제목</th>
-					<td colspan="4">
-						<input type="text" name="questionTitle" class="form-control" placeHolder="제목을 입력해주세요">
+					<td>
+						<input type="text" name="questionTitle" class="form-control" value="<%=q.getQuestionTitle() %>">
 					</td>
 				</tr>
-				<tr>
-					<th class="table-success tt1">작성자</th>
+				<th class="table-success tt1">작성자</th>
 					<td>
 						<input type="hidden" name="questionWriter" value="<%=m.getMemberId() %>">
 						<%=m.getMemberId() %>
 					</td>
+				<tr class="tr-1">
+					<th class="table-success tt1">내용</th>
+					<td><textarea id="questionContent" style="width: 100%;height: 500px"  name="questionContent" class="form-cotrol"><%=q.getQuestionContent() %></textarea></td>
 				</tr>
-				<tr class="tr-1 pad">
-					<td colspan="4" style="text-align: left;"><textarea id="questionContent" style="width: 100%;height: 500px"  name="questionContent" class="form-cotrol" ></textarea></td>
-				</tr>
-				<tr>
-					<td colspan="4"><button type="submit" class="btn btn-lg btn-primary" id="btnclick">질문 등록</button></td>
+				<tr class="tr-1">
+					<td colspan="4"><button type="submit" class="btn btn-lg btn-primary" id="btnclick">수정 완료</button></td>
 				</tr>
 			</table>
 		</form>
 	</div>
-	<script>
+		<script>
 		$("#questionContent").summernote({
 			height:400,
 			lang : "ko-KR",
@@ -87,13 +90,14 @@
 				}
 			});
 		}
-			//processData : 기본값 ture {key1:value1,key2:value2, key3:value3}
-			//					-> 파일전송 시 String이아니라 파일형태로 전송하기위해서 기본값 제거
-			//contentType : 기본값 "application/x-www-form-ulrencoded;charset=UTF-8"
-			//				-> form태그 전송 시 enctype의 기본값임
-			//				-> enctype="multipart/form-data"로 설정하기위해 기본값을 제거
-			
-	</script>
+			/*
+			$("#fileDelBtn").on("click",function(){
+				$(".delFile").hide();
+				$(this).next().show();
+				$("[name=status]").val("delete");
+			});
+			*/
+		</script>
 	<%@include file="/WEB-INF/views/common/footer.jsp" %>
 </body>
 </html>

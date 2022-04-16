@@ -1,31 +1,28 @@
 package kr.co.iei.question.controller;
 
 import java.io.IOException;
-import java.util.ArrayList;
+import java.io.PrintWriter;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import kr.co.iei.question.service.QuestionService;
-import kr.co.iei.question.vo.Question;
-import kr.co.iei.question.vo.QuestionAnswerData;
-import kr.co.iei.question.vo.QuestionPageData;
+import com.oreilly.servlet.MultipartRequest;
+import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
 
 /**
- * Servlet implementation class QuestionServlet
+ * Servlet implementation class QuestionUploadImageServlet
  */
-@WebServlet(name = "QuestionList", urlPatterns = { "/questionList.do" })
-public class QuestionListServlet extends HttpServlet {
+@WebServlet(name = "QuestionUploadImage", urlPatterns = { "/questionUploadImage.do" })
+public class QuestionUploadImageServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public QuestionListServlet() {
+    public QuestionUploadImageServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -37,19 +34,18 @@ public class QuestionListServlet extends HttpServlet {
 		//1. 인코딩
 		request.setCharacterEncoding("utf-8");
 		//2. 값추출
-		int reqPage = Integer.parseInt(request.getParameter("reqPage"));
-		//3. 비즈니스 로직
-		QuestionService service = new QuestionService();
-		QuestionAnswerData qad = service.selectQuestionList(reqPage);
-		//4. 결과처리.
-		RequestDispatcher view
-		= request.getRequestDispatcher("/WEB-INF/views/question/questionList.jsp");
-		request.setAttribute("list", qad.getList());
-		request.setAttribute("pageNavi", qad.getPageNavi());
-		request.setAttribute("questionList", qad.getQuestionList());
-		request.setAttribute("requestionList", qad.getRequestionList());
-		view.forward(request, response);
-	}
+		String root = getServletContext().getRealPath("/");
+		String saveDirectory = root+"upload/question";
+		int maxSize = 10*1024*1024;
+		MultipartRequest mRequest
+		= new MultipartRequest(request, saveDirectory,maxSize,"UTF-8",new DefaultFileRenamePolicy());
+		String filepath = mRequest.getFilesystemName("file");
+		//3. 비즈니스로직
+		//4. 결과처리
+		response.setCharacterEncoding("UTF-8");
+		PrintWriter out = response.getWriter();
+		out.print("/upload/question/"+filepath);
+}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)

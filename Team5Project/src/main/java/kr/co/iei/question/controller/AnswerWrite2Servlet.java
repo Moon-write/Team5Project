@@ -9,23 +9,20 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.oreilly.servlet.MultipartRequest;
-import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
-
 import kr.co.iei.question.service.QuestionService;
 import kr.co.iei.question.vo.Question;
 
 /**
- * Servlet implementation class QuestionWriteServlet
+ * Servlet implementation class AnswerWrite2Servlet
  */
-@WebServlet(name = "QuestionWrite", urlPatterns = { "/questionWrite.do" })
-public class QuestionWriteServlet extends HttpServlet {
+@WebServlet(name = "AnswerWrite2", urlPatterns = { "/answerWrite2.do" })
+public class AnswerWrite2Servlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public QuestionWriteServlet() {
+    public AnswerWrite2Servlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -41,30 +38,33 @@ public class QuestionWriteServlet extends HttpServlet {
 		String questionTitle = request.getParameter("questionTitle");
 		String questionWriter = request.getParameter("questionWriter");
 		String questionContent = request.getParameter("questionContent");
+		int queRef = Integer.parseInt(request.getParameter("queRef"));
 		
 		Question q = new Question();
 		q.setQuestionTitle(questionTitle);
 		q.setQuestionWriter(questionWriter);
 		q.setQuestionContent(questionContent);
+		q.setQueRef(queRef);
+		
 		//3. 비즈니스로직
 		QuestionService service = new QuestionService();
-		int result = service.insertQuestion(q);
+		int result = service.insertAnswer(q);
 		//4. 화면처리
 		RequestDispatcher view
 		= request.getRequestDispatcher("/WEB-INF/views/common/msg.jsp");
 		if(result>0) {
 			request.setAttribute("title", "성공");
-			request.setAttribute("msg", "질문이 등록되었습니다.");
+			request.setAttribute("msg", "답변이 등록되었습니다.");
 			request.setAttribute("icon", "success");
 		}else {
 			request.setAttribute("title", "실패");
-			request.setAttribute("msg", "질문 등록 중 문제가 발생했습니다.");
+			request.setAttribute("msg", "답변 등록 중 문제가 발생했습니다.");
 			request.setAttribute("icon", "error");
 		}
 		request.setAttribute("loc", "/questionList.do?reqPage=1");
 		view.forward(request, response);
-		
 	}
+	
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
