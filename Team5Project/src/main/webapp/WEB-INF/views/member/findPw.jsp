@@ -18,7 +18,7 @@
 	<%@include file="/WEB-INF/views/common/header.jsp" %>
 		<div class="div-content" style="width:70%">
 			<div class="content-title">비밀번호 찾기
-				<h5>가입시 입력한 이름,아이디,이메일을 통해 찾을 수 있습니다.</h5>
+				<h5>가입시 입력하신 이름,아이디,이메일을 통해 찾을 수 있습니다.</h5>
 			</div>
 			<form action="/findPwAfter.do" method="post">
 				<div class="input-wrap">
