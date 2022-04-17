@@ -40,14 +40,12 @@ public class QuestionListServlet extends HttpServlet {
 		int reqPage = Integer.parseInt(request.getParameter("reqPage"));
 		//3. 비즈니스 로직
 		QuestionService service = new QuestionService();
-		QuestionAnswerData qad = service.selectQuestionList(reqPage);
+		QuestionPageData qpd = service.selectQuestionList(reqPage);
 		//4. 결과처리.
 		RequestDispatcher view
 		= request.getRequestDispatcher("/WEB-INF/views/question/questionList.jsp");
-		request.setAttribute("list", qad.getList());
-		request.setAttribute("pageNavi", qad.getPageNavi());
-		request.setAttribute("questionList", qad.getQuestionList());
-		request.setAttribute("requestionList", qad.getRequestionList());
+		request.setAttribute("list", qpd.getList());
+		request.setAttribute("pageNavi", qpd.getPageNavi());
 		view.forward(request, response);
 	}
 

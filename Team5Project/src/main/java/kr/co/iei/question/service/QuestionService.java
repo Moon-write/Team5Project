@@ -15,7 +15,9 @@ import kr.co.iei.question.vo.QuestionViewData;
 
 public class QuestionService {
 
-	public QuestionAnswerData selectQuestionList(int reqPage) {
+	private static final String Question = null;
+
+	public QuestionPageData selectQuestionList(int reqPage) {
 		//연결
 		Connection conn = JDBCTemplate.getConnection();
 		QuestionDao dao = new QuestionDao();
@@ -27,10 +29,8 @@ public class QuestionService {
 		int numPerPage = 15;		
 		int end = reqPage*numPerPage;
 		int start = end - numPerPage + 1;
-		ArrayList<Question> list = dao.selectQuestionList(conn,start,end);
-		ArrayList<Question> questionList = dao.selectQuestion(conn);
-		ArrayList<Question> requestionList = dao.selectreQuestion(conn);
 		
+		ArrayList<Question> list = dao.selectQuestionList(conn,start,end);
 		
 		int totalCount = dao.totalQuestionCount(conn);
 		//전체페이지 수
@@ -80,9 +80,9 @@ public class QuestionService {
 			pageNavi +=	"</a></li>";
 		}
 		pageNavi += "</ul>";
-		QuestionAnswerData qad = new QuestionAnswerData(questionList,questionList,list, pageNavi);
+		QuestionPageData qpd = new QuestionPageData(list, pageNavi);
 		JDBCTemplate.close(conn);
-		return qad;
+		return qpd;
 	}
 
 	public int insertQuestion(Question q) {

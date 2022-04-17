@@ -18,7 +18,7 @@ public class QuestionDao {
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
 		ArrayList<Question> list = new ArrayList<Question>();
-		String query = "select * from(select rownum as qnum,q. *from(select*from question_tbl order by question_no desc)q) where qnum between ? and ?";
+		String query = "select * from(select rownum as qnum, q.*from(SELECT QUESTION_NO,QUESTION_WRITER,QUESTION_TITLE,QUESTION_CONTENT,QUESTION_COUNT,QUESTION_DATE,QUE_REF,(NVL(que_ref,QUESTION_NO)+(-0.01)*QUESTION_NO) FROM QUESTION_TBL ORDER BY (NVL(que_ref,QUESTION_NO)+(-0.01)*QUESTION_NO) DESC)q) where qnum between ? and ?";
 		try {
 			pstmt = conn.prepareStatement(query);
 			pstmt.setInt(1, start);
@@ -354,7 +354,7 @@ public class QuestionDao {
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
 		ArrayList<Question> list = new ArrayList<Question>();
-		String query = "select * from question_tbl where que_ref is null order by question_no desc";
+		String query = "select * from(select rownum as qqnum, qq.*from(select*from question_tbl where que_ref is null order by question_no desc)qq)";
 		try {
 			pstmt = conn.prepareStatement(query);
 			rset = pstmt.executeQuery();
@@ -383,20 +383,20 @@ public class QuestionDao {
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
 		ArrayList<Question> list = new ArrayList<Question>();
-		String query = "select * from question_tbl where que_ref is not null order by question_no desc";
+		String query = "select * from(select rownum as qqnum, qq.*from(select*from question_tbl where que_ref is not null order by question_no desc)qq)";
 		try {
 			pstmt = conn.prepareStatement(query);
 			rset = pstmt.executeQuery();
 			while(rset.next()) {
-				Question q = new Question();
-				q.setQuestionNo(rset.getInt("question_no"));
-				q.setQuestionWriter(rset.getString("question_writer"));
-				q.setQuestionTitle(rset.getString("question_title"));
-				q.setQuestionContent(rset.getString("question_content"));
-				q.setQuestionCount(rset.getInt("question_count"));
-				q.setQuestionDate(rset.getString("question_date"));
-				q.setQueRef((rset.getString("que_ref")==null?0:Integer.valueOf(rset.getInt("que_ref"))));	
-				list.add(q);
+				Question qcc = new Question();
+				qcc.setQuestionNo(rset.getInt("question_no"));
+				qcc.setQuestionWriter(rset.getString("question_writer"));
+				qcc.setQuestionTitle(rset.getString("question_title"));
+				qcc.setQuestionContent(rset.getString("question_content"));
+				qcc.setQuestionCount(rset.getInt("question_count"));
+				qcc.setQuestionDate(rset.getString("question_date"));
+				qcc.setQueRef(rset.getInt("que_ref"));	
+				list.add(qcc);
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block

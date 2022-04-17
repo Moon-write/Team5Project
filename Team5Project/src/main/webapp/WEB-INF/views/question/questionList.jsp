@@ -1,15 +1,10 @@
 <%@page import="kr.co.iei.question.vo.Question"%>
 <%@page import="java.util.ArrayList"%>
+<%@page import="kr.co.iei.question.vo.QuestionAnswerData"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
      <%
      	ArrayList<Question> list = (ArrayList<Question>)request.getAttribute("list");
-     	
-    	ArrayList<Question> questionList 
-    	= (ArrayList<Question>)request.getAttribute("questionList");
-     	ArrayList<Question> requestionList 
-     	= (ArrayList<Question>)request.getAttribute("requestionList");
-     	
      	String pageNavi = (String)request.getAttribute("pageNavi");
     %>
 <!DOCTYPE html>
@@ -65,25 +60,40 @@
 	<%@include file="/WEB-INF/views/common/header.jsp" %>
 	<div class = "div-content">
 		<div class="content-title">질문게시판</div>
-		<%if(m != null && m.getMemberLevel()==0) {%>
+		<%if(m != null) {%>
 		<a class="btn btn-lg btn-primary" href="/questionWriteFrm.do">글쓰기</a>	
 		<%} %>
-		<table class="table table-hover notice-tbl">
+		<table class="table notice-tbl">
 			<tr class="table-success tr-2">
 				<th>번호</th><th>제목</th><th>작성자</th><th>작성일</th><th>조회수</th>
 			</tr>
 			<%for(Question q : list) {%>
-				<tr class="table-light tr-1">
-					<td><%=q.getQuestionNo() %></td>
-					<td>
-						<a href="/questionView.do?questionNo=<%=q.getQuestionNo() %>" style="color: #000;">
+				<%if(q.getQueRef()==0) {%>
+					<tr class="table-light tr-1">
+						<td><%=q.getQuestionNo() %></td>
+						<td>
+							<a href="/questionView.do?questionNo=<%=q.getQuestionNo() %>" style="color: #000;">
 							<%=q.getQuestionTitle() %>
-						</a>
-					</td>	
-					<td><%=q.getQuestionWriter() %></td>
-					<td><%=q.getQuestionDate() %></td>
-					<td><%=q.getQuestionCount() %></td>
-				</tr>				
+							</a>
+						</td>	
+						<td><%=q.getQuestionWriter() %></td>
+						<td><%=q.getQuestionDate() %></td>
+						<td><%=q.getQuestionCount() %></td>
+					</tr>
+				<%}else { %>
+					<tr class="table-primary tr-1" style="color:#001E6C">
+						<td><%=q.getQuestionNo() %></td>
+						<td>
+							<a href="/questionView.do?questionNo=<%=q.getQuestionNo() %>" style="color: #000;">
+							<span class="material-icons">subdirectory_arrow_right</span>
+							<%=q.getQuestionTitle() %>
+							</a>
+						</td>	
+						<td><%=q.getQuestionWriter() %></td>
+						<td><%=q.getQuestionDate() %></td>
+						<td><%=q.getQuestionCount() %></td>
+					</tr>		
+				<%} %>
 			<%} %>
 		</table>
 		<div id="pageNavi"><%=pageNavi %></div>
