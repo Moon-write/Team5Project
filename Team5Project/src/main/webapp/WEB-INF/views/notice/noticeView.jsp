@@ -167,7 +167,7 @@
 <body>
 	<%@include file="/WEB-INF/views/common/header.jsp" %>
 	<div class="div-content">
-		<div class="content-title" id="content">공지사항 작성</div>
+		<div class="content-title" id="content">공지사항</div>
 		
 		<table class="table tabel-hover" id="noticeView">
 			<tr class="table-success">
