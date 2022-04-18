@@ -12,7 +12,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import kr.co.iei.question.service.QuestionService;
 import kr.co.iei.question.vo.Question;
-import kr.co.iei.question.vo.QuestionAnswerData;
 import kr.co.iei.question.vo.QuestionPageData;
 
 /**

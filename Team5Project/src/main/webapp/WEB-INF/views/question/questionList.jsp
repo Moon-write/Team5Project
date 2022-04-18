@@ -1,6 +1,5 @@
 <%@page import="kr.co.iei.question.vo.Question"%>
 <%@page import="java.util.ArrayList"%>
-<%@page import="kr.co.iei.question.vo.QuestionAnswerData"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
      <%
@@ -51,9 +50,14 @@
 			justify-content: center;
 		}
 		.btn-lg{
-		 margin-bottom: 10px; 
+			 margin-bottom: 10px; 
 		}
-		
+		.write-cl{
+			
+		}
+		.search-box{
+			
+		}
 	</style>
 </head>
 <body>
@@ -61,7 +65,11 @@
 	<div class = "div-content">
 		<div class="content-title">질문게시판</div>
 		<%if(m != null) {%>
-		<a class="btn btn-lg btn-primary" href="/questionWriteFrm.do">글쓰기</a>	
+		<div class="search-box">
+			
+			<!-- <a class="btn btn-lg btn-primary write-cl" href="/questionWriteFrm.do">검색</a> -->	
+			<a class="btn btn-lg btn-primary write-cl" href="/questionWriteFrm.do">글쓰기</a>	
+		</div>
 		<%} %>
 		<table class="table notice-tbl">
 			<tr class="table-success tr-2">
@@ -81,7 +89,7 @@
 						<td><%=q.getQuestionCount() %></td>
 					</tr>
 				<%}else { %>
-					<tr class="table-primary tr-1" style="color:#001E6C">
+					<tr class="table-default tr-1" style="color:#001E6C; background-color:#d4dcff;">
 						<td><%=q.getQuestionNo() %></td>
 						<td>
 							<a href="/questionView.do?questionNo=<%=q.getQuestionNo() %>" style="color: #000;">

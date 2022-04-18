@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import common.JDBCTemplate;
 import kr.co.iei.question.dao.QuestionDao;
 import kr.co.iei.question.vo.Question;
-import kr.co.iei.question.vo.QuestionAnswerData;
 import kr.co.iei.question.vo.QuestionComment;
 import kr.co.iei.question.vo.QuestionPageData;
 import kr.co.iei.question.vo.QuestionViewData;
@@ -57,7 +56,7 @@ public class QuestionService {
 		for(int i=0;i<pageNaviSize;i++) {
 			if(pageNo == reqPage) {
 				pageNavi += "<li class='page-item active'>";
-				pageNavi += "<a class='page-link' href='/question.do?reqPage="+pageNo+"'>";
+				pageNavi += "<a class='page-link' href='/questionList.do?reqPage="+pageNo+"'>";
 				pageNavi += pageNo;
 				pageNavi +=	"</a></li>";
 			}else {
@@ -84,7 +83,7 @@ public class QuestionService {
 		JDBCTemplate.close(conn);
 		return qpd;
 	}
-
+	
 	public int insertQuestion(Question q) {
 		Connection conn = JDBCTemplate.getConnection();
 		QuestionDao dao = new QuestionDao();
@@ -101,6 +100,7 @@ public class QuestionService {
 	public QuestionViewData selectQuestionView(int questionNo) {
 		Connection conn = JDBCTemplate.getConnection();
 		QuestionDao dao = new QuestionDao();
+		int result = dao.updateReadCount(conn, questionNo);
 		//공지사항 정보
 		Question q = dao.selectOneQuestion(conn, questionNo);
 		//공지사항에 달려있는 일반댓글 조회
@@ -192,7 +192,7 @@ public class QuestionService {
 		JDBCTemplate.close(conn);
 		return que;
 	}
-
+	
 	public int questionUpdate(Question q) {
 		Connection conn = JDBCTemplate.getConnection();
 		QuestionDao dao = new QuestionDao();
@@ -204,6 +204,22 @@ public class QuestionService {
 		}
 		JDBCTemplate.close(conn);
 		return result;
+	}
+
+	public kr.co.iei.question.vo.Question selectOneQuestion(int questionNo) {
+		Connection conn = JDBCTemplate.getConnection();
+		QuestionDao dao = new QuestionDao();
+		int result = dao.updateReadCount(conn, questionNo);
+		if(result>0) {
+			JDBCTemplate.commit(conn);
+		}else {
+			JDBCTemplate.rollback(conn);
+			JDBCTemplate.close(conn);
+			return null;
+		}
+		Question n = dao.selectOneNotice(conn, questionNo);
+		JDBCTemplate.close(conn);
+		return n;
 	}
 
 }

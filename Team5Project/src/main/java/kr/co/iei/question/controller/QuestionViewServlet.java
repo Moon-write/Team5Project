@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import kr.co.iei.question.service.QuestionService;
+import kr.co.iei.question.vo.Question;
 import kr.co.iei.question.vo.QuestionViewData;
 
 
@@ -39,7 +40,7 @@ public class QuestionViewServlet extends HttpServlet {
 		//3. 비즈니스로직
 		QuestionService service = new QuestionService();
 		QuestionViewData qvd = service.selectQuestionView(questionNo);
-		//Notice n = service.selectOneNotice(noticeNo);
+		//Question n = service.selectOneQuestion(questionNo);
 		//4. 결과처리
 		RequestDispatcher view
 		=request.getRequestDispatcher("WEB-INF/views/question/questionView.jsp");

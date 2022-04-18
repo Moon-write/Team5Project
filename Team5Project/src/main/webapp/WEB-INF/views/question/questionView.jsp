@@ -14,7 +14,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>질문글</title>
 	<style>
 		#questionView th, #questionView td{
 			border : 1px solid #eee;
@@ -223,7 +223,7 @@
 		<%}else {%>
 			<div class="content-title" style="margin-bottom: 0px;">답변</div>
 		<%} %>
-		<%if(m != null) {%>
+		<%if(m != null && q.getQueRef()==0) {%>
 			<form action="/answerWriteFrm.do" method="post">
 				<input type="hidden" name="questionWriter" value="<%=m.getMemberId()%>">
 				<input type="hidden" name="questionTitle" value="<%=q.getQuestionTitle()%>">
